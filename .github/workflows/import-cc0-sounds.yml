@@ -20,12 +20,10 @@ jobs:
 
       - name: Download and optimize CC0 sounds
         run: |
-          sudo apt-get update
-          sudo apt-get install -y ffmpeg
-          curl --fail --location "https://bigsoundbank.com/UPLOAD/wav/0316.wav" --output /tmp/noisemaker.wav
-          curl --fail --location "https://bigsoundbank.com/UPLOAD/wav/1049.wav" --output /tmp/stadium-horn.wav
-          ffmpeg -y -i /tmp/noisemaker.wav -af "atrim=0:2.4,afade=t=out:st=2.05:d=0.35,loudnorm=I=-12:TP=-1.0:LRA=6" -ar 44100 -ac 2 -c:a pcm_s16le Resources/noisemaker.wav
-          ffmpeg -y -i /tmp/stadium-horn.wav -af "atrim=0:2.8,afade=t=out:st=2.4:d=0.4,loudnorm=I=-12:TP=-1.0:LRA=6" -ar 44100 -ac 2 -c:a pcm_s16le Resources/stadium-horn.wav
+          curl --fail --location "https://bigsoundbank.com/UPLOAD/mp3/0316.mp3" --output /tmp/noisemaker.mp3
+          curl --fail --location "https://bigsoundbank.com/UPLOAD/mp3/1049.mp3" --output /tmp/stadium-horn.mp3
+          ffmpeg -y -i /tmp/noisemaker.mp3 -af "atrim=0:2.4,afade=t=out:st=2.05:d=0.35,loudnorm=I=-12:TP=-1.0:LRA=6" -ar 44100 -ac 2 -c:a pcm_s16le Resources/noisemaker.wav
+          ffmpeg -y -i /tmp/stadium-horn.mp3 -af "atrim=0:2.8,afade=t=out:st=2.4:d=0.4,loudnorm=I=-12:TP=-1.0:LRA=6" -ar 44100 -ac 2 -c:a pcm_s16le Resources/stadium-horn.wav
 
       - name: Commit sound assets and remove importer
         run: |
