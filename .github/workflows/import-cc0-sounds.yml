@@ -1,0 +1,37 @@
+name: Import CC0 sound assets
+
+on:
+  push:
+    branches:
+      - feature/animated-sound-icons
+    paths:
+      - .github/workflows/import-cc0-sounds.yml
+
+permissions:
+  contents: write
+
+jobs:
+  import-sounds:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feature/animated-sound-icons
+
+      - name: Download and optimize CC0 sounds
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg
+          curl --fail --location "https://bigsoundbank.com/UPLOAD/wav/0316.wav" --output /tmp/noisemaker.wav
+          curl --fail --location "https://bigsoundbank.com/UPLOAD/wav/1049.wav" --output /tmp/stadium-horn.wav
+          ffmpeg -y -i /tmp/noisemaker.wav -af "atrim=0:2.4,afade=t=out:st=2.05:d=0.35,loudnorm=I=-12:TP=-1.0:LRA=6" -ar 44100 -ac 2 -c:a pcm_s16le Resources/noisemaker.wav
+          ffmpeg -y -i /tmp/stadium-horn.wav -af "atrim=0:2.8,afade=t=out:st=2.4:d=0.4,loudnorm=I=-12:TP=-1.0:LRA=6" -ar 44100 -ac 2 -c:a pcm_s16le Resources/stadium-horn.wav
+
+      - name: Commit sound assets and remove importer
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          rm .github/workflows/import-cc0-sounds.yml
+          git add Resources/noisemaker.wav Resources/stadium-horn.wav .github/workflows/import-cc0-sounds.yml
+          git commit -m "Add optimized CC0 noisemaker and stadium horn sounds"
+          git push
