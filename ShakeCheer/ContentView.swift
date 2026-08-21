@@ -35,8 +35,7 @@ struct ContentView: View {
                                 selectedSound = sound
                             } label: {
                                 VStack(spacing: 5) {
-                                    Text(sound.emoji)
-                                        .font(.system(size: 29))
+                                    SoundIcon(sound: sound, size: 34)
                                     Text(sound.title)
                                         .font(.caption2.weight(.semibold))
                                         .lineLimit(1)
@@ -121,6 +120,30 @@ struct ContentView: View {
     }
 }
 
+private struct SoundIcon: View {
+    let sound: CheerSound
+    let size: CGFloat
+
+    @ViewBuilder
+    var body: some View {
+        switch sound {
+        case .noisemaker:
+            Image("Noisemaker")
+                .resizable()
+                .scaledToFit()
+                .frame(width: size * 1.22, height: size)
+        case .stadiumHorn:
+            Image("StadiumHorn")
+                .resizable()
+                .scaledToFit()
+                .frame(width: size, height: size)
+        default:
+            Text(sound.emoji)
+                .font(.system(size: size))
+        }
+    }
+}
+
 private struct SoundAnimationView: View {
     let sound: CheerSound
     let trigger: Int
@@ -180,8 +203,7 @@ private struct SoundAnimationView: View {
             }
 
         case .noisemaker:
-            Text(sound.emoji)
-                .font(.system(size: 92))
+            SoundIcon(sound: sound, size: 112)
                 .phaseAnimator(RattlePhase.allCases, trigger: trigger) { content, phase in
                     content
                         .rotationEffect(.degrees(phase.angle))
@@ -192,8 +214,7 @@ private struct SoundAnimationView: View {
 
         case .stadiumHorn:
             ZStack {
-                Text(sound.emoji)
-                    .font(.system(size: 92))
+                SoundIcon(sound: sound, size: 112)
                     .phaseAnimator(HornPhase.allCases, trigger: trigger) { content, phase in
                         content
                             .scaleEffect(phase.scale)
