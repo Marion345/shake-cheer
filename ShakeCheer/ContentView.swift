@@ -127,11 +127,21 @@ private struct SoundIcon: View {
     @ViewBuilder
     var body: some View {
         switch sound {
+        case .bell:
+            Image("HandBell")
+                .resizable()
+                .scaledToFit()
+                .frame(width: size, height: size)
+        case .applause:
+            Image("ApplauseHands")
+                .resizable()
+                .scaledToFit()
+                .frame(width: size, height: size)
         case .noisemaker:
             Image("Noisemaker")
                 .resizable()
                 .scaledToFit()
-                .frame(width: size * 1.22, height: size)
+                .frame(width: size * 1.02, height: size * 0.78)
         case .stadiumHorn:
             Image("StadiumHorn")
                 .resizable()
@@ -151,26 +161,54 @@ private struct SoundAnimationView: View {
     var body: some View {
         switch sound {
         case .bell:
-            Text(sound.emoji)
-                .font(.system(size: 92))
-                .phaseAnimator(BellPhase.allCases, trigger: trigger) { content, phase in
+            ZStack {
+                SoundIcon(sound: sound, size: 108)
+                    .phaseAnimator(BellPhase.allCases, trigger: trigger) { content, phase in
+                        content
+                            .rotationEffect(.degrees(phase.angle), anchor: .bottom)
+                            .scaleEffect(phase.scale)
+                    } animation: { _ in
+                        .easeInOut(duration: 0.075)
+                    }
+
+                HStack(spacing: 94) {
+                    Image(systemName: "wave.3.left")
+                    Image(systemName: "wave.3.right")
+                }
+                .font(.system(size: 20, weight: .bold))
+                .foregroundStyle(.orange)
+                .phaseAnimator(ImpactPhase.allCases, trigger: trigger) { content, phase in
                     content
-                        .rotationEffect(.degrees(phase.angle), anchor: .bottom)
+                        .opacity(phase.opacity)
                         .scaleEffect(phase.scale)
                 } animation: { _ in
-                    .easeInOut(duration: 0.075)
+                    .easeOut(duration: 0.16)
                 }
+            }
 
         case .applause:
-            Text(sound.emoji)
-                .font(.system(size: 92))
-                .phaseAnimator(ClapPhase.allCases, trigger: trigger) { content, phase in
-                    content
-                        .scaleEffect(x: phase.width, y: phase.height)
-                        .rotationEffect(.degrees(phase.angle))
-                } animation: { _ in
-                    .easeInOut(duration: 0.065)
-                }
+            ZStack {
+                SoundIcon(sound: sound, size: 106)
+                    .phaseAnimator(ClapPhase.allCases, trigger: trigger) { content, phase in
+                        content
+                            .scaleEffect(x: phase.width, y: phase.height)
+                            .rotationEffect(.degrees(phase.angle))
+                    } animation: { _ in
+                        .easeInOut(duration: 0.065)
+                    }
+
+                Image(systemName: "sparkles")
+                    .font(.system(size: 28, weight: .bold))
+                    .foregroundStyle(.orange)
+                    .offset(y: -43)
+                    .phaseAnimator(ImpactPhase.allCases, trigger: trigger) { content, phase in
+                        content
+                            .opacity(phase.opacity)
+                            .scaleEffect(phase.scale)
+                    } animation: { _ in
+                        .easeOut(duration: 0.15)
+                    }
+            }
 
         case .cheer:
             ZStack {
@@ -281,6 +319,20 @@ private enum ClapPhase: CaseIterable {
         case .rebound: return 5
         case .secondClap: return -3
         default: return 0
+        }
+    }
+}
+
+private enum ImpactPhase: CaseIterable {
+    case hidden, impact, fading
+
+    var opacity: Double { self == .impact ? 1 : 0 }
+
+    var scale: Double {
+        switch self {
+        case .hidden: return 0.55
+        case .impact: return 1
+        case .fading: return 1.35
         }
     }
 }
