@@ -108,7 +108,10 @@ struct ContentView: View {
             .onDisappear {
                 detector.stop()
             }
+            .background(Color.black.ignoresSafeArea())
         }
+        .tint(.orange)
+        .preferredColorScheme(.dark)
     }
 
     private var sensitivityLabel: String {
