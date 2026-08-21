@@ -134,22 +134,22 @@ private struct SoundIcon: View {
             Image("HandBell")
                 .resizable()
                 .scaledToFit()
-                .frame(width: size, height: size)
+                .frame(width: size * 1.08, height: size * 1.08)
         case .applause:
             Image("ApplauseHands")
                 .resizable()
                 .scaledToFit()
-                .frame(width: size, height: size)
+                .frame(width: size * 1.08, height: size * 1.08)
         case .noisemaker:
             Image("Noisemaker")
                 .resizable()
                 .scaledToFit()
-                .frame(width: size * 1.02, height: size * 0.78)
+                .frame(width: size * 1.25, height: size * 1.25)
         case .stadiumHorn:
             Image("StadiumHorn")
                 .resizable()
                 .scaledToFit()
-                .frame(width: size, height: size)
+                .frame(width: size * 1.15, height: size * 1.15)
         default:
             Text(sound.emoji)
                 .font(.system(size: size))
