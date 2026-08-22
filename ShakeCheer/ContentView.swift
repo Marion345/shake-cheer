@@ -36,65 +36,74 @@ struct ContentView: View {
     }
 
     private var setupView: some View {
-        ScrollView {
-            VStack(spacing: 22) {
-                VStack(spacing: 8) {
-                    TabView(selection: $selectedSound) {
-                        ForEach(CheerSound.allCases) { sound in
-                            VStack(spacing: 10) {
-                                SoundAnimationView(sound: sound, trigger: animationTrigger)
-                                    .frame(height: 235)
+        GeometryReader { proxy in
+            ScrollView {
+                VStack(spacing: 14) {
+                    Spacer(minLength: 8)
 
-                                Text(sound.title)
-                                    .font(.title2.bold())
-                                    .foregroundStyle(.white)
+                    VStack(spacing: 12) {
+                        TabView(selection: $selectedSound) {
+                            ForEach(CheerSound.allCases) { sound in
+                                VStack(spacing: 16) {
+                                    SoundAnimationView(sound: sound, trigger: animationTrigger)
+                                        .scaleEffect(setupIconScale(for: proxy.size))
+                                        .frame(height: max(245, min(proxy.size.height * 0.34, 330)))
+
+                                    Text(sound.title)
+                                        .font(.title.bold())
+                                        .foregroundStyle(.white)
+                                }
+                                .tag(sound)
+                                .accessibilityLabel(sound.title)
                             }
-                            .tag(sound)
-                            .accessibilityLabel(sound.title)
                         }
-                    }
-                    .tabViewStyle(.page(indexDisplayMode: .never))
-                    .frame(height: 285)
+                        .tabViewStyle(.page(indexDisplayMode: .never))
+                        .frame(height: max(330, min(proxy.size.height * 0.47, 420)))
 
-                    HStack(spacing: 8) {
-                        ForEach(CheerSound.allCases) { sound in
-                            Capsule()
-                                .fill(selectedSound == sound ? Color.orange : Color.white.opacity(0.28))
-                                .frame(width: selectedSound == sound ? 22 : 8, height: 8)
-                                .animation(.easeInOut(duration: 0.2), value: selectedSound)
+                        HStack(spacing: 8) {
+                            ForEach(CheerSound.allCases) { sound in
+                                Capsule()
+                                    .fill(selectedSound == sound ? Color.orange : Color.white.opacity(0.28))
+                                    .frame(width: selectedSound == sound ? 22 : 8, height: 8)
+                                    .animation(.easeInOut(duration: 0.2), value: selectedSound)
+                            }
                         }
+
+                        Label("Glisse pour changer de son", systemImage: "arrow.left.and.right")
+                            .font(.footnote)
+                            .foregroundStyle(.secondary)
                     }
 
-                    Label("Glisse pour changer de son", systemImage: "arrow.left.and.right")
+                    Spacer(minLength: 18)
+
+                    VStack(spacing: 6) {
+                        Text("SHAKE CHEER")
+                            .font(.largeTitle.bold())
+                        Text("Choisis un son, puis commence")
+                            .foregroundStyle(.secondary)
+                            .multilineTextAlignment(.center)
+                    }
+
+                    Button {
+                        beginSession()
+                    } label: {
+                        Text("START")
+                            .font(.title3.bold())
+                            .frame(maxWidth: .infinity)
+                            .padding(.vertical, 15)
+                    }
+                    .buttonStyle(.borderedProminent)
+                    .controlSize(.large)
+
+                    Text("Version B · plus le mouvement est fort, plus les sons peuvent se déclencher rapidement.")
                         .font(.footnote)
-                        .foregroundStyle(.secondary)
-                }
-
-                VStack(spacing: 6) {
-                    Text("SHAKE CHEER")
-                        .font(.largeTitle.bold())
-                    Text("Choisis un son, puis commence")
-                        .foregroundStyle(.secondary)
                         .multilineTextAlignment(.center)
+                        .foregroundStyle(.secondary)
+                        .padding(.bottom, 8)
                 }
-
-                Button {
-                    beginSession()
-                } label: {
-                    Text("START")
-                        .font(.title3.bold())
-                        .frame(maxWidth: .infinity)
-                        .padding(.vertical, 15)
-                }
-                .buttonStyle(.borderedProminent)
-                .controlSize(.large)
-
-                Text("Version B · plus le mouvement est fort, plus les sons peuvent se déclencher rapidement.")
-                    .font(.footnote)
-                    .multilineTextAlignment(.center)
-                    .foregroundStyle(.secondary)
+                .padding(.horizontal)
+                .frame(minHeight: proxy.size.height)
             }
-            .padding()
         }
     }
 
@@ -127,6 +136,10 @@ struct ContentView: View {
             .accessibilityLabel("\(selectedSound.title). Touchez pour arrêter.")
             .accessibilityAddTraits(.isButton)
         }
+    }
+
+    private func setupIconScale(for size: CGSize) -> Double {
+        min(max(Double(size.width / 245), 1.4), 1.75)
     }
 
     private func fullScreenIconScale(for size: CGSize) -> Double {
