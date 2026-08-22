@@ -34,7 +34,7 @@ enum CheerSound: String, CaseIterable, Identifiable {
 
     var fileName: String {
         switch self {
-        case .cheer: return "cheer-crowd"
+        case .cheer: return "cheer-crowd-loop"
         case .drum: return "drum-crowd"
         case .stadiumHorn: return "stadium-horn"
         default: return rawValue
@@ -43,7 +43,7 @@ enum CheerSound: String, CaseIterable, Identifiable {
 
     var fileExtension: String {
         switch self {
-        case .cheer, .drum: return "mp3"
+        case .drum: return "mp3"
         default: return "wav"
         }
     }
