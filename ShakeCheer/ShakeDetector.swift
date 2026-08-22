@@ -36,8 +36,12 @@ final class ShakeDetector: ObservableObject {
             let a = motion.userAcceleration
             let magnitude = sqrt(a.x * a.x + a.y * a.y + a.z * a.z)
 
+            let r = motion.rotationRate
+            let rotationMagnitude = sqrt(r.x * r.x + r.y * r.y + r.z * r.z)
+            let activityMagnitude = max(magnitude, rotationMagnitude / 8.0)
+
             Task { @MainActor in
-                self.process(magnitude: magnitude)
+                self.process(magnitude: magnitude, activityMagnitude: activityMagnitude)
             }
         }
     }
@@ -48,12 +52,12 @@ final class ShakeDetector: ObservableObject {
         liveIntensity = 0
     }
 
-    private func process(magnitude: Double) {
+    private func process(magnitude: Double, activityMagnitude: Double) {
         liveIntensity = min(magnitude / 3.5, 1.0)
         let now = Date()
 
         // A lower motion threshold keeps sustained sounds alive between full shake peaks.
-        if magnitude >= 0.18, now.timeIntervalSince(lastMotionSignal) >= 0.12 {
+        if activityMagnitude >= 0.04, now.timeIntervalSince(lastMotionSignal) >= 0.12 {
             lastMotionSignal = now
             onMotion?()
         }
