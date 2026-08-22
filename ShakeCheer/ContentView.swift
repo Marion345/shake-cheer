@@ -29,6 +29,7 @@ struct ContentView: View {
             }
             .onDisappear {
                 detector.stop()
+                soundManager.stopAll()
             }
         }
         .tint(.orange)
@@ -131,6 +132,7 @@ struct ContentView: View {
             .contentShape(Rectangle())
             .onTapGesture {
                 detector.stop()
+                soundManager.stopAll()
             }
             .accessibilityElement(children: .combine)
             .accessibilityLabel("\(selectedSound.title). Touchez pour arrêter.")
@@ -272,6 +274,30 @@ private struct SoundAnimationView: View {
                 }
             }
 
+        case .drum:
+            ZStack {
+                SoundIcon(sound: sound, size: 108)
+                    .phaseAnimator(DrumPhase.allCases, trigger: trigger) { content, phase in
+                        content
+                            .scaleEffect(phase.scale)
+                            .rotationEffect(.degrees(phase.angle))
+                    } animation: { _ in
+                        .easeOut(duration: 0.09)
+                    }
+
+                Image(systemName: "burst.fill")
+                    .font(.system(size: 24, weight: .bold))
+                    .foregroundStyle(.orange)
+                    .offset(y: -56)
+                    .phaseAnimator(ImpactPhase.allCases, trigger: trigger) { content, phase in
+                        content
+                            .opacity(phase.opacity)
+                            .scaleEffect(phase.scale)
+                    } animation: { _ in
+                        .easeOut(duration: 0.15)
+                    }
+            }
+
         case .noisemaker:
             SoundIcon(sound: sound, size: 112)
                 .phaseAnimator(RattlePhase.allCases, trigger: trigger) { content, phase in
@@ -402,6 +428,27 @@ private enum NotePhase: CaseIterable {
         case .hidden: return -8
         case .burst: return -30
         case .floating: return -52
+        }
+    }
+}
+
+private enum DrumPhase: CaseIterable {
+    case resting, hit, rebound, secondHit, settled
+
+    var scale: Double {
+        switch self {
+        case .hit, .secondHit: return 0.88
+        case .rebound: return 1.12
+        default: return 1
+        }
+    }
+
+    var angle: Double {
+        switch self {
+        case .hit: return -6
+        case .rebound: return 5
+        case .secondHit: return -3
+        default: return 0
         }
     }
 }
