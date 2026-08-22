@@ -26,6 +26,9 @@ struct ContentView: View {
                     animationTrigger += 1
                     soundManager.play(selectedSound, intensity: intensity)
                 }
+                detector.onMotion = {
+                    soundManager.keepAlive(selectedSound)
+                }
             }
             .onDisappear {
                 detector.stop()
