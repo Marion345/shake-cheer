@@ -4,6 +4,7 @@ enum CheerSound: String, CaseIterable, Identifiable {
     case bell
     case applause
     case cheer
+    case drum
     case noisemaker
     case stadiumHorn
 
@@ -14,6 +15,7 @@ enum CheerSound: String, CaseIterable, Identifiable {
         case .bell: return "Cloche"
         case .applause: return "Applaudissements"
         case .cheer: return "Encouragement"
+        case .drum: return "Tambour"
         case .noisemaker: return "Crécelle"
         case .stadiumHorn: return "Corne de stade"
         }
@@ -24,6 +26,7 @@ enum CheerSound: String, CaseIterable, Identifiable {
         case .bell: return "🔔"
         case .applause: return "👏"
         case .cheer: return "📣"
+        case .drum: return "🥁"
         case .noisemaker: return "🪇"
         case .stadiumHorn: return "📯"
         }
@@ -31,8 +34,24 @@ enum CheerSound: String, CaseIterable, Identifiable {
 
     var fileName: String {
         switch self {
+        case .cheer: return "cheer-crowd"
+        case .drum: return "drum-crowd"
         case .stadiumHorn: return "stadium-horn"
         default: return rawValue
+        }
+    }
+
+    var fileExtension: String {
+        switch self {
+        case .cheer, .drum: return "mp3"
+        default: return "wav"
+        }
+    }
+
+    var usesSustainedPlayback: Bool {
+        switch self {
+        case .cheer, .drum, .stadiumHorn: return true
+        default: return false
         }
     }
 }
