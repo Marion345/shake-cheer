@@ -78,17 +78,6 @@ struct ContentView: View {
                         .multilineTextAlignment(.center)
                 }
 
-                VStack(alignment: .leading, spacing: 10) {
-                    HStack {
-                        Text("Sensibilité")
-                            .font(.headline)
-                        Spacer()
-                        Text(sensitivityLabel)
-                            .foregroundStyle(.secondary)
-                    }
-                    Slider(value: $detector.sensitivity, in: 0...1)
-                }
-
                 Button {
                     beginSession()
                 } label: {
@@ -147,14 +136,6 @@ struct ContentView: View {
     private func beginSession() {
         // The free version can present an ad here before starting motion detection.
         detector.start()
-    }
-
-    private var sensitivityLabel: String {
-        switch detector.sensitivity {
-        case 0..<0.34: return "Élevée"
-        case 0.34..<0.67: return "Moyenne"
-        default: return "Faible"
-        }
     }
 }
 
