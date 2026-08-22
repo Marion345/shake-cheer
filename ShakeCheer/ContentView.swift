@@ -17,7 +17,7 @@ struct ContentView: View {
                                     SoundAnimationView(sound: sound, trigger: animationTrigger)
                                         .scaleEffect(1.32 + detector.liveIntensity * 0.08)
                                         .animation(.easeOut(duration: 0.08), value: detector.liveIntensity)
-                                        .frame(height: 165)
+                                        .frame(height: 235)
 
                                     Text(sound.title)
                                         .font(.title2.bold())
@@ -28,7 +28,7 @@ struct ContentView: View {
                             }
                         }
                         .tabViewStyle(.page(indexDisplayMode: .never))
-                        .frame(height: 215)
+                        .frame(height: 285)
 
                         HStack(spacing: 8) {
                             ForEach(CheerSound.allCases) { sound in
@@ -47,38 +47,19 @@ struct ContentView: View {
                     VStack(spacing: 6) {
                         Text("SHAKE CHEER")
                             .font(.largeTitle.bold())
-                        Text(detector.isRunning ? "Secoue ton iPhone!" : "Choisis un son et appuie sur Start")
+                        Text(detector.isRunning ? "Secoue ton iPhone!" : "Choisis un son, puis commence")
                             .foregroundStyle(.secondary)
                             .multilineTextAlignment(.center)
-                    }
-
-                    VStack(alignment: .leading, spacing: 10) {
-                        HStack {
-                            Text("Sensibilité")
-                                .font(.headline)
-                            Spacer()
-                            Text(sensitivityLabel)
-                                .foregroundStyle(.secondary)
-                        }
-                        Slider(value: $detector.sensitivity, in: 0...1)
-                            .disabled(detector.isRunning)
-                    }
-
-                    VStack(spacing: 6) {
-                        Text("Shakes")
-                            .foregroundStyle(.secondary)
-                        Text("\(detector.shakeCount)")
-                            .font(.system(size: 40, weight: .bold, design: .rounded))
                     }
 
                     Button {
                         if detector.isRunning {
                             detector.stop()
                         } else {
-                            detector.start()
+                            beginSession()
                         }
                     } label: {
-                        Text(detector.isRunning ? "STOP" : "START")
+                        Text(detector.isRunning ? "ARRÊTER" : "APPUYER POUR COMMENCER")
                             .font(.title3.bold())
                             .frame(maxWidth: .infinity)
                             .padding(.vertical, 15)
@@ -91,6 +72,18 @@ struct ContentView: View {
                             .font(.footnote)
                             .multilineTextAlignment(.center)
                             .foregroundStyle(.secondary)
+                    }
+
+                    VStack(alignment: .leading, spacing: 10) {
+                        HStack {
+                            Text("Sensibilité")
+                                .font(.headline)
+                            Spacer()
+                            Text(sensitivityLabel)
+                                .foregroundStyle(.secondary)
+                        }
+                        Slider(value: $detector.sensitivity, in: 0...1)
+                            .disabled(detector.isRunning)
                     }
                 }
                 .padding()
@@ -109,6 +102,11 @@ struct ContentView: View {
         }
         .tint(.orange)
         .preferredColorScheme(.dark)
+    }
+
+    private func beginSession() {
+        // The free version can present an ad here before starting motion detection.
+        detector.start()
     }
 
     private var sensitivityLabel: String {
