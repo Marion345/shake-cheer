@@ -4,7 +4,6 @@ import Foundation
 @MainActor
 final class ShakeDetector: ObservableObject {
     @Published var isRunning = false
-    @Published var shakeCount = 0
     @Published var liveIntensity = 0.0
 
     /// 0 = easiest to trigger, 1 = hardest to trigger.
@@ -24,7 +23,6 @@ final class ShakeDetector: ObservableObject {
     func start() {
         guard motionManager.isDeviceMotionAvailable else { return }
 
-        shakeCount = 0
         isRunning = true
         lastTrigger = Date.distantPast
         motionManager.deviceMotionUpdateInterval = 1.0 / 60.0
@@ -62,7 +60,6 @@ final class ShakeDetector: ObservableObject {
         guard now.timeIntervalSince(lastTrigger) >= cooldown else { return }
         lastTrigger = now
 
-        shakeCount += 1
         onShake?(normalized)
     }
 }
