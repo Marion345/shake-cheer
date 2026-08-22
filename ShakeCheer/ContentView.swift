@@ -17,7 +17,7 @@ struct ContentView: View {
                                     SoundAnimationView(sound: sound, trigger: animationTrigger)
                                         .scaleEffect(1.32 + detector.liveIntensity * 0.08)
                                         .animation(.easeOut(duration: 0.08), value: detector.liveIntensity)
-                                        .frame(height: 165)
+                                        .frame(height: 235)
 
                                     Text(sound.title)
                                         .font(.title2.bold())
@@ -28,7 +28,7 @@ struct ContentView: View {
                             }
                         }
                         .tabViewStyle(.page(indexDisplayMode: .never))
-                        .frame(height: 215)
+                        .frame(height: 285)
 
                         HStack(spacing: 8) {
                             ForEach(CheerSound.allCases) { sound in
@@ -52,18 +52,6 @@ struct ContentView: View {
                             .multilineTextAlignment(.center)
                     }
 
-                    VStack(alignment: .leading, spacing: 10) {
-                        HStack {
-                            Text("Sensibilité")
-                                .font(.headline)
-                            Spacer()
-                            Text(sensitivityLabel)
-                                .foregroundStyle(.secondary)
-                        }
-                        Slider(value: $detector.sensitivity, in: 0...1)
-                            .disabled(detector.isRunning)
-                    }
-
                     Button {
                         if detector.isRunning {
                             detector.stop()
@@ -84,6 +72,18 @@ struct ContentView: View {
                             .font(.footnote)
                             .multilineTextAlignment(.center)
                             .foregroundStyle(.secondary)
+                    }
+
+                    VStack(alignment: .leading, spacing: 10) {
+                        HStack {
+                            Text("Sensibilité")
+                                .font(.headline)
+                            Spacer()
+                            Text(sensitivityLabel)
+                                .foregroundStyle(.secondary)
+                        }
+                        Slider(value: $detector.sensitivity, in: 0...1)
+                            .disabled(detector.isRunning)
                     }
                 }
                 .padding()
