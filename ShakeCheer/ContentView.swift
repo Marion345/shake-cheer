@@ -47,7 +47,7 @@ struct ContentView: View {
                     VStack(spacing: 6) {
                         Text("SHAKE CHEER")
                             .font(.largeTitle.bold())
-                        Text(detector.isRunning ? "Secoue ton iPhone!" : "Choisis un son et appuie sur Start")
+                        Text(detector.isRunning ? "Secoue ton iPhone!" : "Choisis un son, puis commence")
                             .foregroundStyle(.secondary)
                             .multilineTextAlignment(.center)
                     }
@@ -64,21 +64,14 @@ struct ContentView: View {
                             .disabled(detector.isRunning)
                     }
 
-                    VStack(spacing: 6) {
-                        Text("Shakes")
-                            .foregroundStyle(.secondary)
-                        Text("\(detector.shakeCount)")
-                            .font(.system(size: 40, weight: .bold, design: .rounded))
-                    }
-
                     Button {
                         if detector.isRunning {
                             detector.stop()
                         } else {
-                            detector.start()
+                            beginSession()
                         }
                     } label: {
-                        Text(detector.isRunning ? "STOP" : "START")
+                        Text(detector.isRunning ? "ARRÊTER" : "APPUYER POUR COMMENCER")
                             .font(.title3.bold())
                             .frame(maxWidth: .infinity)
                             .padding(.vertical, 15)
@@ -109,6 +102,11 @@ struct ContentView: View {
         }
         .tint(.orange)
         .preferredColorScheme(.dark)
+    }
+
+    private func beginSession() {
+        // The free version can present an ad here before starting motion detection.
+        detector.start()
     }
 
     private var sensitivityLabel: String {
