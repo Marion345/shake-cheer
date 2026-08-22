@@ -8,87 +8,19 @@ struct ContentView: View {
 
     var body: some View {
         NavigationStack {
-            ScrollView {
-                VStack(spacing: 22) {
-                    VStack(spacing: 8) {
-                        TabView(selection: $selectedSound) {
-                            ForEach(CheerSound.allCases) { sound in
-                                VStack(spacing: 10) {
-                                    SoundAnimationView(sound: sound, trigger: animationTrigger)
-                                        .scaleEffect(1.32 + detector.liveIntensity * 0.08)
-                                        .animation(.easeOut(duration: 0.08), value: detector.liveIntensity)
-                                        .frame(height: 235)
+            ZStack {
+                Color.black.ignoresSafeArea()
 
-                                    Text(sound.title)
-                                        .font(.title2.bold())
-                                        .foregroundStyle(.white)
-                                }
-                                .tag(sound)
-                                .accessibilityLabel(sound.title)
-                            }
-                        }
-                        .tabViewStyle(.page(indexDisplayMode: .never))
-                        .frame(height: 285)
-
-                        HStack(spacing: 8) {
-                            ForEach(CheerSound.allCases) { sound in
-                                Capsule()
-                                    .fill(selectedSound == sound ? Color.orange : Color.white.opacity(0.28))
-                                    .frame(width: selectedSound == sound ? 22 : 8, height: 8)
-                                    .animation(.easeInOut(duration: 0.2), value: selectedSound)
-                            }
-                        }
-
-                        Label("Glisse pour changer de son", systemImage: "arrow.left.and.right")
-                            .font(.footnote)
-                            .foregroundStyle(.secondary)
-                    }
-
-                    VStack(spacing: 6) {
-                        Text("SHAKE CHEER")
-                            .font(.largeTitle.bold())
-                        Text(detector.isRunning ? "Secoue ton iPhone!" : "Choisis un son, puis commence")
-                            .foregroundStyle(.secondary)
-                            .multilineTextAlignment(.center)
-                    }
-
-                    Button {
-                        if detector.isRunning {
-                            detector.stop()
-                        } else {
-                            beginSession()
-                        }
-                    } label: {
-                        Text(detector.isRunning ? "ARRÊTER" : "APPUYER POUR COMMENCER")
-                            .font(.title3.bold())
-                            .frame(maxWidth: .infinity)
-                            .padding(.vertical, 15)
-                    }
-                    .buttonStyle(.borderedProminent)
-                    .controlSize(.large)
-
-                    if !detector.isRunning {
-                        Text("Version B · plus le mouvement est fort, plus les sons peuvent se déclencher rapidement.")
-                            .font(.footnote)
-                            .multilineTextAlignment(.center)
-                            .foregroundStyle(.secondary)
-                    }
-
-                    VStack(alignment: .leading, spacing: 10) {
-                        HStack {
-                            Text("Sensibilité")
-                                .font(.headline)
-                            Spacer()
-                            Text(sensitivityLabel)
-                                .foregroundStyle(.secondary)
-                        }
-                        Slider(value: $detector.sensitivity, in: 0...1)
-                            .disabled(detector.isRunning)
-                    }
+                if detector.isRunning {
+                    playingView
+                        .transition(.opacity.combined(with: .scale(scale: 1.04)))
+                } else {
+                    setupView
+                        .transition(.opacity)
                 }
-                .padding()
             }
             .navigationBarTitleDisplayMode(.inline)
+            .animation(.easeInOut(duration: 0.25), value: detector.isRunning)
             .onAppear {
                 detector.onShake = { intensity in
                     animationTrigger += 1
@@ -98,10 +30,118 @@ struct ContentView: View {
             .onDisappear {
                 detector.stop()
             }
-            .background(Color.black.ignoresSafeArea())
         }
         .tint(.orange)
         .preferredColorScheme(.dark)
+    }
+
+    private var setupView: some View {
+        ScrollView {
+            VStack(spacing: 22) {
+                VStack(spacing: 8) {
+                    TabView(selection: $selectedSound) {
+                        ForEach(CheerSound.allCases) { sound in
+                            VStack(spacing: 10) {
+                                SoundAnimationView(sound: sound, trigger: animationTrigger)
+                                    .frame(height: 235)
+
+                                Text(sound.title)
+                                    .font(.title2.bold())
+                                    .foregroundStyle(.white)
+                            }
+                            .tag(sound)
+                            .accessibilityLabel(sound.title)
+                        }
+                    }
+                    .tabViewStyle(.page(indexDisplayMode: .never))
+                    .frame(height: 285)
+
+                    HStack(spacing: 8) {
+                        ForEach(CheerSound.allCases) { sound in
+                            Capsule()
+                                .fill(selectedSound == sound ? Color.orange : Color.white.opacity(0.28))
+                                .frame(width: selectedSound == sound ? 22 : 8, height: 8)
+                                .animation(.easeInOut(duration: 0.2), value: selectedSound)
+                        }
+                    }
+
+                    Label("Glisse pour changer de son", systemImage: "arrow.left.and.right")
+                        .font(.footnote)
+                        .foregroundStyle(.secondary)
+                }
+
+                VStack(spacing: 6) {
+                    Text("SHAKE CHEER")
+                        .font(.largeTitle.bold())
+                    Text("Choisis un son, puis commence")
+                        .foregroundStyle(.secondary)
+                        .multilineTextAlignment(.center)
+                }
+
+                VStack(alignment: .leading, spacing: 10) {
+                    HStack {
+                        Text("Sensibilité")
+                            .font(.headline)
+                        Spacer()
+                        Text(sensitivityLabel)
+                            .foregroundStyle(.secondary)
+                    }
+                    Slider(value: $detector.sensitivity, in: 0...1)
+                }
+
+                Button {
+                    beginSession()
+                } label: {
+                    Text("START")
+                        .font(.title3.bold())
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 15)
+                }
+                .buttonStyle(.borderedProminent)
+                .controlSize(.large)
+
+                Text("Version B · plus le mouvement est fort, plus les sons peuvent se déclencher rapidement.")
+                    .font(.footnote)
+                    .multilineTextAlignment(.center)
+                    .foregroundStyle(.secondary)
+            }
+            .padding()
+        }
+    }
+
+    private var playingView: some View {
+        GeometryReader { proxy in
+            VStack(spacing: 28) {
+                Spacer()
+
+                SoundAnimationView(sound: selectedSound, trigger: animationTrigger)
+                    .scaleEffect(fullScreenIconScale(for: proxy.size) + detector.liveIntensity * 0.12)
+                    .animation(.easeOut(duration: 0.08), value: detector.liveIntensity)
+                    .frame(maxWidth: .infinity, minHeight: 320)
+
+                Text(selectedSound.title)
+                    .font(.largeTitle.bold())
+                    .foregroundStyle(.white)
+
+                Text("Touchez l’écran pour arrêter")
+                    .font(.headline)
+                    .foregroundStyle(.secondary)
+
+                Spacer()
+            }
+            .frame(width: proxy.size.width, height: proxy.size.height)
+            .contentShape(Rectangle())
+            .onTapGesture {
+                detector.stop()
+            }
+            .accessibilityElement(children: .combine)
+            .accessibilityLabel("\(selectedSound.title). Touchez pour arrêter.")
+            .accessibilityAddTraits(.isButton)
+        }
+    }
+
+    private func fullScreenIconScale(for size: CGSize) -> Double {
+        min(max(Double(size.width / 190), 1.65), 2.45)
     }
 
     private func beginSession() {
