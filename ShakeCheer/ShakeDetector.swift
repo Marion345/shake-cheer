@@ -10,10 +10,12 @@ final class ShakeDetector: ObservableObject {
     @Published var sensitivity = 0.5
 
     var onShake: ((Double) -> Void)?
+    var onMotion: (() -> Void)?
 
     private let motionManager = CMMotionManager()
     private let queue = OperationQueue()
     private var lastTrigger = Date.distantPast
+    private var lastMotionSignal = Date.distantPast
 
     init() {
         queue.name = "ShakeCheer.MotionQueue"
@@ -25,6 +27,7 @@ final class ShakeDetector: ObservableObject {
 
         isRunning = true
         lastTrigger = Date.distantPast
+        lastMotionSignal = Date.distantPast
         motionManager.deviceMotionUpdateInterval = 1.0 / 60.0
 
         motionManager.startDeviceMotionUpdates(to: queue) { [weak self] motion, _ in
@@ -47,16 +50,22 @@ final class ShakeDetector: ObservableObject {
 
     private func process(magnitude: Double) {
         liveIntensity = min(magnitude / 3.5, 1.0)
+        let now = Date()
 
-        // Sensitivity slider maps to a threshold of ~0.75g–2.0g user acceleration.
+        // A lower motion threshold keeps sustained sounds alive between full shake peaks.
+        if magnitude >= 0.18, now.timeIntervalSince(lastMotionSignal) >= 0.12 {
+            lastMotionSignal = now
+            onMotion?()
+        }
+
+        // Fixed medium sensitivity: ~1.375g user acceleration.
         let threshold = 0.75 + sensitivity * 1.25
         guard magnitude >= threshold else { return }
 
-        // Version B: harder movement produces more frequent sound triggers.
+        // Harder movement produces more frequent sound triggers.
         let normalized = min(max((magnitude - threshold) / 2.25, 0), 1)
         let cooldown = 0.34 - (0.22 * normalized) // ~340 ms down to ~120 ms
 
-        let now = Date()
         guard now.timeIntervalSince(lastTrigger) >= cooldown else { return }
         lastTrigger = now
 

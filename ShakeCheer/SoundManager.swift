@@ -32,6 +32,14 @@ final class SoundManager: ObservableObject {
         }
     }
 
+    func keepAlive(_ sound: CheerSound) {
+        guard sound.usesSustainedPlayback,
+              sustainedSound == sound,
+              sustainedPlayer?.isPlaying == true else { return }
+
+        scheduleSustainedStop()
+    }
+
     func stopAll() {
         sustainedStopTask?.cancel()
         sustainedStopTask = nil
@@ -89,6 +97,11 @@ final class SoundManager: ObservableObject {
             }
         }
 
+        scheduleSustainedStop()
+    }
+
+    private func scheduleSustainedStop() {
+        sustainedStopTask?.cancel()
         sustainedStopTask = Task { [weak self] in
             do {
                 try await Task.sleep(for: .seconds(1.1))
@@ -102,7 +115,7 @@ final class SoundManager: ObservableObject {
                 self.sustainedPlayer = nil
                 self.sustainedSound = nil
             } catch {
-                // A new shake cancelled the scheduled fade-out and extended playback.
+                // Ongoing motion cancelled the fade-out and extended playback.
             }
         }
     }
