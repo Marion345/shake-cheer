@@ -104,7 +104,7 @@ final class SoundManager: ObservableObject {
         sustainedStopTask?.cancel()
         sustainedStopTask = Task { [weak self] in
             do {
-                try await Task.sleep(for: .seconds(1.1))
+                try await Task.sleep(for: .seconds(2.2))
                 guard !Task.isCancelled, let self, let player = self.sustainedPlayer else { return }
 
                 player.setVolume(0, fadeDuration: 0.35)
