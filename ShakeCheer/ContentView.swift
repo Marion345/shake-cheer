@@ -6,20 +6,43 @@ struct ContentView: View {
     @State private var selectedSound: CheerSound = .bell
     @State private var animationTrigger = 0
 
-    private let soundColumns = [
-        GridItem(.flexible(), spacing: 10),
-        GridItem(.flexible(), spacing: 10),
-        GridItem(.flexible(), spacing: 10)
-    ]
-
     var body: some View {
         NavigationStack {
             ScrollView {
                 VStack(spacing: 22) {
-                    SoundAnimationView(sound: selectedSound, trigger: animationTrigger)
-                        .scaleEffect(1.0 + detector.liveIntensity * 0.08)
-                        .animation(.easeOut(duration: 0.08), value: detector.liveIntensity)
-                        .frame(height: 112)
+                    VStack(spacing: 8) {
+                        TabView(selection: $selectedSound) {
+                            ForEach(CheerSound.allCases) { sound in
+                                VStack(spacing: 10) {
+                                    SoundAnimationView(sound: sound, trigger: animationTrigger)
+                                        .scaleEffect(1.32 + detector.liveIntensity * 0.08)
+                                        .animation(.easeOut(duration: 0.08), value: detector.liveIntensity)
+                                        .frame(height: 165)
+
+                                    Text(sound.title)
+                                        .font(.title2.bold())
+                                        .foregroundStyle(.white)
+                                }
+                                .tag(sound)
+                                .accessibilityLabel(sound.title)
+                            }
+                        }
+                        .tabViewStyle(.page(indexDisplayMode: .never))
+                        .frame(height: 215)
+
+                        HStack(spacing: 8) {
+                            ForEach(CheerSound.allCases) { sound in
+                                Capsule()
+                                    .fill(selectedSound == sound ? Color.orange : Color.white.opacity(0.28))
+                                    .frame(width: selectedSound == sound ? 22 : 8, height: 8)
+                                    .animation(.easeInOut(duration: 0.2), value: selectedSound)
+                            }
+                        }
+
+                        Label("Glisse pour changer de son", systemImage: "arrow.left.and.right")
+                            .font(.footnote)
+                            .foregroundStyle(.secondary)
+                    }
 
                     VStack(spacing: 6) {
                         Text("SHAKE CHEER")
@@ -27,32 +50,6 @@ struct ContentView: View {
                         Text(detector.isRunning ? "Secoue ton iPhone!" : "Choisis un son et appuie sur Start")
                             .foregroundStyle(.secondary)
                             .multilineTextAlignment(.center)
-                    }
-
-                    LazyVGrid(columns: soundColumns, spacing: 10) {
-                        ForEach(CheerSound.allCases) { sound in
-                            Button {
-                                selectedSound = sound
-                            } label: {
-                                VStack(spacing: 5) {
-                                    SoundIcon(sound: sound, size: 34)
-                                    Text(sound.title)
-                                        .font(.caption2.weight(.semibold))
-                                        .lineLimit(1)
-                                        .minimumScaleFactor(0.65)
-                                }
-                                .frame(maxWidth: .infinity)
-                                .frame(height: 68)
-                                .foregroundStyle(selectedSound == sound ? .white : .primary)
-                                .background(
-                                    RoundedRectangle(cornerRadius: 14)
-                                        .fill(selectedSound == sound ? Color.accentColor : Color.secondary.opacity(0.12))
-                                )
-                            }
-                            .buttonStyle(.plain)
-                            .accessibilityLabel(sound.title)
-                            .accessibilityAddTraits(selectedSound == sound ? .isSelected : [])
-                        }
                     }
 
                     VStack(alignment: .leading, spacing: 10) {
@@ -230,7 +227,7 @@ private struct SoundAnimationView: View {
                     Text("♫")
                 }
                 .font(.system(size: 27, weight: .bold, design: .rounded))
-                .foregroundStyle(.blue)
+                .foregroundStyle(.orange)
                 .phaseAnimator(NotePhase.allCases, trigger: trigger) { content, phase in
                     content
                         .opacity(phase.opacity)
@@ -266,7 +263,7 @@ private struct SoundAnimationView: View {
 
                 Image(systemName: "wave.3.right")
                     .font(.system(size: 34, weight: .bold))
-                    .foregroundStyle(.blue)
+                    .foregroundStyle(.orange)
                     .phaseAnimator(WavePhase.allCases, trigger: trigger) { content, phase in
                         content
                             .opacity(phase.opacity)
