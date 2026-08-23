@@ -1,3 +1,4 @@
+import Combine
 import Foundation
 import StoreKit
 
@@ -51,6 +52,8 @@ final class PurchaseManager: ObservableObject {
 
             if product == nil {
                 message = "ShakeCheer Pro doit encore être configuré dans App Store Connect."
+            } else {
+                message = nil
             }
         } catch {
             message = "Impossible de charger ShakeCheer Pro. Réessaie plus tard."
