@@ -2,16 +2,12 @@ import CoreMotion
 import Foundation
 
 @MainActor
-final class ShakeDetector: ObservableObject {
-    @Published var isRunning = false
-    @Published var liveIntensity = 0.0
-
-    /// 0 = easiest to trigger, 1 = hardest to trigger.
-    @Published var sensitivity = 0.5
-
+final class CoreMotionEngine: MotionEngine {
     var onShake: ((Double) -> Void)?
     var onMotion: (() -> Void)?
+    var onIntensityChange: ((Double) -> Void)?
 
+    private let sensitivity = 0.5
     private let motionManager = CMMotionManager()
     private let queue = OperationQueue()
     private var lastTrigger = Date.distantPast
@@ -22,10 +18,10 @@ final class ShakeDetector: ObservableObject {
         queue.qualityOfService = .userInteractive
     }
 
-    func start() {
-        guard motionManager.isDeviceMotionAvailable else { return }
+    @discardableResult
+    func start() -> Bool {
+        guard motionManager.isDeviceMotionAvailable else { return false }
 
-        isRunning = true
         lastTrigger = Date.distantPast
         lastMotionSignal = Date.distantPast
         motionManager.deviceMotionUpdateInterval = 1.0 / 60.0
@@ -44,16 +40,17 @@ final class ShakeDetector: ObservableObject {
                 self.process(magnitude: magnitude, activityMagnitude: activityMagnitude)
             }
         }
+
+        return true
     }
 
     func stop() {
         motionManager.stopDeviceMotionUpdates()
-        isRunning = false
-        liveIntensity = 0
+        onIntensityChange?(0)
     }
 
     private func process(magnitude: Double, activityMagnitude: Double) {
-        liveIntensity = min(magnitude / 3.5, 1.0)
+        onIntensityChange?(min(magnitude / 3.5, 1.0))
         let now = Date()
 
         // A lower motion threshold keeps sustained sounds alive between full shake peaks.
