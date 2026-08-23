@@ -85,7 +85,7 @@ final class SoundManager: AudioEngine {
             }
 
             let player = try AVAudioPlayer(contentsOf: url)
-            player.volume = volume(for: intensity)
+            player.volume = volume(for: intensity, sound: sound)
             player.prepareToPlay()
             player.play()
             players.append(player)
@@ -97,7 +97,7 @@ final class SoundManager: AudioEngine {
     private func sustain(_ sound: SoundDefinition, intensity: Double) {
         sustainedStopTask?.cancel()
         isStoppingSustainedAudio = false
-        sustainedVolume = volume(for: intensity)
+        sustainedVolume = volume(for: intensity, sound: sound)
 
         if sustainedSound?.id != sound.id || sustainedPlayer == nil {
             sustainedLoopTask?.cancel()
@@ -223,7 +223,11 @@ final class SoundManager: AudioEngine {
         return url
     }
 
-    private func volume(for intensity: Double) -> Float {
-        Float(min(max(0.55 + intensity * 0.12, 0.55), 1.0))
+    private func volume(
+        for intensity: Double,
+        sound: SoundDefinition
+    ) -> Float {
+        let baseVolume = min(max(0.55 + intensity * 0.12, 0.55), 1.0)
+        return Float(min(baseVolume * sound.volumeMultiplier, 1.0))
     }
 }
