@@ -66,6 +66,12 @@ enum SoundAnimationKind: String {
     case victory
     case refereeWhistle
     case laughTrack
+    case failBuzzer
+    case gameOver
+    case crowdHey
+    case djScratch
+    case champagnePops
+    case partyBlower
 }
 
 struct AudioResource: Hashable {
@@ -200,6 +206,54 @@ enum SoundCatalog {
         accessLevel: .pro
     )
 
+    static let crowdHey = SoundDefinition(
+        id: "crowd-hey",
+        title: "Foule « Hey! »",
+        emoji: "🙌",
+        category: .party,
+        audio: AudioResource(fileName: "crowd-hey", fileExtension: "mp3"),
+        animation: .crowdHey,
+        playbackMode: .sustained,
+        accessLevel: .pro,
+        loopEndTime: 7.20,
+        loopCrossfadeDuration: 0.25
+    )
+
+    static let djScratch = SoundDefinition(
+        id: "dj-scratch",
+        title: "DJ Scratch",
+        emoji: "💿",
+        category: .party,
+        audio: AudioResource(fileName: "dj-scratch", fileExtension: "mp3"),
+        animation: .djScratch,
+        playbackMode: .impact,
+        accessLevel: .pro
+    )
+
+    static let champagnePops = SoundDefinition(
+        id: "champagne-pops",
+        title: "Trois bouchons",
+        emoji: "🍾",
+        category: .party,
+        audio: AudioResource(fileName: "champagne-pops", fileExtension: "mp3"),
+        animation: .champagnePops,
+        playbackMode: .impact,
+        accessLevel: .pro
+    )
+
+    static let partyBlower = SoundDefinition(
+        id: "party-blower",
+        title: "Sans-gêne",
+        emoji: "🥳",
+        category: .party,
+        audio: AudioResource(fileName: "party-blower", fileExtension: "mp3"),
+        animation: .partyBlower,
+        playbackMode: .sustained,
+        accessLevel: .pro,
+        loopEndTime: 4.26,
+        loopCrossfadeDuration: 0.20
+    )
+
     static let refereeWhistle = SoundDefinition(
         id: "referee-whistle",
         title: "Sifflet",
@@ -259,6 +313,28 @@ enum SoundCatalog {
         accessLevel: .pro,
         loopEndTime: 7.64,
         loopCrossfadeDuration: 0.25
+    )
+
+    static let failBuzzer = SoundDefinition(
+        id: "fail-buzzer",
+        title: "Échec",
+        emoji: "❌",
+        category: .gaming,
+        audio: AudioResource(fileName: "fail-buzzer", fileExtension: "mp3"),
+        animation: .failBuzzer,
+        playbackMode: .impact,
+        accessLevel: .pro
+    )
+
+    static let gameOver = SoundDefinition(
+        id: "game-over",
+        title: "Game Over",
+        emoji: "☠️",
+        category: .gaming,
+        audio: AudioResource(fileName: "game-over", fileExtension: "mp3"),
+        animation: .gameOver,
+        playbackMode: .impact,
+        accessLevel: .pro
     )
 
     static let sadTrumpet = SoundDefinition(
@@ -345,9 +421,15 @@ enum SoundCatalog {
         refereeWhistle,
         podium,
         airHorn,
+        crowdHey,
+        djScratch,
+        champagnePops,
+        partyBlower,
         levelUp,
         coin,
         victory,
+        failBuzzer,
+        gameOver,
         sadTrumpet,
         boo,
         crowdDisappointment,

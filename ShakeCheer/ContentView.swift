@@ -593,6 +593,151 @@ private struct SoundAnimationView: View {
                     }
             }
 
+        case .crowdHey:
+            ZStack {
+                SoundIcon(sound: sound, size: 106)
+                    .phaseAnimator(PulsePhase.allCases, trigger: trigger) { content, phase in
+                        content
+                            .scaleEffect(phase.scale)
+                            .offset(y: phase == .burst ? -7 : 0)
+                    } animation: { _ in
+                        .spring(duration: 0.18, bounce: 0.4)
+                    }
+
+                Image(systemName: "person.3.fill")
+                    .font(.system(size: 28, weight: .bold))
+                    .foregroundStyle(.orange)
+                    .offset(y: -56)
+                    .phaseAnimator(ImpactPhase.allCases, trigger: trigger) { content, phase in
+                        content
+                            .opacity(phase.opacity)
+                            .scaleEffect(phase.scale)
+                    } animation: { _ in
+                        .easeOut(duration: 0.16)
+                    }
+            }
+
+        case .djScratch:
+            ZStack {
+                SoundIcon(sound: sound, size: 108)
+                    .phaseAnimator(CoinPhase.allCases, trigger: trigger) { content, phase in
+                        content
+                            .rotationEffect(.degrees(phase.angle))
+                            .scaleEffect(phase.scale)
+                    } animation: { _ in
+                        .linear(duration: 0.075)
+                    }
+
+                Image(systemName: "waveform")
+                    .font(.system(size: 26, weight: .bold))
+                    .foregroundStyle(.orange)
+                    .offset(y: 58)
+                    .phaseAnimator(ImpactPhase.allCases, trigger: trigger) { content, phase in
+                        content
+                            .opacity(phase.opacity)
+                            .scaleEffect(phase.scale)
+                    } animation: { _ in
+                        .easeOut(duration: 0.15)
+                    }
+            }
+
+        case .champagnePops:
+            ZStack {
+                SoundIcon(sound: sound, size: 108)
+                    .phaseAnimator(PulsePhase.allCases, trigger: trigger) { content, phase in
+                        content
+                            .scaleEffect(phase.scale)
+                            .rotationEffect(.degrees(-phase.angle), anchor: .bottom)
+                    } animation: { _ in
+                        .spring(duration: 0.16, bounce: 0.45)
+                    }
+
+                Image(systemName: "sparkles")
+                    .font(.system(size: 30, weight: .bold))
+                    .foregroundStyle(.orange)
+                    .offset(x: 42, y: -50)
+                    .phaseAnimator(ImpactPhase.allCases, trigger: trigger) { content, phase in
+                        content
+                            .opacity(phase.opacity)
+                            .scaleEffect(phase.scale)
+                    } animation: { _ in
+                        .easeOut(duration: 0.16)
+                    }
+            }
+
+        case .partyBlower:
+            ZStack {
+                SoundIcon(sound: sound, size: 108)
+                    .phaseAnimator(HornPhase.allCases, trigger: trigger) { content, phase in
+                        content
+                            .scaleEffect(phase.scale)
+                            .offset(x: phase.offset)
+                    } animation: { _ in
+                        .easeOut(duration: 0.11)
+                    }
+
+                Image(systemName: "wave.3.right")
+                    .font(.system(size: 31, weight: .bold))
+                    .foregroundStyle(.orange)
+                    .offset(x: 62, y: -8)
+                    .phaseAnimator(WavePhase.allCases, trigger: trigger) { content, phase in
+                        content
+                            .opacity(phase.opacity)
+                            .scaleEffect(phase.scale)
+                            .offset(x: phase.x)
+                    } animation: { _ in
+                        .easeOut(duration: 0.20)
+                    }
+            }
+
+        case .failBuzzer:
+            ZStack {
+                SoundIcon(sound: sound, size: 108)
+                    .phaseAnimator(PulsePhase.allCases, trigger: trigger) { content, phase in
+                        content
+                            .scaleEffect(phase.scale)
+                            .rotationEffect(.degrees(phase.angle))
+                    } animation: { _ in
+                        .easeOut(duration: 0.12)
+                    }
+
+                Image(systemName: "exclamationmark.triangle.fill")
+                    .font(.system(size: 28, weight: .bold))
+                    .foregroundStyle(.orange)
+                    .offset(y: -56)
+                    .phaseAnimator(ImpactPhase.allCases, trigger: trigger) { content, phase in
+                        content
+                            .opacity(phase.opacity)
+                            .scaleEffect(phase.scale)
+                    } animation: { _ in
+                        .easeOut(duration: 0.15)
+                    }
+            }
+
+        case .gameOver:
+            ZStack {
+                SoundIcon(sound: sound, size: 108)
+                    .phaseAnimator(PulsePhase.allCases, trigger: trigger) { content, phase in
+                        content
+                            .scaleEffect(phase.scale)
+                            .offset(y: phase == .burst ? 6 : 0)
+                    } animation: { _ in
+                        .easeOut(duration: 0.13)
+                    }
+
+                Image(systemName: "xmark.circle.fill")
+                    .font(.system(size: 30, weight: .bold))
+                    .foregroundStyle(.orange)
+                    .offset(y: -56)
+                    .phaseAnimator(ImpactPhase.allCases, trigger: trigger) { content, phase in
+                        content
+                            .opacity(phase.opacity)
+                            .scaleEffect(phase.scale)
+                    } animation: { _ in
+                        .easeOut(duration: 0.16)
+                    }
+            }
+
         case .noisemaker:
             SoundIcon(sound: sound, size: 112)
                 .phaseAnimator(RattlePhase.allCases, trigger: trigger) { content, phase in

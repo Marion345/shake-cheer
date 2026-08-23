@@ -9,7 +9,7 @@ final class SoundCatalogTests: XCTestCase {
 
     func testFreeAndProSoundsPartitionCatalog() {
         XCTAssertEqual(SoundCatalog.freeSounds.count, 3)
-        XCTAssertEqual(SoundCatalog.proSounds.count, 14)
+        XCTAssertEqual(SoundCatalog.proSounds.count, 20)
         XCTAssertEqual(
             Set(SoundCatalog.freeSounds + SoundCatalog.proSounds),
             Set(SoundCatalog.allSounds)
@@ -31,8 +31,13 @@ final class SoundCatalogTests: XCTestCase {
         XCTAssertTrue(SoundCatalog.sounds(in: .sports).contains(SoundCatalog.cheer))
         XCTAssertTrue(SoundCatalog.sounds(in: .sports).contains(SoundCatalog.drum))
         XCTAssertTrue(SoundCatalog.sounds(in: .sports).contains(SoundCatalog.refereeWhistle))
+        XCTAssertEqual(SoundCatalog.sounds(in: .sports).count, 5)
+        XCTAssertEqual(SoundCatalog.sounds(in: .party).count, 5)
         XCTAssertTrue(SoundCatalog.sounds(in: .party).contains(SoundCatalog.airHorn))
+        XCTAssertTrue(SoundCatalog.sounds(in: .party).contains(SoundCatalog.champagnePops))
+        XCTAssertEqual(SoundCatalog.sounds(in: .gaming).count, 5)
         XCTAssertTrue(SoundCatalog.sounds(in: .gaming).contains(SoundCatalog.victory))
+        XCTAssertTrue(SoundCatalog.sounds(in: .gaming).contains(SoundCatalog.gameOver))
         XCTAssertTrue(SoundCatalog.sounds(in: .funny).contains(SoundCatalog.laughTrack))
         XCTAssertTrue(SoundCatalog.sounds(in: .custom).isEmpty)
     }
@@ -82,5 +87,11 @@ final class SoundCatalogTests: XCTestCase {
         XCTAssertEqual(SoundCatalog.podium.playbackMode, .sustained)
         XCTAssertEqual(SoundCatalog.victory.playbackMode, .sustained)
         XCTAssertEqual(SoundCatalog.laughTrack.playbackMode, .sustained)
+        XCTAssertEqual(SoundCatalog.crowdHey.playbackMode, .sustained)
+        XCTAssertEqual(SoundCatalog.partyBlower.playbackMode, .sustained)
+        XCTAssertEqual(SoundCatalog.djScratch.playbackMode, .impact)
+        XCTAssertEqual(SoundCatalog.champagnePops.playbackMode, .impact)
+        XCTAssertEqual(SoundCatalog.failBuzzer.playbackMode, .impact)
+        XCTAssertEqual(SoundCatalog.gameOver.playbackMode, .impact)
     }
 }

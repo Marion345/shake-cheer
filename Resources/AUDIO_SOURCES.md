@@ -24,3 +24,12 @@ Les URL sources et les preuves de licence commerciale de ces trois pistes doiven
 - `laugh-track.mp3`: “90s Sitcom Laugh Track V2” — Artificially Inspired, utilisé pour « Rires ».
 
 Ces six pistes ont été coupées au besoin, fondues et optimisées en MP3 mono 96 kbit/s. Leurs URL sources et preuves de licence commerciale doivent être ajoutées avant la soumission App Store.
+
+- `fail-buzzer.mp3`: “Buzzer 4” — Floraphonic, utilisé pour « Échec ».
+- `game-over.mp3`: “Game Over Deep Male Voice Clip” — Universfield, utilisé pour « Game Over ».
+- `crowd-hey.mp3`: “Crowd Shouting Hey Hey Hey” — créateur `11325622`, utilisé pour « Foule Hey! ».
+- `dj-scratch.mp3`: “Babyscratch” — Freesound Community, utilisé pour « DJ Scratch ».
+- `champagne-pops.mp3`: “Corkscrew Mix” — Freesound Community; seules les trois premières détonations ont été conservées.
+- `party-blower.mp3`: “Party Blower 6” — Floraphonic, utilisé pour « Sans-gêne ».
+
+Ces six pistes ont été coupées au besoin, fondues et optimisées en MP3 mono 96 kbit/s. Leurs URL sources et preuves de licence commerciale doivent être ajoutées avant la soumission App Store.
