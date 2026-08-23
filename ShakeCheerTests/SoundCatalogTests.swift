@@ -9,7 +9,7 @@ final class SoundCatalogTests: XCTestCase {
 
     func testFreeAndProSoundsPartitionCatalog() {
         XCTAssertEqual(SoundCatalog.freeSounds.count, 3)
-        XCTAssertEqual(SoundCatalog.proSounds.count, 3)
+        XCTAssertEqual(SoundCatalog.proSounds.count, 5)
         XCTAssertEqual(
             Set(SoundCatalog.freeSounds + SoundCatalog.proSounds),
             Set(SoundCatalog.allSounds)
@@ -34,5 +34,9 @@ final class SoundCatalogTests: XCTestCase {
         XCTAssertEqual(SoundCatalog.cheer.playbackMode, .sustained)
         XCTAssertEqual(SoundCatalog.drum.playbackMode, .sustained)
         XCTAssertEqual(SoundCatalog.stadiumHorn.playbackMode, .sustained)
+        XCTAssertEqual(SoundCatalog.drum.loopEndTime, 4.69)
+        XCTAssertEqual(SoundCatalog.stadiumHorn.loopEndTime, 2.10)
+        XCTAssertEqual(SoundCatalog.airHorn.category, .party)
+        XCTAssertEqual(SoundCatalog.sadTrumpet.category, .funny)
     }
 }
