@@ -139,8 +139,13 @@ final class SoundManager: AudioEngine {
         guard let currentPlayer = sustainedPlayer,
               let url = audioURL(for: sound) else { return }
 
-        let crossfadeDuration = min(0.65, currentPlayer.duration * 0.25)
-        let delay = max(currentPlayer.duration - crossfadeDuration, 0.1)
+        let requestedLoopEnd = sound.loopEndTime ?? currentPlayer.duration
+        let loopEnd = min(max(requestedLoopEnd, 0.2), currentPlayer.duration)
+        let crossfadeDuration = min(
+            sound.loopCrossfadeDuration,
+            loopEnd * 0.25
+        )
+        let delay = max(loopEnd - crossfadeDuration, 0.1)
         let expectedSoundID = sound.id
 
         sustainedLoopTask = Task { [weak self, weak currentPlayer] in
