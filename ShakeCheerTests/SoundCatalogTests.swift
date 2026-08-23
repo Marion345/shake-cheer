@@ -24,9 +24,14 @@ final class SoundCatalogTests: XCTestCase {
     }
 
     func testCatalogCanFilterByCategory() {
-        XCTAssertTrue(SoundCatalog.sounds(in: .basic).contains(SoundCatalog.bell))
+        XCTAssertEqual(
+            SoundCatalog.sounds(in: .basic),
+            [SoundCatalog.bell, SoundCatalog.applause, SoundCatalog.noisemaker]
+        )
+        XCTAssertTrue(SoundCatalog.sounds(in: .sports).contains(SoundCatalog.cheer))
+        XCTAssertTrue(SoundCatalog.sounds(in: .sports).contains(SoundCatalog.drum))
         XCTAssertTrue(SoundCatalog.sounds(in: .sports).contains(SoundCatalog.refereeWhistle))
-        XCTAssertTrue(SoundCatalog.sounds(in: .party).contains(SoundCatalog.drum))
+        XCTAssertTrue(SoundCatalog.sounds(in: .party).contains(SoundCatalog.airHorn))
         XCTAssertTrue(SoundCatalog.sounds(in: .gaming).contains(SoundCatalog.victory))
         XCTAssertTrue(SoundCatalog.sounds(in: .funny).contains(SoundCatalog.laughTrack))
         XCTAssertTrue(SoundCatalog.sounds(in: .custom).isEmpty)
@@ -36,6 +41,12 @@ final class SoundCatalogTests: XCTestCase {
         XCTAssertEqual(SoundCatalog.selectableCategories.first, .basic)
         XCTAssertFalse(SoundCatalog.selectableCategories.contains(.custom))
         XCTAssertEqual(SoundCategory.basic.accessLevel, .free)
+        XCTAssertEqual(
+            Set(SoundCatalog.freeSounds),
+            Set([SoundCatalog.bell, SoundCatalog.applause, SoundCatalog.noisemaker])
+        )
+        XCTAssertEqual(SoundCatalog.cheer.accessLevel, .pro)
+        XCTAssertEqual(SoundCatalog.drum.accessLevel, .pro)
         XCTAssertTrue(
             SoundCatalog.selectableCategories
                 .filter { $0 != .basic }
