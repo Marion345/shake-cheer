@@ -9,7 +9,7 @@ final class SoundCatalogTests: XCTestCase {
 
     func testFreeAndProSoundsPartitionCatalog() {
         XCTAssertEqual(SoundCatalog.freeSounds.count, 3)
-        XCTAssertEqual(SoundCatalog.proSounds.count, 8)
+        XCTAssertEqual(SoundCatalog.proSounds.count, 14)
         XCTAssertEqual(
             Set(SoundCatalog.freeSounds + SoundCatalog.proSounds),
             Set(SoundCatalog.allSounds)
@@ -24,9 +24,23 @@ final class SoundCatalogTests: XCTestCase {
     }
 
     func testCatalogCanFilterByCategory() {
-        XCTAssertTrue(SoundCatalog.sounds(in: .sports).contains(SoundCatalog.bell))
+        XCTAssertTrue(SoundCatalog.sounds(in: .basic).contains(SoundCatalog.bell))
+        XCTAssertTrue(SoundCatalog.sounds(in: .sports).contains(SoundCatalog.refereeWhistle))
         XCTAssertTrue(SoundCatalog.sounds(in: .party).contains(SoundCatalog.drum))
+        XCTAssertTrue(SoundCatalog.sounds(in: .gaming).contains(SoundCatalog.victory))
+        XCTAssertTrue(SoundCatalog.sounds(in: .funny).contains(SoundCatalog.laughTrack))
         XCTAssertTrue(SoundCatalog.sounds(in: .custom).isEmpty)
+    }
+
+    func testSelectableCategoriesPrepareFreeAndProAccess() {
+        XCTAssertEqual(SoundCatalog.selectableCategories.first, .basic)
+        XCTAssertFalse(SoundCatalog.selectableCategories.contains(.custom))
+        XCTAssertEqual(SoundCategory.basic.accessLevel, .free)
+        XCTAssertTrue(
+            SoundCatalog.selectableCategories
+                .filter { $0 != .basic }
+                .allSatisfy { $0.accessLevel == .pro }
+        )
     }
 
     func testSustainedPlaybackMetadata() {
@@ -51,5 +65,11 @@ final class SoundCatalogTests: XCTestCase {
         XCTAssertEqual(SoundCatalog.sadTrumpet.playbackMode, .sustained)
         XCTAssertEqual(SoundCatalog.sadTrumpet.loopEndTime, 2.30)
         XCTAssertEqual(SoundCatalog.sadTrumpet.volumeMultiplier, 1.55)
+        XCTAssertEqual(SoundCatalog.refereeWhistle.playbackMode, .impact)
+        XCTAssertEqual(SoundCatalog.coin.playbackMode, .impact)
+        XCTAssertEqual(SoundCatalog.levelUp.playbackMode, .sustained)
+        XCTAssertEqual(SoundCatalog.podium.playbackMode, .sustained)
+        XCTAssertEqual(SoundCatalog.victory.playbackMode, .sustained)
+        XCTAssertEqual(SoundCatalog.laughTrack.playbackMode, .sustained)
     }
 }
