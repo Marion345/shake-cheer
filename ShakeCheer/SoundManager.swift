@@ -2,7 +2,7 @@ import AVFoundation
 import Foundation
 
 @MainActor
-final class SoundManager: ObservableObject {
+final class SoundManager: AudioEngine {
     private var players: [AVAudioPlayer] = []
     private let maxConcurrentPlayers = 8
 
