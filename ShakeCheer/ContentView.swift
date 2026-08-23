@@ -5,9 +5,19 @@ struct ContentView: View {
     @State private var selectedSound = SoundCatalog.bell
 
     @MainActor
+    init() {
+        _session = StateObject(
+            wrappedValue: ShakeCheerSession(
+                motionEngine: CoreMotionEngine(),
+                audioEngine: SoundManager()
+            )
+        )
+    }
+
+    @MainActor
     init(
-        motionEngine: any MotionEngine = CoreMotionEngine(),
-        audioEngine: any AudioEngine = SoundManager()
+        motionEngine: any MotionEngine,
+        audioEngine: any AudioEngine
     ) {
         _session = StateObject(
             wrappedValue: ShakeCheerSession(
