@@ -12,3 +12,4 @@ Both source recordings are released under CC0 (public domain) and were trimmed, 
 - `sad-trumpet.mp3`: “Failure Trumpet” — Universfield, fichier fourni par le propriétaire du projet.
 
 Les URL sources et les preuves de licence commerciale de ces trois pistes doivent être ajoutées avant la soumission App Store.
+- `boo-crowd.mp3`: “Crowd Disappointment Reaction” — Universfield, fichier fourni par le propriétaire du projet; preuve de licence commerciale à ajouter avant soumission.

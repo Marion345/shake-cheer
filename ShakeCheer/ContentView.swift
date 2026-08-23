@@ -311,6 +311,30 @@ private struct SoundAnimationView: View {
                     }
             }
 
+        case .boo:
+            ZStack {
+                SoundIcon(sound: sound, size: 106)
+                    .phaseAnimator(PulsePhase.allCases, trigger: trigger) { content, phase in
+                        content
+                            .scaleEffect(phase.scale)
+                            .rotationEffect(.degrees(-phase.angle))
+                    } animation: { _ in
+                        .easeOut(duration: 0.11)
+                    }
+
+                Image(systemName: "hand.thumbsdown.fill")
+                    .font(.system(size: 27, weight: .bold))
+                    .foregroundStyle(.orange)
+                    .offset(y: -52)
+                    .phaseAnimator(ImpactPhase.allCases, trigger: trigger) { content, phase in
+                        content
+                            .opacity(phase.opacity)
+                            .scaleEffect(phase.scale)
+                    } animation: { _ in
+                        .easeOut(duration: 0.15)
+                    }
+            }
+
         case .noisemaker:
             SoundIcon(sound: sound, size: 112)
                 .phaseAnimator(RattlePhase.allCases, trigger: trigger) { content, phase in
