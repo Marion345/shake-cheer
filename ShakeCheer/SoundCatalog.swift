@@ -100,7 +100,7 @@ enum SoundCatalog {
         title: "Tambour",
         emoji: "🥁",
         category: .party,
-        audio: AudioResource(fileName: "drum-crowd", fileExtension: "wav"),
+        audio: AudioResource(fileName: "drum-crowd", fileExtension: "mp3"),
         animation: .drum,
         playbackMode: .sustained,
         accessLevel: .pro
