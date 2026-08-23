@@ -7,7 +7,7 @@ final class SoundManager: ObservableObject {
     private let maxConcurrentPlayers = 8
 
     private var sustainedPlayer: AVAudioPlayer?
-    private var sustainedSound: CheerSound?
+    private var sustainedSoundID: String?
     private var sustainedStopTask: Task<Void, Never>?
 
     init() {
@@ -24,7 +24,7 @@ final class SoundManager: ObservableObject {
         }
     }
 
-    func play(_ sound: CheerSound, intensity: Double) {
+    func play(_ sound: SoundDefinition, intensity: Double) {
         if sound.usesSustainedPlayback {
             sustain(sound, intensity: intensity)
         } else {
@@ -32,9 +32,9 @@ final class SoundManager: ObservableObject {
         }
     }
 
-    func keepAlive(_ sound: CheerSound) {
+    func keepAlive(_ sound: SoundDefinition) {
         guard sound.usesSustainedPlayback,
-              sustainedSound == sound,
+              sustainedSoundID == sound.id,
               sustainedPlayer?.isPlaying == true else { return }
 
         scheduleSustainedStop()
@@ -45,13 +45,13 @@ final class SoundManager: ObservableObject {
         sustainedStopTask = nil
         sustainedPlayer?.stop()
         sustainedPlayer = nil
-        sustainedSound = nil
+        sustainedSoundID = nil
 
         players.forEach { $0.stop() }
         players.removeAll()
     }
 
-    private func playImpact(_ sound: CheerSound, intensity: Double) {
+    private func playImpact(_ sound: SoundDefinition, intensity: Double) {
         guard let url = audioURL(for: sound) else { return }
 
         do {
@@ -70,10 +70,10 @@ final class SoundManager: ObservableObject {
         }
     }
 
-    private func sustain(_ sound: CheerSound, intensity: Double) {
+    private func sustain(_ sound: SoundDefinition, intensity: Double) {
         sustainedStopTask?.cancel()
 
-        if sustainedSound != sound || sustainedPlayer == nil {
+        if sustainedSoundID != sound.id || sustainedPlayer == nil {
             sustainedPlayer?.stop()
 
             guard let url = audioURL(for: sound) else { return }
@@ -85,7 +85,7 @@ final class SoundManager: ObservableObject {
                 player.prepareToPlay()
                 player.play()
                 sustainedPlayer = player
-                sustainedSound = sound
+                sustainedSoundID = sound.id
             } catch {
                 print("Sustained playback error: \(error.localizedDescription)")
                 return
@@ -113,14 +113,14 @@ final class SoundManager: ObservableObject {
 
                 player.stop()
                 self.sustainedPlayer = nil
-                self.sustainedSound = nil
+                self.sustainedSoundID = nil
             } catch {
                 // Ongoing motion cancelled the fade-out and extended playback.
             }
         }
     }
 
-    private func audioURL(for sound: CheerSound) -> URL? {
+    private func audioURL(for sound: SoundDefinition) -> URL? {
         guard let url = Bundle.main.url(
             forResource: sound.fileName,
             withExtension: sound.fileExtension
