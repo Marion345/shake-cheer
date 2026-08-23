@@ -41,6 +41,8 @@ enum SoundAnimationKind: String {
     case airHorn
     case sadTrumpet
     case boo
+    case crowdDisappointment
+    case crickets
 }
 
 struct AudioResource: Hashable {
@@ -194,12 +196,38 @@ enum SoundCatalog {
         title: "Boo",
         emoji: "👎",
         category: .funny,
-        audio: AudioResource(fileName: "boo-crowd", fileExtension: "mp3"),
+        audio: AudioResource(fileName: "boo", fileExtension: "mp3"),
         animation: .boo,
+        playbackMode: .sustained,
+        accessLevel: .pro,
+        loopEndTime: 3.90,
+        loopCrossfadeDuration: 0.20
+    )
+
+    static let crowdDisappointment = SoundDefinition(
+        id: "crowd-disappointment",
+        title: "Foule déçue",
+        emoji: "😩",
+        category: .funny,
+        audio: AudioResource(fileName: "boo-crowd", fileExtension: "mp3"),
+        animation: .crowdDisappointment,
         playbackMode: .sustained,
         accessLevel: .pro,
         loopEndTime: 2.70,
         loopCrossfadeDuration: 0.20
+    )
+
+    static let crickets = SoundDefinition(
+        id: "crickets",
+        title: "Criquets",
+        emoji: "🦗",
+        category: .funny,
+        audio: AudioResource(fileName: "crickets", fileExtension: "mp3"),
+        animation: .crickets,
+        playbackMode: .sustained,
+        accessLevel: .pro,
+        loopEndTime: 9.30,
+        loopCrossfadeDuration: 0.35
     )
 
     static let allSounds: [SoundDefinition] = [
@@ -211,7 +239,9 @@ enum SoundCatalog {
         stadiumHorn,
         airHorn,
         sadTrumpet,
-        boo
+        boo,
+        crowdDisappointment,
+        crickets
     ]
 
     static var freeSounds: [SoundDefinition] {
