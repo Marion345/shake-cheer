@@ -3,6 +3,8 @@ import SwiftUI
 struct ContentView: View {
     @StateObject private var session: ShakeCheerSession
     @State private var selectedSound = SoundCatalog.bell
+    @State private var selectedCategory: SoundCategory?
+    private let categoryLocksEnabled = false
 
     @MainActor
     init() {
@@ -35,9 +37,12 @@ struct ContentView: View {
                 if session.isRunning {
                     playingView
                         .transition(.opacity.combined(with: .scale(scale: 1.04)))
-                } else {
-                    setupView
+                } else if let selectedCategory {
+                    setupView(for: selectedCategory)
                         .transition(.opacity)
+                } else {
+                    categorySelectionView
+                        .transition(.opacity.combined(with: .scale(scale: 0.98)))
                 }
             }
             .navigationBarTitleDisplayMode(.inline)
@@ -50,15 +55,104 @@ struct ContentView: View {
         .preferredColorScheme(.dark)
     }
 
-    private var setupView: some View {
+    private var categorySelectionView: some View {
+        GeometryReader { proxy in
+            ScrollView {
+                VStack(spacing: 24) {
+                    Spacer(minLength: max(24, proxy.size.height * 0.06))
+
+                    VStack(spacing: 8) {
+                        Text("SHAKE CHEER")
+                            .font(.largeTitle.bold())
+                            .foregroundStyle(.white)
+                        Text("Choisis ton ambiance")
+                            .font(.title3)
+                            .foregroundStyle(.secondary)
+                    }
+
+                    LazyVGrid(
+                        columns: [
+                            GridItem(.flexible(), spacing: 14),
+                            GridItem(.flexible(), spacing: 14)
+                        ],
+                        spacing: 14
+                    ) {
+                        ForEach(SoundCatalog.selectableCategories) { category in
+                            Button {
+                                selectCategory(category)
+                            } label: {
+                                VStack(spacing: 12) {
+                                    Image(systemName: category.icon)
+                                        .font(.system(size: 42, weight: .semibold))
+                                        .foregroundStyle(category == .basic ? .white : .orange)
+
+                                    Text(category.title)
+                                        .font(.headline)
+                                        .foregroundStyle(.white)
+
+                                    Text(category == .basic ? "GRATUIT" : "PRO · TEST")
+                                        .font(.caption2.bold())
+                                        .foregroundStyle(category == .basic ? .green : .orange)
+                                }
+                                .frame(maxWidth: .infinity, minHeight: 138)
+                                .background(
+                                    RoundedRectangle(cornerRadius: 24, style: .continuous)
+                                        .fill(Color.white.opacity(0.075))
+                                        .overlay {
+                                            RoundedRectangle(cornerRadius: 24, style: .continuous)
+                                                .stroke(
+                                                    category == .basic
+                                                        ? Color.white.opacity(0.16)
+                                                        : Color.orange.opacity(0.28),
+                                                    lineWidth: 1
+                                                )
+                                        }
+                                )
+                            }
+                            .buttonStyle(.plain)
+                            .disabled(
+                                categoryLocksEnabled
+                                    && category.accessLevel == .pro
+                            )
+                        }
+                    }
+
+                    Text("Les catégories Pro sont déverrouillées pendant les tests.")
+                        .font(.footnote)
+                        .multilineTextAlignment(.center)
+                        .foregroundStyle(.secondary)
+
+                    Spacer(minLength: 24)
+                }
+                .padding(.horizontal, 18)
+                .frame(minHeight: proxy.size.height)
+            }
+        }
+    }
+
+    private func setupView(for category: SoundCategory) -> some View {
         GeometryReader { proxy in
             ScrollView {
                 VStack(spacing: 14) {
-                    Spacer(minLength: 8)
+                    HStack {
+                        Button {
+                            selectedCategory = nil
+                        } label: {
+                            Label("Catégories", systemImage: "chevron.left")
+                                .font(.headline)
+                        }
+
+                        Spacer()
+
+                        Text(category.title)
+                            .font(.headline)
+                            .foregroundStyle(.secondary)
+                    }
+                    .padding(.top, 8)
 
                     VStack(spacing: 12) {
                         TabView(selection: $selectedSound) {
-                            ForEach(SoundCatalog.allSounds) { sound in
+                            ForEach(SoundCatalog.sounds(in: category)) { sound in
                                 VStack(spacing: 16) {
                                     SoundAnimationView(sound: sound, trigger: session.animationTrigger)
                                         .scaleEffect(setupIconScale(for: proxy.size))
@@ -76,7 +170,7 @@ struct ContentView: View {
                         .frame(height: max(330, min(proxy.size.height * 0.47, 420)))
 
                         HStack(spacing: 8) {
-                            ForEach(SoundCatalog.allSounds) { sound in
+                            ForEach(SoundCatalog.sounds(in: category)) { sound in
                                 Capsule()
                                     .fill(selectedSound == sound ? Color.orange : Color.white.opacity(0.28))
                                     .frame(width: selectedSound == sound ? 22 : 8, height: 8)
@@ -159,6 +253,12 @@ struct ContentView: View {
 
     private func fullScreenIconScale(for size: CGSize) -> Double {
         min(max(Double(size.width / 190), 1.65), 2.45)
+    }
+
+    private func selectCategory(_ category: SoundCategory) {
+        guard let firstSound = SoundCatalog.sounds(in: category).first else { return }
+        selectedCategory = category
+        selectedSound = firstSound
     }
 
     private func beginSession() {
@@ -383,6 +483,116 @@ private struct SoundAnimationView: View {
                     }
             }
 
+        case .levelUp:
+            ZStack {
+                SoundIcon(sound: sound, size: 104)
+                    .phaseAnimator(PulsePhase.allCases, trigger: trigger) { content, phase in
+                        content
+                            .scaleEffect(phase.scale)
+                            .offset(y: phase == .burst ? -10 : 0)
+                    } animation: { _ in
+                        .spring(duration: 0.20, bounce: 0.4)
+                    }
+
+                Image(systemName: "chevron.up.2")
+                    .font(.system(size: 30, weight: .black))
+                    .foregroundStyle(.orange)
+                    .offset(y: -58)
+                    .phaseAnimator(ImpactPhase.allCases, trigger: trigger) { content, phase in
+                        content
+                            .opacity(phase.opacity)
+                            .scaleEffect(phase.scale)
+                    } animation: { _ in
+                        .easeOut(duration: 0.18)
+                    }
+            }
+
+        case .podium, .victory:
+            ZStack {
+                SoundIcon(sound: sound, size: 106)
+                    .phaseAnimator(PulsePhase.allCases, trigger: trigger) { content, phase in
+                        content
+                            .scaleEffect(phase.scale)
+                            .rotationEffect(.degrees(phase.angle))
+                    } animation: { _ in
+                        .spring(duration: 0.20, bounce: 0.35)
+                    }
+
+                Image(systemName: "sparkles")
+                    .font(.system(size: 30, weight: .bold))
+                    .foregroundStyle(.orange)
+                    .offset(y: -56)
+                    .phaseAnimator(ImpactPhase.allCases, trigger: trigger) { content, phase in
+                        content
+                            .opacity(phase.opacity)
+                            .scaleEffect(phase.scale)
+                    } animation: { _ in
+                        .easeOut(duration: 0.18)
+                    }
+            }
+
+        case .coin:
+            SoundIcon(sound: sound, size: 108)
+                .phaseAnimator(CoinPhase.allCases, trigger: trigger) { content, phase in
+                    content
+                        .rotation3DEffect(
+                            .degrees(phase.angle),
+                            axis: (x: 0, y: 1, z: 0)
+                        )
+                        .scaleEffect(phase.scale)
+                } animation: { _ in
+                    .easeInOut(duration: 0.10)
+                }
+
+        case .refereeWhistle:
+            ZStack {
+                SoundIcon(sound: sound, size: 106)
+                    .phaseAnimator(HornPhase.allCases, trigger: trigger) { content, phase in
+                        content
+                            .scaleEffect(phase.scale)
+                            .offset(x: phase.offset)
+                    } animation: { _ in
+                        .easeOut(duration: 0.11)
+                    }
+
+                Image(systemName: "wave.3.right")
+                    .font(.system(size: 31, weight: .bold))
+                    .foregroundStyle(.orange)
+                    .offset(x: 62, y: -8)
+                    .phaseAnimator(WavePhase.allCases, trigger: trigger) { content, phase in
+                        content
+                            .opacity(phase.opacity)
+                            .scaleEffect(phase.scale)
+                            .offset(x: phase.x)
+                    } animation: { _ in
+                        .easeOut(duration: 0.20)
+                    }
+            }
+
+        case .laughTrack:
+            ZStack {
+                SoundIcon(sound: sound, size: 108)
+                    .phaseAnimator(PulsePhase.allCases, trigger: trigger) { content, phase in
+                        content
+                            .scaleEffect(phase.scale)
+                            .rotationEffect(.degrees(-phase.angle))
+                    } animation: { _ in
+                        .spring(duration: 0.18, bounce: 0.5)
+                    }
+
+                Image(systemName: "face.smiling.fill")
+                    .font(.system(size: 28, weight: .bold))
+                    .foregroundStyle(.orange)
+                    .offset(y: -55)
+                    .phaseAnimator(ImpactPhase.allCases, trigger: trigger) { content, phase in
+                        content
+                            .opacity(phase.opacity)
+                            .scaleEffect(phase.scale)
+                    } animation: { _ in
+                        .easeOut(duration: 0.16)
+                    }
+            }
+
         case .noisemaker:
             SoundIcon(sound: sound, size: 112)
                 .phaseAnimator(RattlePhase.allCases, trigger: trigger) { content, phase in
@@ -534,6 +744,28 @@ private enum DrumPhase: CaseIterable {
         case .rebound: return 5
         case .secondHit: return -3
         default: return 0
+        }
+    }
+}
+
+private enum CoinPhase: CaseIterable {
+    case resting, quarter, half, threeQuarter, fullTurn
+
+    var angle: Double {
+        switch self {
+        case .resting: return 0
+        case .quarter: return 90
+        case .half: return 180
+        case .threeQuarter: return 270
+        case .fullTurn: return 360
+        }
+    }
+
+    var scale: Double {
+        switch self {
+        case .quarter, .threeQuarter: return 0.90
+        case .half: return 1.10
+        default: return 1
         }
     }
 }
