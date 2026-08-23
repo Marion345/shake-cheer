@@ -148,6 +148,17 @@ Les vues SwiftUI consomment ces modèles et services sans connaître directement
 - Les réglages techniques restent cachés tant que les valeurs par défaut fonctionnent.
 - L’expérience gratuite doit être utile, pas artificiellement inutilisable.
 
+## Suivi GitHub
+
+- [#23 — Stabiliser la V0.1 sur appareils TestFlight](https://github.com/Marion345/shake-cheer/issues/23)
+- [#21 — Créer le catalogue de sons et les catégories Pro](https://github.com/Marion345/shake-cheer/issues/21)
+- [#20 — Séparer MotionEngine et AudioEngine](https://github.com/Marion345/shake-cheer/issues/20)
+- [#26 — Ajouter StoreKit 2 et le déverrouillage Pro](https://github.com/Marion345/shake-cheer/issues/26)
+- [#19 — Créer la navigation par catégories](https://github.com/Marion345/shake-cheer/issues/19)
+- [#22 — Importer et gérer des sons personnalisés](https://github.com/Marion345/shake-cheer/issues/22)
+- [#24 — Intégrer la publicité avant les sessions gratuites](https://github.com/Marion345/shake-cheer/issues/24)
+- [#25 — Vérifier les licences audio et préparer l’App Store](https://github.com/Marion345/shake-cheer/issues/25)
+
 ## Définition de terminé
 
 Une fonctionnalité est terminée lorsqu’elle :
