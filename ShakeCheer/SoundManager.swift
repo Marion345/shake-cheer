@@ -120,7 +120,7 @@ final class SoundManager: ObservableObject {
         }
     }
 
-    private func audioURL(for sound: CheerSound) -> URL? {
+    private func audioURL(for sound: SoundDefinition) -> URL? {
         guard let url = Bundle.main.url(
             forResource: sound.fileName,
             withExtension: sound.fileExtension
