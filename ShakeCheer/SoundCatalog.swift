@@ -58,6 +58,7 @@ struct SoundDefinition: Identifiable, Hashable {
     let accessLevel: AccessLevel
     let loopEndTime: TimeInterval?
     let loopCrossfadeDuration: TimeInterval
+    let volumeMultiplier: Double
 
     init(
         id: String,
@@ -69,7 +70,8 @@ struct SoundDefinition: Identifiable, Hashable {
         playbackMode: PlaybackMode,
         accessLevel: AccessLevel,
         loopEndTime: TimeInterval? = nil,
-        loopCrossfadeDuration: TimeInterval = 0.4
+        loopCrossfadeDuration: TimeInterval = 0.4,
+        volumeMultiplier: Double = 1.0
     ) {
         self.id = id
         self.title = title
@@ -81,6 +83,7 @@ struct SoundDefinition: Identifiable, Hashable {
         self.accessLevel = accessLevel
         self.loopEndTime = loopEndTime
         self.loopCrossfadeDuration = loopCrossfadeDuration
+        self.volumeMultiplier = volumeMultiplier
     }
 
     var fileName: String { audio.fileName }
@@ -178,8 +181,11 @@ enum SoundCatalog {
         category: .funny,
         audio: AudioResource(fileName: "sad-trumpet", fileExtension: "mp3"),
         animation: .sadTrumpet,
-        playbackMode: .impact,
-        accessLevel: .pro
+        playbackMode: .sustained,
+        accessLevel: .pro,
+        loopEndTime: 1.90,
+        loopCrossfadeDuration: 0.18,
+        volumeMultiplier: 1.55
     )
 
     static let allSounds: [SoundDefinition] = [
