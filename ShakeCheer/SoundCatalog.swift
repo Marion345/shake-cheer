@@ -25,7 +25,7 @@ enum SoundCategory: String, CaseIterable, Identifiable {
         switch self {
         case .basic: return "star.fill"
         case .sports: return "sportscourt.fill"
-        case .party: return "party.popper.fill"
+        case .party: return "music.note"
         case .gaming: return "gamecontroller.fill"
         case .funny: return "face.smiling.fill"
         case .custom: return "waveform.badge.plus"
