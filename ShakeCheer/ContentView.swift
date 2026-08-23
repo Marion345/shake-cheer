@@ -257,7 +257,7 @@ private struct SoundAnimationView: View {
                     }
             }
 
-        case .cheer:
+        case .cheer, .sadTrumpet:
             ZStack {
                 Text(sound.emoji)
                     .font(.system(size: 92))
@@ -321,7 +321,7 @@ private struct SoundAnimationView: View {
                     .linear(duration: 0.075)
                 }
 
-        case .stadiumHorn:
+        case .stadiumHorn, .airHorn:
             ZStack {
                 SoundIcon(sound: sound, size: 112)
                     .phaseAnimator(HornPhase.allCases, trigger: trigger) { content, phase in
