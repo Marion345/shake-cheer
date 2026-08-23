@@ -1,6 +1,7 @@
 import Foundation
 
 enum SoundCategory: String, CaseIterable, Identifiable {
+    case basic
     case sports
     case party
     case gaming
@@ -11,12 +12,28 @@ enum SoundCategory: String, CaseIterable, Identifiable {
 
     var title: String {
         switch self {
+        case .basic: return "De base"
         case .sports: return "Sports"
         case .party: return "Party"
         case .gaming: return "Gaming"
         case .funny: return "Funny"
         case .custom: return "Mes sons"
         }
+    }
+
+    var icon: String {
+        switch self {
+        case .basic: return "star.fill"
+        case .sports: return "sportscourt.fill"
+        case .party: return "music.note"
+        case .gaming: return "gamecontroller.fill"
+        case .funny: return "face.smiling.fill"
+        case .custom: return "waveform.badge.plus"
+        }
+    }
+
+    var accessLevel: AccessLevel {
+        self == .basic ? .free : .pro
     }
 }
 
@@ -43,6 +60,12 @@ enum SoundAnimationKind: String {
     case boo
     case crowdDisappointment
     case crickets
+    case levelUp
+    case podium
+    case coin
+    case victory
+    case refereeWhistle
+    case laughTrack
 }
 
 struct AudioResource: Hashable {
@@ -100,7 +123,7 @@ enum SoundCatalog {
         id: "bell",
         title: "Cloche",
         emoji: "🔔",
-        category: .sports,
+        category: .basic,
         audio: AudioResource(fileName: "bell", fileExtension: "wav"),
         animation: .bell,
         playbackMode: .impact,
@@ -111,7 +134,7 @@ enum SoundCatalog {
         id: "applause",
         title: "Applaudissements",
         emoji: "👏",
-        category: .sports,
+        category: .basic,
         audio: AudioResource(fileName: "applause", fileExtension: "wav"),
         animation: .applause,
         playbackMode: .impact,
@@ -122,7 +145,7 @@ enum SoundCatalog {
         id: "cheer",
         title: "Encouragement",
         emoji: "📣",
-        category: .sports,
+        category: .basic,
         audio: AudioResource(fileName: "cheer-crowd", fileExtension: "mp3"),
         animation: .cheer,
         playbackMode: .sustained,
@@ -175,6 +198,67 @@ enum SoundCatalog {
         animation: .airHorn,
         playbackMode: .impact,
         accessLevel: .pro
+    )
+
+    static let refereeWhistle = SoundDefinition(
+        id: "referee-whistle",
+        title: "Sifflet",
+        emoji: "📣",
+        category: .sports,
+        audio: AudioResource(fileName: "referee-whistle", fileExtension: "mp3"),
+        animation: .refereeWhistle,
+        playbackMode: .impact,
+        accessLevel: .pro
+    )
+
+    static let podium = SoundDefinition(
+        id: "podium",
+        title: "Podium",
+        emoji: "🏆",
+        category: .sports,
+        audio: AudioResource(fileName: "podium", fileExtension: "mp3"),
+        animation: .podium,
+        playbackMode: .sustained,
+        accessLevel: .pro,
+        loopEndTime: 22.04,
+        loopCrossfadeDuration: 0.35
+    )
+
+    static let levelUp = SoundDefinition(
+        id: "level-up",
+        title: "Level Up",
+        emoji: "⬆️",
+        category: .gaming,
+        audio: AudioResource(fileName: "level-up", fileExtension: "mp3"),
+        animation: .levelUp,
+        playbackMode: .sustained,
+        accessLevel: .pro,
+        loopEndTime: 8.20,
+        loopCrossfadeDuration: 0.25
+    )
+
+    static let coin = SoundDefinition(
+        id: "coin",
+        title: "Pièce gagnée",
+        emoji: "🪙",
+        category: .gaming,
+        audio: AudioResource(fileName: "coin", fileExtension: "mp3"),
+        animation: .coin,
+        playbackMode: .impact,
+        accessLevel: .pro
+    )
+
+    static let victory = SoundDefinition(
+        id: "victory",
+        title: "Victoire",
+        emoji: "🎉",
+        category: .gaming,
+        audio: AudioResource(fileName: "victory", fileExtension: "mp3"),
+        animation: .victory,
+        playbackMode: .sustained,
+        accessLevel: .pro,
+        loopEndTime: 7.64,
+        loopCrossfadeDuration: 0.25
     )
 
     static let sadTrumpet = SoundDefinition(
@@ -230,18 +314,45 @@ enum SoundCatalog {
         loopCrossfadeDuration: 0.35
     )
 
+    static let laughTrack = SoundDefinition(
+        id: "laugh-track",
+        title: "Rires",
+        emoji: "😂",
+        category: .funny,
+        audio: AudioResource(fileName: "laugh-track", fileExtension: "mp3"),
+        animation: .laughTrack,
+        playbackMode: .sustained,
+        accessLevel: .pro,
+        loopEndTime: 3.36,
+        loopCrossfadeDuration: 0.20
+    )
+
+    static let selectableCategories: [SoundCategory] = [
+        .basic,
+        .sports,
+        .party,
+        .gaming,
+        .funny
+    ]
+
     static let allSounds: [SoundDefinition] = [
         bell,
         applause,
         cheer,
+        stadiumHorn,
+        refereeWhistle,
+        podium,
         drum,
         noisemaker,
-        stadiumHorn,
         airHorn,
+        levelUp,
+        coin,
+        victory,
         sadTrumpet,
         boo,
         crowdDisappointment,
-        crickets
+        crickets,
+        laughTrack
     ]
 
     static var freeSounds: [SoundDefinition] {
