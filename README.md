@@ -7,7 +7,7 @@ ShakeCheer est un **soundboard iPhone contrôlé par le mouvement**. L’utilisa
 La V0.1 fonctionnelle comprend :
 
 - SwiftUI et Core Motion;
-- dix-sept sons répartis entre De base, Sports, Party, Gaming et Funny;
+- vingt-trois sons répartis entre De base, Sports, Party, Gaming et Funny;
 - un écran de choix de catégorie préparé pour l’accès gratuit/Pro;
 - un carrousel de sélection filtré avec animations;
 - un mode immersif en plein écran;
