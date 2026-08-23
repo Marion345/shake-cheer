@@ -33,3 +33,13 @@ targets:
         CFBundleDisplayName: ShakeCheer
         NSMotionUsageDescription: ShakeCheer utilise les capteurs de mouvement pour déclencher les sons lorsque vous secouez votre iPhone.
         UIApplicationSupportsIndirectInputEvents: true
+  ShakeCheerTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - path: ShakeCheerTests
+    dependencies:
+      - target: ShakeCheer
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES
