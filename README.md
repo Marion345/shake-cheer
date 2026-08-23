@@ -8,7 +8,9 @@ La V0.1 fonctionnelle comprend :
 
 - SwiftUI et Core Motion;
 - vingt-trois sons répartis entre De base, Sports, Party, Gaming et Funny;
-- un écran de choix de catégorie préparé pour l’accès gratuit/Pro;
+- un écran de choix de catégorie avec verrouillage gratuit/Pro;
+- un achat unique ShakeCheer Pro géré avec StoreKit 2;
+- une restauration des achats Apple;
 - un carrousel de sélection filtré avec animations;
 - un mode immersif en plein écran;
 - des sons courts déclenchés par secousse;
@@ -28,7 +30,7 @@ Catégories prévues :
 - Funny;
 - Custom sounds.
 
-Consulter la [feuille de route complète](ROADMAP.md) pour l’offre gratuite/Pro, l’architecture cible et les phases de livraison.
+Consulter la [feuille de route complète](ROADMAP.md) pour l’offre gratuite/Pro, l’architecture cible et les phases de livraison. La configuration de l’achat intégré est détaillée dans [STOREKIT_SETUP.md](STOREKIT_SETUP.md).
 
 ## Générer le projet Xcode
 
