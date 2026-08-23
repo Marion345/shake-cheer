@@ -2,6 +2,7 @@ import XCTest
 @testable import ShakeCheer
 
 final class SoundCatalogTests: XCTestCase {
+    @MainActor
     func testProProductIdentifierIsStable() {
         XCTAssertEqual(
             PurchaseManager.proProductID,
