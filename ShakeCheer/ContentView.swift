@@ -335,6 +335,54 @@ private struct SoundAnimationView: View {
                     }
             }
 
+        case .crowdDisappointment:
+            ZStack {
+                SoundIcon(sound: sound, size: 106)
+                    .phaseAnimator(PulsePhase.allCases, trigger: trigger) { content, phase in
+                        content
+                            .scaleEffect(phase.scale)
+                            .rotationEffect(.degrees(phase.angle))
+                    } animation: { _ in
+                        .easeOut(duration: 0.11)
+                    }
+
+                Image(systemName: "person.3.fill")
+                    .font(.system(size: 26, weight: .bold))
+                    .foregroundStyle(.orange)
+                    .offset(y: -52)
+                    .phaseAnimator(ImpactPhase.allCases, trigger: trigger) { content, phase in
+                        content
+                            .opacity(phase.opacity)
+                            .scaleEffect(phase.scale)
+                    } animation: { _ in
+                        .easeOut(duration: 0.15)
+                    }
+            }
+
+        case .crickets:
+            ZStack {
+                SoundIcon(sound: sound, size: 108)
+                    .phaseAnimator(PulsePhase.allCases, trigger: trigger) { content, phase in
+                        content
+                            .scaleEffect(phase.scale)
+                            .offset(y: phase == .burst ? -8 : 0)
+                    } animation: { _ in
+                        .spring(duration: 0.20, bounce: 0.45)
+                    }
+
+                Image(systemName: "waveform")
+                    .font(.system(size: 28, weight: .bold))
+                    .foregroundStyle(.orange)
+                    .offset(y: 58)
+                    .phaseAnimator(ImpactPhase.allCases, trigger: trigger) { content, phase in
+                        content
+                            .opacity(phase.opacity)
+                            .scaleEffect(phase.scale)
+                    } animation: { _ in
+                        .easeOut(duration: 0.18)
+                    }
+            }
+
         case .noisemaker:
             SoundIcon(sound: sound, size: 112)
                 .phaseAnimator(RattlePhase.allCases, trigger: trigger) { content, phase in
