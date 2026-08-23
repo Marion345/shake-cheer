@@ -2,6 +2,14 @@ import XCTest
 @testable import ShakeCheer
 
 final class SoundCatalogTests: XCTestCase {
+    @MainActor
+    func testProProductIdentifierIsStable() {
+        XCTAssertEqual(
+            PurchaseManager.proProductID,
+            "com.marion345.shakecheer.pro"
+        )
+    }
+
     func testBuiltInSoundIDsAreUnique() {
         let ids = SoundCatalog.allSounds.map(\.id)
         XCTAssertEqual(Set(ids).count, ids.count)

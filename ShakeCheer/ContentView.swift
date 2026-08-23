@@ -2,12 +2,14 @@ import SwiftUI
 
 struct ContentView: View {
     @StateObject private var session: ShakeCheerSession
+    @StateObject private var purchaseManager: PurchaseManager
     @State private var selectedSound = SoundCatalog.bell
     @State private var selectedCategory: SoundCategory?
-    private let categoryLocksEnabled = false
+    @State private var showingPaywall = false
 
     @MainActor
     init() {
+        _purchaseManager = StateObject(wrappedValue: PurchaseManager())
         _session = StateObject(
             wrappedValue: ShakeCheerSession(
                 motionEngine: CoreMotionEngine(),
@@ -21,6 +23,7 @@ struct ContentView: View {
         motionEngine: any MotionEngine,
         audioEngine: any AudioEngine
     ) {
+        _purchaseManager = StateObject(wrappedValue: PurchaseManager())
         _session = StateObject(
             wrappedValue: ShakeCheerSession(
                 motionEngine: motionEngine,
@@ -53,6 +56,9 @@ struct ContentView: View {
         }
         .tint(.orange)
         .preferredColorScheme(.dark)
+        .sheet(isPresented: $showingPaywall) {
+            ProPaywallView(purchaseManager: purchaseManager)
+        }
     }
 
     private var categorySelectionView: some View {
@@ -79,7 +85,7 @@ struct ContentView: View {
                     ) {
                         ForEach(SoundCatalog.selectableCategories) { category in
                             Button {
-                                selectCategory(category)
+                                handleCategoryTap(category)
                             } label: {
                                 VStack(spacing: 12) {
                                     Image(systemName: category.icon)
@@ -90,9 +96,19 @@ struct ContentView: View {
                                         .font(.headline)
                                         .foregroundStyle(.white)
 
-                                    Text(category == .basic ? "GRATUIT" : "PRO · TEST")
-                                        .font(.caption2.bold())
-                                        .foregroundStyle(category == .basic ? Color.green : Color.orange)
+                                    HStack(spacing: 5) {
+                                        if isCategoryLocked(category) {
+                                            Image(systemName: "lock.fill")
+                                        }
+
+                                        Text(
+                                            category == .basic
+                                                ? "GRATUIT"
+                                                : purchaseManager.isPro ? "PRO ACTIF" : "PRO"
+                                        )
+                                    }
+                                    .font(.caption2.bold())
+                                    .foregroundStyle(category == .basic ? Color.green : Color.orange)
                                 }
                                 .frame(maxWidth: .infinity, minHeight: 138)
                                 .background(
@@ -110,14 +126,14 @@ struct ContentView: View {
                                 )
                             }
                             .buttonStyle(.plain)
-                            .disabled(
-                                categoryLocksEnabled
-                                    && category.accessLevel == .pro
-                            )
                         }
                     }
 
-                    Text("Les catégories Pro sont déverrouillées pendant les tests.")
+                    Text(
+                        purchaseManager.isPro
+                            ? "ShakeCheer Pro est actif sur ce compte Apple."
+                            : "Déverrouille les catégories Pro avec un achat unique."
+                    )
                         .font(.footnote)
                         .multilineTextAlignment(.center)
                         .foregroundStyle(.secondary)
@@ -253,6 +269,18 @@ struct ContentView: View {
 
     private func fullScreenIconScale(for size: CGSize) -> Double {
         min(max(Double(size.width / 190), 1.65), 2.45)
+    }
+
+    private func handleCategoryTap(_ category: SoundCategory) {
+        if isCategoryLocked(category) {
+            showingPaywall = true
+        } else {
+            selectCategory(category)
+        }
+    }
+
+    private func isCategoryLocked(_ category: SoundCategory) -> Bool {
+        category.accessLevel == .pro && !purchaseManager.isPro
     }
 
     private func selectCategory(_ category: SoundCategory) {
