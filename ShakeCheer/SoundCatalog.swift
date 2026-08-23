@@ -184,8 +184,8 @@ enum SoundCatalog {
         animation: .sadTrumpet,
         playbackMode: .sustained,
         accessLevel: .pro,
-        loopEndTime: 2.18,
-        loopCrossfadeDuration: 0.10,
+        loopEndTime: 2.30,
+        loopCrossfadeDuration: 0.06,
         volumeMultiplier: 1.55
     )
 
@@ -196,8 +196,10 @@ enum SoundCatalog {
         category: .funny,
         audio: AudioResource(fileName: "boo-crowd", fileExtension: "mp3"),
         animation: .boo,
-        playbackMode: .impact,
-        accessLevel: .pro
+        playbackMode: .sustained,
+        accessLevel: .pro,
+        loopEndTime: 2.70,
+        loopCrossfadeDuration: 0.20
     )
 
     static let allSounds: [SoundDefinition] = [
