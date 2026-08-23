@@ -39,7 +39,7 @@ final class SoundCatalogTests: XCTestCase {
         XCTAssertEqual(SoundCatalog.airHorn.category, .party)
         XCTAssertEqual(SoundCatalog.sadTrumpet.category, .funny)
         XCTAssertEqual(SoundCatalog.sadTrumpet.playbackMode, .sustained)
-        XCTAssertEqual(SoundCatalog.sadTrumpet.loopEndTime, 1.90)
+        XCTAssertEqual(SoundCatalog.sadTrumpet.loopEndTime, 2.18)
         XCTAssertEqual(SoundCatalog.sadTrumpet.volumeMultiplier, 1.55)
     }
 }

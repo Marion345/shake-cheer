@@ -183,8 +183,8 @@ enum SoundCatalog {
         animation: .sadTrumpet,
         playbackMode: .sustained,
         accessLevel: .pro,
-        loopEndTime: 1.90,
-        loopCrossfadeDuration: 0.18,
+        loopEndTime: 2.18,
+        loopCrossfadeDuration: 0.10,
         volumeMultiplier: 1.55
     )
 
