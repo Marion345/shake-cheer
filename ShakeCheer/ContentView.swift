@@ -3,7 +3,7 @@ import SwiftUI
 struct ContentView: View {
     @StateObject private var detector = ShakeDetector()
     @StateObject private var soundManager = SoundManager()
-    @State private var selectedSound: CheerSound = .bell
+    @State private var selectedSound = SoundCatalog.bell
     @State private var animationTrigger = 0
 
     var body: some View {
@@ -47,7 +47,7 @@ struct ContentView: View {
 
                     VStack(spacing: 12) {
                         TabView(selection: $selectedSound) {
-                            ForEach(CheerSound.allCases) { sound in
+                            ForEach(SoundCatalog.allSounds) { sound in
                                 VStack(spacing: 16) {
                                     SoundAnimationView(sound: sound, trigger: animationTrigger)
                                         .scaleEffect(setupIconScale(for: proxy.size))
@@ -65,7 +65,7 @@ struct ContentView: View {
                         .frame(height: max(330, min(proxy.size.height * 0.47, 420)))
 
                         HStack(spacing: 8) {
-                            ForEach(CheerSound.allCases) { sound in
+                            ForEach(SoundCatalog.allSounds) { sound in
                                 Capsule()
                                     .fill(selectedSound == sound ? Color.orange : Color.white.opacity(0.28))
                                     .frame(width: selectedSound == sound ? 22 : 8, height: 8)
@@ -158,12 +158,12 @@ struct ContentView: View {
 }
 
 private struct SoundIcon: View {
-    let sound: CheerSound
+    let sound: SoundDefinition
     let size: CGFloat
 
     @ViewBuilder
     var body: some View {
-        switch sound {
+        switch sound.animation {
         case .bell:
             Image("HandBell")
                 .resizable()
@@ -192,11 +192,11 @@ private struct SoundIcon: View {
 }
 
 private struct SoundAnimationView: View {
-    let sound: CheerSound
+    let sound: SoundDefinition
     let trigger: Int
 
     var body: some View {
-        switch sound {
+        switch sound.animation {
         case .bell:
             ZStack {
                 SoundIcon(sound: sound, size: 108)
