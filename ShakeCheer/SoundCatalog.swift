@@ -38,6 +38,8 @@ enum SoundAnimationKind: String {
     case drum
     case noisemaker
     case stadiumHorn
+    case airHorn
+    case sadTrumpet
 }
 
 struct AudioResource: Hashable {
@@ -54,6 +56,32 @@ struct SoundDefinition: Identifiable, Hashable {
     let animation: SoundAnimationKind
     let playbackMode: PlaybackMode
     let accessLevel: AccessLevel
+    let loopEndTime: TimeInterval?
+    let loopCrossfadeDuration: TimeInterval
+
+    init(
+        id: String,
+        title: String,
+        emoji: String,
+        category: SoundCategory,
+        audio: AudioResource,
+        animation: SoundAnimationKind,
+        playbackMode: PlaybackMode,
+        accessLevel: AccessLevel,
+        loopEndTime: TimeInterval? = nil,
+        loopCrossfadeDuration: TimeInterval = 0.4
+    ) {
+        self.id = id
+        self.title = title
+        self.emoji = emoji
+        self.category = category
+        self.audio = audio
+        self.animation = animation
+        self.playbackMode = playbackMode
+        self.accessLevel = accessLevel
+        self.loopEndTime = loopEndTime
+        self.loopCrossfadeDuration = loopCrossfadeDuration
+    }
 
     var fileName: String { audio.fileName }
     var fileExtension: String { audio.fileExtension }
@@ -103,7 +131,9 @@ enum SoundCatalog {
         audio: AudioResource(fileName: "drum-crowd", fileExtension: "mp3"),
         animation: .drum,
         playbackMode: .sustained,
-        accessLevel: .pro
+        accessLevel: .pro,
+        loopEndTime: 4.69,
+        loopCrossfadeDuration: 0.28
     )
 
     static let noisemaker = SoundDefinition(
@@ -119,12 +149,36 @@ enum SoundCatalog {
 
     static let stadiumHorn = SoundDefinition(
         id: "stadium-horn",
-        title: "Corne de stade",
+        title: "Corne cargo",
         emoji: "📯",
         category: .sports,
-        audio: AudioResource(fileName: "stadium-horn", fileExtension: "wav"),
+        audio: AudioResource(fileName: "cargo-ship-horn", fileExtension: "mp3"),
         animation: .stadiumHorn,
         playbackMode: .sustained,
+        accessLevel: .pro,
+        loopEndTime: 2.10,
+        loopCrossfadeDuration: 0.45
+    )
+
+    static let airHorn = SoundDefinition(
+        id: "air-horn",
+        title: "Air Horn",
+        emoji: "📢",
+        category: .party,
+        audio: AudioResource(fileName: "air-horn", fileExtension: "mp3"),
+        animation: .airHorn,
+        playbackMode: .impact,
+        accessLevel: .pro
+    )
+
+    static let sadTrumpet = SoundDefinition(
+        id: "sad-trumpet",
+        title: "Trompette triste",
+        emoji: "🎺",
+        category: .funny,
+        audio: AudioResource(fileName: "sad-trumpet", fileExtension: "mp3"),
+        animation: .sadTrumpet,
+        playbackMode: .impact,
         accessLevel: .pro
     )
 
@@ -134,7 +188,9 @@ enum SoundCatalog {
         cheer,
         drum,
         noisemaker,
-        stadiumHorn
+        stadiumHorn,
+        airHorn,
+        sadTrumpet
     ]
 
     static var freeSounds: [SoundDefinition] {
