@@ -9,7 +9,7 @@ final class SoundCatalogTests: XCTestCase {
 
     func testFreeAndProSoundsPartitionCatalog() {
         XCTAssertEqual(SoundCatalog.freeSounds.count, 3)
-        XCTAssertEqual(SoundCatalog.proSounds.count, 6)
+        XCTAssertEqual(SoundCatalog.proSounds.count, 8)
         XCTAssertEqual(
             Set(SoundCatalog.freeSounds + SoundCatalog.proSounds),
             Set(SoundCatalog.allSounds)
@@ -40,7 +40,14 @@ final class SoundCatalogTests: XCTestCase {
         XCTAssertEqual(SoundCatalog.sadTrumpet.category, .funny)
         XCTAssertEqual(SoundCatalog.boo.category, .funny)
         XCTAssertEqual(SoundCatalog.boo.playbackMode, .sustained)
-        XCTAssertEqual(SoundCatalog.boo.loopEndTime, 2.70)
+        XCTAssertEqual(SoundCatalog.boo.fileName, "boo")
+        XCTAssertEqual(SoundCatalog.boo.loopEndTime, 3.90)
+        XCTAssertEqual(SoundCatalog.crowdDisappointment.category, .funny)
+        XCTAssertEqual(SoundCatalog.crowdDisappointment.playbackMode, .sustained)
+        XCTAssertEqual(SoundCatalog.crowdDisappointment.fileName, "boo-crowd")
+        XCTAssertEqual(SoundCatalog.crickets.category, .funny)
+        XCTAssertEqual(SoundCatalog.crickets.playbackMode, .sustained)
+        XCTAssertEqual(SoundCatalog.crickets.loopEndTime, 9.30)
         XCTAssertEqual(SoundCatalog.sadTrumpet.playbackMode, .sustained)
         XCTAssertEqual(SoundCatalog.sadTrumpet.loopEndTime, 2.30)
         XCTAssertEqual(SoundCatalog.sadTrumpet.volumeMultiplier, 1.55)
