@@ -33,9 +33,15 @@ final class SoundManager: AudioEngine {
     }
 
     func keepAlive(_ sound: SoundDefinition) {
-        guard sound.usesSustainedPlayback,
-              sustainedSoundID == sound.id,
-              sustainedPlayer?.isPlaying == true else { return }
+        guard sound.usesSustainedPlayback else { return }
+
+        // Any recognized movement can recover a sustained sound if its player
+        // stopped between two full shake peaks.
+        guard sustainedSoundID == sound.id,
+              sustainedPlayer?.isPlaying == true else {
+            sustain(sound, intensity: 0.5)
+            return
+        }
 
         scheduleSustainedStop()
     }
