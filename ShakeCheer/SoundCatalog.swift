@@ -145,18 +145,18 @@ enum SoundCatalog {
         id: "cheer",
         title: "Encouragement",
         emoji: "📣",
-        category: .basic,
+        category: .sports,
         audio: AudioResource(fileName: "cheer-crowd", fileExtension: "mp3"),
         animation: .cheer,
         playbackMode: .sustained,
-        accessLevel: .free
+        accessLevel: .pro
     )
 
     static let drum = SoundDefinition(
         id: "drum",
         title: "Tambour",
         emoji: "🥁",
-        category: .party,
+        category: .sports,
         audio: AudioResource(fileName: "drum-crowd", fileExtension: "mp3"),
         animation: .drum,
         playbackMode: .sustained,
@@ -169,11 +169,11 @@ enum SoundCatalog {
         id: "noisemaker",
         title: "Crécelle",
         emoji: "🪇",
-        category: .party,
+        category: .basic,
         audio: AudioResource(fileName: "noisemaker", fileExtension: "wav"),
         animation: .noisemaker,
         playbackMode: .impact,
-        accessLevel: .pro
+        accessLevel: .free
     )
 
     static let stadiumHorn = SoundDefinition(
@@ -338,12 +338,12 @@ enum SoundCatalog {
     static let allSounds: [SoundDefinition] = [
         bell,
         applause,
+        noisemaker,
         cheer,
+        drum,
         stadiumHorn,
         refereeWhistle,
         podium,
-        drum,
-        noisemaker,
         airHorn,
         levelUp,
         coin,
