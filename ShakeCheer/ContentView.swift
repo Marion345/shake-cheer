@@ -84,7 +84,7 @@ struct ContentView: View {
                                 VStack(spacing: 12) {
                                     Image(systemName: category.icon)
                                         .font(.system(size: 42, weight: .semibold))
-                                        .foregroundStyle(category == .basic ? .white : .orange)
+                                        .foregroundStyle(category == .basic ? Color.white : Color.orange)
 
                                     Text(category.title)
                                         .font(.headline)
@@ -92,7 +92,7 @@ struct ContentView: View {
 
                                     Text(category == .basic ? "GRATUIT" : "PRO · TEST")
                                         .font(.caption2.bold())
-                                        .foregroundStyle(category == .basic ? .green : .orange)
+                                        .foregroundStyle(category == .basic ? Color.green : Color.orange)
                                 }
                                 .frame(maxWidth: .infinity, minHeight: 138)
                                 .background(
