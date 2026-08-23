@@ -40,6 +40,7 @@ enum SoundAnimationKind: String {
     case stadiumHorn
     case airHorn
     case sadTrumpet
+    case boo
 }
 
 struct AudioResource: Hashable {
@@ -188,6 +189,17 @@ enum SoundCatalog {
         volumeMultiplier: 1.55
     )
 
+    static let boo = SoundDefinition(
+        id: "boo",
+        title: "Boo",
+        emoji: "👎",
+        category: .funny,
+        audio: AudioResource(fileName: "boo-crowd", fileExtension: "mp3"),
+        animation: .boo,
+        playbackMode: .impact,
+        accessLevel: .pro
+    )
+
     static let allSounds: [SoundDefinition] = [
         bell,
         applause,
@@ -196,7 +208,8 @@ enum SoundCatalog {
         noisemaker,
         stadiumHorn,
         airHorn,
-        sadTrumpet
+        sadTrumpet,
+        boo
     ]
 
     static var freeSounds: [SoundDefinition] {
