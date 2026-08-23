@@ -1,17 +1,38 @@
 import SwiftUI
 
 struct ContentView: View {
-    @StateObject private var detector = ShakeDetector()
-    @StateObject private var soundManager = SoundManager()
+    @StateObject private var session: ShakeCheerSession
     @State private var selectedSound = SoundCatalog.bell
-    @State private var animationTrigger = 0
+
+    @MainActor
+    init() {
+        _session = StateObject(
+            wrappedValue: ShakeCheerSession(
+                motionEngine: CoreMotionEngine(),
+                audioEngine: SoundManager()
+            )
+        )
+    }
+
+    @MainActor
+    init(
+        motionEngine: any MotionEngine,
+        audioEngine: any AudioEngine
+    ) {
+        _session = StateObject(
+            wrappedValue: ShakeCheerSession(
+                motionEngine: motionEngine,
+                audioEngine: audioEngine
+            )
+        )
+    }
 
     var body: some View {
         NavigationStack {
             ZStack {
                 Color.black.ignoresSafeArea()
 
-                if detector.isRunning {
+                if session.isRunning {
                     playingView
                         .transition(.opacity.combined(with: .scale(scale: 1.04)))
                 } else {
@@ -20,19 +41,9 @@ struct ContentView: View {
                 }
             }
             .navigationBarTitleDisplayMode(.inline)
-            .animation(.easeInOut(duration: 0.25), value: detector.isRunning)
-            .onAppear {
-                detector.onShake = { intensity in
-                    animationTrigger += 1
-                    soundManager.play(selectedSound, intensity: intensity)
-                }
-                detector.onMotion = {
-                    soundManager.keepAlive(selectedSound)
-                }
-            }
+            .animation(.easeInOut(duration: 0.25), value: session.isRunning)
             .onDisappear {
-                detector.stop()
-                soundManager.stopAll()
+                session.stop()
             }
         }
         .tint(.orange)
@@ -49,7 +60,7 @@ struct ContentView: View {
                         TabView(selection: $selectedSound) {
                             ForEach(SoundCatalog.allSounds) { sound in
                                 VStack(spacing: 16) {
-                                    SoundAnimationView(sound: sound, trigger: animationTrigger)
+                                    SoundAnimationView(sound: sound, trigger: session.animationTrigger)
                                         .scaleEffect(setupIconScale(for: proxy.size))
                                         .frame(height: max(245, min(proxy.size.height * 0.34, 330)))
 
@@ -116,9 +127,9 @@ struct ContentView: View {
             VStack(spacing: 28) {
                 Spacer()
 
-                SoundAnimationView(sound: selectedSound, trigger: animationTrigger)
-                    .scaleEffect(fullScreenIconScale(for: proxy.size) + detector.liveIntensity * 0.12)
-                    .animation(.easeOut(duration: 0.08), value: detector.liveIntensity)
+                SoundAnimationView(sound: selectedSound, trigger: session.animationTrigger)
+                    .scaleEffect(fullScreenIconScale(for: proxy.size) + session.liveIntensity * 0.12)
+                    .animation(.easeOut(duration: 0.08), value: session.liveIntensity)
                     .frame(maxWidth: .infinity, minHeight: 320)
 
                 Text(selectedSound.title)
@@ -134,8 +145,7 @@ struct ContentView: View {
             .frame(width: proxy.size.width, height: proxy.size.height)
             .contentShape(Rectangle())
             .onTapGesture {
-                detector.stop()
-                soundManager.stopAll()
+                session.stop()
             }
             .accessibilityElement(children: .combine)
             .accessibilityLabel("\(selectedSound.title). Touchez pour arrêter.")
@@ -153,7 +163,7 @@ struct ContentView: View {
 
     private func beginSession() {
         // The free version can present an ad here before starting motion detection.
-        detector.start()
+        session.start(sound: selectedSound)
     }
 }
 
