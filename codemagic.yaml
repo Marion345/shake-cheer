@@ -30,7 +30,7 @@ workflows:
         script: |
           xcode-project use-profiles \
             --project "$CM_BUILD_DIR/$XCODE_PROJECT" \
-            --custom-export-options='{"testFlightInternalTestingOnly": true}'
+            --custom-export-options='{"testFlightInternalTestingOnly": false}'
 
       - name: Set build number
         script: |
