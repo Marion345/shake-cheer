@@ -5,9 +5,28 @@ Deux pages statiques en français canadien, sans JavaScript, formulaire, police 
 - `dist/index.html` : aide et contact public `yanick.marion@hotmail.com`.
 - `dist/confidentialite.html` : politique de la version actuelle, achats Apple, mouvements locaux, support et hébergement.
 - `dist/styles.css` : thème noir/orange, navigation clavier et mise en page responsive.
-- `.openai/hosting.json` : identité de l’hébergement Sites. Ne pas recréer le site lors d’une mise à jour.
+- `.openai/hosting.json` : identité conservée de l’ancien hébergement Sites; elle n’est pas publiée par GitHub Pages.
+- `../.github/workflows/website-pages.yml` : vérification et publication sur GitHub Pages.
 
-Les mêmes sources sont versionnées dans le dossier `website/` du dépôt `Marion345/shake-cheer`. L’hébergement Sites conserve également la source exacte de chaque publication. Après une modification dans GitHub, reporter les fichiers validés dans le site existant puis publier une nouvelle version; la fusion GitHub seule ne publie pas automatiquement le site.
+Les sources sont versionnées dans le dossier `website/` du dépôt public `Marion345/shake-cheer`. GitHub Pages est l’hébergement retenu pour disposer d’adresses gratuites sans « chatgpt ». Les liens internes sont relatifs et fonctionnent sous le préfixe `/shake-cheer/`.
+
+## Activer la publication GitHub Pages
+
+Une personne ayant les droits d’administration du dépôt doit effectuer ce réglage une fois :
+
+1. Ouvrir [Settings → Pages](https://github.com/Marion345/shake-cheer/settings/pages).
+2. Dans **Build and deployment → Source**, sélectionner **GitHub Actions**.
+3. Dans **Actions → Deploy ShakeCheer website**, cliquer **Run workflow**, choisir `main` et lancer. Si une première exécution a échoué avant l’activation de Pages, lancer une nouvelle exécution après ce réglage.
+4. Attendre la réussite de **Publish to GitHub Pages**, puis vérifier les deux pages publiques avant de remplacer les adresses dans App Store Connect.
+
+Adresses attendues après la première publication réussie :
+
+- Support : https://marion345.github.io/shake-cheer/
+- Confidentialité : https://marion345.github.io/shake-cheer/confidentialite.html
+
+Après activation, chaque modification de `website/` fusionnée dans `main` déclenche la vérification et la publication. Les pull requests exécutent seulement la vérification. Le déploiement publie uniquement `website/dist`; aucun fichier Swift, document interne ou réglage Sites n’est inclus. Aucun secret supplémentaire ni compilation iOS n’est nécessaire pour publier ces pages.
+
+L’ancienne publication Sites reste disponible pendant la transition et n’est pas mise à jour par ce workflow. Ne pas y publier cette version de la politique, qui décrit GitHub Pages. Ne retirer les anciennes adresses d’App Store Connect qu’après vérification des nouvelles.
 
 ## Vérification
 
@@ -25,7 +44,7 @@ Code examiné au commit `35f38854900e2bd53213fa929dda36a29b73fd7e` de ShakeCheer
 - `ContentView.swift`, `ProPaywallView.swift` et `ShakeCheerApp.swift` : pas de compte propre ni d’outil publicitaire ou d’analyse tiers.
 - `SoundCatalog.swift`, `project.yml` et l’arborescence : catalogue local, iPhone/iOS 17, pas de dépendance publicitaire déclarée.
 
-Les affirmations concernant le code s’appliquent à cette version. La politique distingue ces traitements des courriels de support et des traitements des prestataires Apple, Microsoft, OpenAI et Cloudflare.
+Les affirmations concernant le code s’appliquent à cette version. La politique distingue ces traitements des courriels de support et des traitements des prestataires Apple, Microsoft et GitHub.
 
 ## Avant la soumission App Store
 
@@ -49,3 +68,5 @@ Références :
 - https://developer.apple.com/app-store/review/guidelines/#privacy
 - https://developer.apple.com/app-store/app-privacy-details/
 - https://developer.apple.com/app-store/user-privacy-and-data-use/
+- https://docs.github.com/en/pages/getting-started-with-github-pages/what-is-github-pages#data-collection
+- https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement
