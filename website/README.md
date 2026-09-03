@@ -49,4 +49,3 @@ Références :
 - https://developer.apple.com/app-store/review/guidelines/#privacy
 - https://developer.apple.com/app-store/app-privacy-details/
 - https://developer.apple.com/app-store/user-privacy-and-data-use/
-
