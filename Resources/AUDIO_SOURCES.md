@@ -5,6 +5,15 @@
 
 Both source recordings are released under CC0 (public domain) and were trimmed, normalized, faded, resampled to 44.1 kHz, and converted to stereo PCM WAV for ShakeCheer.
 
+## Applaudissements — source CC0 vérifiée
+
+- Fichier dans l’app : `applause.wav`.
+- Enregistrement : [Applause #1, nº 2363](https://bigsoundbank.com/applause-1-s2363.html), Dorian CLAIR, BigSoundBank / LaSonothèque.
+- Licence affichée sur la fiche le 3 septembre 2026 : **CC0 (domaine public)**. La fiche autorise explicitement la modification, la redistribution et l’utilisation commerciale dans des applications.
+- Source téléchargée : https://bigsoundbank.com/UPLOAD/mp3/2363.mp3.
+- Préparation : extrait de 1,80 à 3,78 secondes, durée finale 1,98 seconde, normalisation de crête à −1 dBFS, fondu d’entrée de 5 ms et de sortie de 180 ms, conversion en WAV PCM signé 16 bits, 44,1 kHz, stéréo.
+- Cet enregistrement remplace l’ancien fichier d’applaudissements dont la provenance n’était pas établie. Le nom de ressource et la durée restent compatibles avec la lecture actuelle déclenchée par les mouvements.
+
 ## Nouvelles pistes à valider avant commercialisation
 
 - `cargo-ship-horn.mp3`: “Cargo Ship Horn” — Universfield, fichier fourni par le propriétaire du projet.
