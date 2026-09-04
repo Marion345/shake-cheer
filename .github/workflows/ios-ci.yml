@@ -24,6 +24,11 @@ jobs:
       - name: Install XcodeGen
         run: brew install xcodegen
 
+      - name: Generate original familiar audio
+        run: |
+          command -v ffmpeg >/dev/null || brew install ffmpeg
+          python3 scripts/generate_familiar_audio.py
+
       - name: Generate Xcode project
         run: xcodegen generate
 
