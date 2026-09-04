@@ -21,14 +21,7 @@ workflows:
 
     scripts:
       - name: Install build tools
-        script: |
-          brew install xcodegen
-          command -v ffmpeg >/dev/null || brew install ffmpeg
-
-      - name: Generate original familiar audio
-        script: |
-          cd "$CM_BUILD_DIR"
-          python3 scripts/generate_familiar_audio.py
+        script: brew install xcodegen
 
       - name: Generate Xcode project
         script: xcodegen generate
