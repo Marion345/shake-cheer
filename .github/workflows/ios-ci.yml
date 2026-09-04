@@ -24,9 +24,6 @@ jobs:
       - name: Install XcodeGen
         run: brew install xcodegen
 
-      - name: Install selected audio pack
-        run: python3 scripts/generate_familiar_audio.py
-
       - name: Generate Xcode project
         run: xcodegen generate
 
