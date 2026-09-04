@@ -10,6 +10,15 @@ final class SoundCatalogTests: XCTestCase {
         )
     }
 
+    @MainActor
+    func testTemporaryProTestingUnlockIsEnabled() {
+        let purchaseManager = PurchaseManager()
+
+        XCTAssertTrue(PurchaseManager.temporaryProTestingUnlockEnabled)
+        XCTAssertTrue(purchaseManager.isUsingTemporaryProTestingUnlock)
+        XCTAssertTrue(purchaseManager.isPro)
+    }
+
     func testBuiltInSoundIDsAreUnique() {
         let ids = SoundCatalog.allSounds.map(\.id)
         XCTAssertEqual(Set(ids).count, ids.count)

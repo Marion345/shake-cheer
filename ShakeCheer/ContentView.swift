@@ -129,11 +129,7 @@ struct ContentView: View {
                         }
                     }
 
-                    Text(
-                        purchaseManager.isPro
-                            ? "ShakeCheer Pro est actif sur ce compte Apple."
-                            : "Déverrouille les catégories Pro avec un achat unique."
-                    )
+                    Text(proAccessMessage)
                         .font(.footnote)
                         .multilineTextAlignment(.center)
                         .foregroundStyle(.secondary)
@@ -281,6 +277,16 @@ struct ContentView: View {
 
     private func isCategoryLocked(_ category: SoundCategory) -> Bool {
         category.accessLevel == .pro && !purchaseManager.isPro
+    }
+
+    private var proAccessMessage: String {
+        if purchaseManager.isUsingTemporaryProTestingUnlock {
+            return "Mode test : les 20 sons Pro sont temporairement déverrouillés."
+        }
+
+        return purchaseManager.isPro
+            ? "ShakeCheer Pro est actif sur ce compte Apple."
+            : "Déverrouille les catégories Pro avec un achat unique."
     }
 
     private func selectCategory(_ category: SoundCategory) {
