@@ -5,6 +5,10 @@ The selected source recordings were trimmed and normalized offline, then stored
 as one repository archive. This script intentionally does not synthesize or
 redownload replacement sounds: TestFlight/App Store builds use the exact
 processed selections approved for this pass.
+
+The uploaded volleyball crowd/drum recording is intentionally not extracted
+because its Freesound licence is CC BY-NC 4.0. The existing documented CC0
+`drum-crowd.mp3` therefore remains active for commercial builds.
 """
 
 from __future__ import annotations
@@ -23,7 +27,6 @@ EXPECTED = {
     "coin.mp3",
     "crowd-disappointment.mp3",
     "crowd-hey.mp3",
-    "drum-crowd.mp3",
     "fail-buzzer.mp3",
     "game-over.mp3",
     "laugh-track.mp3",
@@ -56,6 +59,7 @@ def main() -> None:
         raise SystemExit(f"Empty audio files after extraction: {empty}")
 
     print(f"Installed {len(EXPECTED)} user-selected ShakeCheer sounds")
+    print("Retained existing CC0 drum-crowd.mp3; excluded uploaded CC BY-NC recording")
 
 
 if __name__ == "__main__":
