@@ -2,7 +2,7 @@ workflows:
   shakecheer-testflight:
     name: ShakeCheer TestFlight
     instance_type: mac_mini_m2
-    max_build_duration: 30
+    max_build_duration: 35
 
     integrations:
       app_store_connect: shakecheer_app_store
@@ -21,7 +21,15 @@ workflows:
 
     scripts:
       - name: Install build tools
-        script: brew install xcodegen
+        script: |
+          brew install xcodegen
+          command -v ffmpeg >/dev/null || brew install ffmpeg
+          python3 -m pip install --upgrade yt-dlp
+
+      - name: Install user-selected audio
+        script: |
+          cd "$CM_BUILD_DIR"
+          python3 scripts/install_user_audio.py
 
       - name: Generate Xcode project
         script: xcodegen generate
