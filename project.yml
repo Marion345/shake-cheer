@@ -1,0 +1,45 @@
+name: ShakeCheer
+options:
+  bundleIdPrefix: com.marion345
+  deploymentTarget:
+    iOS: "17.0"
+settings:
+  base:
+    PRODUCT_BUNDLE_IDENTIFIER: com.marion345.shakecheer
+    SWIFT_VERSION: 5.0
+targets:
+  ShakeCheer:
+    type: application
+    platform: iOS
+    sources:
+      - path: ShakeCheer
+      - path: Resources
+        buildPhase: resources
+    settings:
+      base:
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        CURRENT_PROJECT_VERSION: 1
+        MARKETING_VERSION: 1.0.0
+        VERSIONING_SYSTEM: apple-generic
+        INFOPLIST_KEY_UIApplicationSceneManifest_Generation: YES
+        INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents: YES
+        INFOPLIST_KEY_UILaunchScreen_Generation: YES
+        INFOPLIST_KEY_NSHighResolutionCapable: YES
+        GENERATE_INFOPLIST_FILE: YES
+        TARGETED_DEVICE_FAMILY: "1"
+    info:
+      path: ShakeCheer/Info.plist
+      properties:
+        CFBundleDisplayName: ShakeCheer
+        NSMotionUsageDescription: ShakeCheer utilise les capteurs de mouvement pour déclencher les sons lorsque vous secouez votre iPhone.
+        UIApplicationSupportsIndirectInputEvents: true
+  ShakeCheerTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - path: ShakeCheerTests
+    dependencies:
+      - target: ShakeCheer
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES

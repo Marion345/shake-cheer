@@ -1,0 +1,54 @@
+workflows:
+  shakecheer-testflight:
+    name: ShakeCheer TestFlight
+    instance_type: mac_mini_m2
+    max_build_duration: 30
+
+    integrations:
+      app_store_connect: shakecheer_app_store
+
+    environment:
+      xcode: 26.4
+      ios_signing:
+        provisioning_profiles:
+          - shakecheer_appstore_profile
+        certificates:
+          - shakecheer_distribution_p12
+      vars:
+        BUNDLE_ID: com.marion345.shakecheer
+        XCODE_PROJECT: ShakeCheer.xcodeproj
+        XCODE_SCHEME: ShakeCheer
+
+    scripts:
+      - name: Install XcodeGen
+        script: brew install xcodegen
+
+      - name: Generate Xcode project
+        script: xcodegen generate
+
+      - name: Apply signing profile
+        script: |
+          xcode-project use-profiles \
+            --project "$CM_BUILD_DIR/$XCODE_PROJECT" \
+            --custom-export-options='{"testFlightInternalTestingOnly": false}'
+
+      - name: Set build number
+        script: |
+          cd "$CM_BUILD_DIR"
+          agvtool new-version -all "$BUILD_NUMBER"
+
+      - name: Build signed IPA
+        script: |
+          xcode-project build-ipa \
+            --project "$CM_BUILD_DIR/$XCODE_PROJECT" \
+            --scheme "$XCODE_SCHEME"
+
+    artifacts:
+      - build/ios/ipa/*.ipa
+      - /tmp/xcodebuild_logs/*.log
+      - $HOME/Library/Developer/Xcode/DerivedData/**/Build/**/*.dSYM
+
+    publishing:
+      app_store_connect:
+        auth: integration
+        submit_to_testflight: false
