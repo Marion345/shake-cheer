@@ -1,26 +1,31 @@
 #!/usr/bin/env python3
-"""Generate original ShakeCheer Pro effects before the Xcode project is built.
+"""Generate closer-to-original ShakeCheer Pro effects before XcodeGen.
 
-These sounds are created from code (and, for Game Over on macOS, the built-in
-system speech synthesizer). No third-party audio recording is embedded by this
-script.
+Real-world effects use verified CC0 BigSoundBank recordings when possible.
+Game/crowd cues are generated from code or macOS system speech so no Pixabay
+recording is reintroduced.
 """
 
 from __future__ import annotations
 
 import math
-import os
 import random
 import shutil
 import struct
 import subprocess
 import tempfile
+import urllib.request
 import wave
 from pathlib import Path
 
 SAMPLE_RATE = 44_100
 ROOT = Path(__file__).resolve().parents[1]
 RESOURCES = ROOT / "Resources"
+BIGSOUNDBANK_MP3 = "https://bigsoundbank.com/UPLOAD/mp3/{sound_id}.mp3"
+
+
+def run(args: list[str]) -> None:
+    subprocess.run(args, check=True)
 
 
 def envelope(index: int, total: int, attack: float = 0.01, release: float = 0.18) -> float:
@@ -57,149 +62,177 @@ def add_tone(buffer: list[float], frequency: float, start: float, duration: floa
         if target >= len(buffer):
             break
         t = i / SAMPLE_RATE
-        if saw:
-            value = 2.0 * ((frequency * t) % 1.0) - 1.0
-        else:
-            value = math.sin(2.0 * math.pi * frequency * t)
+        value = (2.0 * ((frequency * t) % 1.0) - 1.0) if saw else math.sin(2.0 * math.pi * frequency * t)
         buffer[target] += amplitude * value * envelope(i, count)
 
 
-def make_air_horn() -> list[float]:
-    duration = 1.70
-    count = int(duration * SAMPLE_RATE)
-    output = [0.0] * count
-    for i in range(count):
-        t = i / SAMPLE_RATE
-        frequency = 470.0 + 8.0 * math.sin(2.0 * math.pi * 5.0 * t)
-        phase = 2.0 * math.pi * frequency * t
-        value = 0.58 * math.sin(phase) + 0.27 * math.sin(2 * phase) + 0.12 * math.sin(3 * phase)
-        output[i] = value * envelope(i, count, 0.015, 0.28)
-    return output
+def encode_mp3(source: Path, target: Path, filters: str | None = None, duration: float | None = None) -> None:
+    args = ["ffmpeg", "-y", "-loglevel", "error", "-i", str(source)]
+    if filters:
+        args += ["-af", filters]
+    if duration is not None:
+        args += ["-t", f"{duration:.2f}"]
+    args += ["-ar", str(SAMPLE_RATE), "-ac", "1", "-b:a", "96k", str(target)]
+    run(args)
+
+
+def download_cc0(sound_id: int, temp_dir: Path) -> Path:
+    target = temp_dir / f"bigsoundbank-{sound_id}.mp3"
+    request = urllib.request.Request(
+        BIGSOUNDBANK_MP3.format(sound_id=sound_id),
+        headers={"User-Agent": "ShakeCheer/1.0"},
+    )
+    with urllib.request.urlopen(request, timeout=30) as response, target.open("wb") as output:
+        output.write(response.read())
+    return target
 
 
 def make_level_up() -> list[float]:
-    output = [0.0] * int(1.55 * SAMPLE_RATE)
-    for index, frequency in enumerate((523.25, 659.25, 783.99, 1046.50)):
-        start = index * 0.24
-        add_tone(output, frequency, start, 0.42, 0.80)
-        add_tone(output, frequency * 2.0, start, 0.42, 0.16)
+    output = [0.0] * int(1.45 * SAMPLE_RATE)
+    for index, frequency in enumerate((523.25, 659.25, 783.99, 1046.50, 1318.51)):
+        start = index * 0.18
+        add_tone(output, frequency, start, 0.34, 0.76)
+        add_tone(output, frequency * 2.0, start, 0.34, 0.12)
+    return output
+
+
+def make_coin() -> list[float]:
+    output = [0.0] * int(0.72 * SAMPLE_RATE)
+    add_tone(output, 987.77, 0.00, 0.22, 0.78)
+    add_tone(output, 1318.51, 0.12, 0.35, 0.82)
+    add_tone(output, 2637.02, 0.12, 0.20, 0.14)
     return output
 
 
 def make_sad_trumpet() -> list[float]:
-    # Three repetitions keep the current sustained playback duration full while
-    # restoring the short descending "wah-wah" identity of the original effect.
-    output = [0.0] * int(7.65 * SAMPLE_RATE)
-    notes = (311.0, 277.0, 247.0, 220.0)
-    for repetition in range(3):
-        base = repetition * 2.42
-        for index, frequency in enumerate(notes):
-            start = base + index * 0.48
-            start_i = int(start * SAMPLE_RATE)
-            count = int(0.62 * SAMPLE_RATE)
-            phase = 0.0
-            for i in range(count):
-                target = start_i + i
-                if target >= len(output):
-                    break
-                t = i / SAMPLE_RATE
-                vibrating_frequency = frequency * (1.0 + 0.012 * math.sin(2.0 * math.pi * 5.2 * t))
-                phase += 2.0 * math.pi * vibrating_frequency / SAMPLE_RATE
-                value = 0.72 * math.sin(phase) + 0.18 * math.sin(2 * phase) + 0.08 * math.sin(3 * phase)
-                output[target] += value * envelope(i, count, 0.02, 0.18)
-    return output
-
-
-def make_victory() -> list[float]:
-    output = [0.0] * int(6.25 * SAMPLE_RATE)
-    notes = (
-        (523.25, 0.00, 0.60), (659.25, 0.45, 0.60), (783.99, 0.90, 0.70),
-        (1046.50, 1.40, 1.00), (783.99, 2.50, 0.45), (1046.50, 2.85, 0.45),
-        (1318.50, 3.25, 1.55),
-    )
-    for frequency, start, duration in notes:
-        add_tone(output, frequency, start, duration, 0.34, saw=True)
-        add_tone(output, frequency * 2.0, start, duration, 0.09)
-    rng = random.Random(4)
-    for start in (1.40, 3.25):
+    output = [0.0] * int(2.38 * SAMPLE_RATE)
+    notes = (311.13, 277.18, 246.94, 220.00)
+    for index, frequency in enumerate(notes):
+        start = index * 0.44
         start_i = int(start * SAMPLE_RATE)
-        count = int(0.70 * SAMPLE_RATE)
+        count = int(0.62 * SAMPLE_RATE)
+        phase = 0.0
         for i in range(count):
             target = start_i + i
             if target >= len(output):
                 break
-            output[target] += rng.uniform(-1.0, 1.0) * math.exp(-i / (SAMPLE_RATE * 0.18)) * 0.16
+            t = i / SAMPLE_RATE
+            vibrating_frequency = frequency * (1.0 + 0.018 * math.sin(2.0 * math.pi * 5.0 * t))
+            phase += 2.0 * math.pi * vibrating_frequency / SAMPLE_RATE
+            value = 0.58 * math.sin(phase) + 0.25 * math.sin(2 * phase) + 0.12 * math.sin(3 * phase)
+            output[target] += value * envelope(i, count, 0.025, 0.20)
+    return output
+
+
+def make_victory() -> list[float]:
+    output = [0.0] * int(7.55 * SAMPLE_RATE)
+    sequence = (
+        (392.00, 0.00, 0.42), (523.25, 0.36, 0.42), (659.25, 0.72, 0.42),
+        (783.99, 1.10, 0.70), (659.25, 2.00, 0.34), (783.99, 2.30, 0.34),
+        (987.77, 2.60, 0.52), (1046.50, 3.10, 0.55), (1318.51, 3.55, 1.65),
+    )
+    for frequency, start, duration in sequence:
+        add_tone(output, frequency, start, duration, 0.28, saw=True)
+        add_tone(output, frequency * 2.0, start, duration, 0.08)
+    for f in (523.25, 659.25, 783.99):
+        add_tone(output, f, 5.35, 1.70, 0.20, saw=True)
+    rng = random.Random(4)
+    for start in (1.10, 3.55, 5.35):
+        start_i = int(start * SAMPLE_RATE)
+        count = int(0.80 * SAMPLE_RATE)
+        for i in range(count):
+            target = start_i + i
+            if target >= len(output):
+                break
+            output[target] += rng.uniform(-1.0, 1.0) * math.exp(-i / (SAMPLE_RATE * 0.20)) * 0.13
     return output
 
 
 def make_podium() -> list[float]:
-    output = [0.0] * int(7.25 * SAMPLE_RATE)
+    output = [0.0] * int(21.90 * SAMPLE_RATE)
     rng = random.Random(7)
-    # Tight snare-like roll before a compact award fanfare.
     strike = 0.0
-    while strike < 2.0:
+    while strike < 4.0:
         start_i = int(strike * SAMPLE_RATE)
         count = int(0.075 * SAMPLE_RATE)
         for i in range(count):
             target = start_i + i
             if target >= len(output):
                 break
-            output[target] += rng.uniform(-1.0, 1.0) * math.exp(-i / (SAMPLE_RATE * 0.025)) * 0.13
-        strike += 0.11
-    for frequency, start, duration in ((392.0, 2.0, 0.55), (523.25, 2.4, 0.55), (659.25, 2.8, 0.55), (783.99, 3.25, 1.0), (1046.50, 4.15, 1.50)):
-        add_tone(output, frequency, start, duration, 0.32, saw=True)
-        add_tone(output, frequency * 2.0, start, duration, 0.08)
+            output[target] += rng.uniform(-1.0, 1.0) * math.exp(-i / (SAMPLE_RATE * 0.025)) * 0.12
+        strike += 0.10
+    fanfare = (
+        (392.00, 4.00, 0.65), (523.25, 4.55, 0.65), (659.25, 5.10, 0.65),
+        (783.99, 5.70, 1.10), (523.25, 7.15, 0.55), (659.25, 7.60, 0.55),
+        (783.99, 8.05, 0.60), (1046.50, 8.55, 1.40),
+    )
+    for frequency, start, duration in fanfare:
+        add_tone(output, frequency, start, duration, 0.25, saw=True)
+        add_tone(output, frequency * 2.0, start, duration, 0.06)
+    for frequency, start, duration in fanfare:
+        shifted = start + 9.30
+        add_tone(output, frequency, shifted, duration, 0.23, saw=True)
+        add_tone(output, frequency * 2.0, shifted, duration, 0.05)
     return output
 
 
-def encode_mp3(wav_path: Path, target: Path) -> None:
-    subprocess.run(
-        ["ffmpeg", "-y", "-loglevel", "error", "-i", str(wav_path), "-ar", str(SAMPLE_RATE), "-ac", "1", "-b:a", "96k", str(target)],
-        check=True,
-    )
-
-
-def make_game_over(temp_dir: Path, target: Path) -> None:
-    aiff = temp_dir / "game-over.aiff"
-    wav_path = temp_dir / "game-over.wav"
-    if shutil.which("say"):
-        subprocess.run(["say", "-v", "Daniel", "-r", "125", "-o", str(aiff), "Game over"], check=True)
-        subprocess.run(
-            ["ffmpeg", "-y", "-loglevel", "error", "-i", str(aiff), "-af", "asetrate=36000,aresample=44100,lowpass=f=3200,volume=1.25", "-t", "1.85", "-ar", str(SAMPLE_RATE), "-ac", "1", "-b:a", "96k", str(target)],
-            check=True,
-        )
+def make_speech_cue(temp_dir: Path, target: Path, text: str, duration: float, crowd: bool = False) -> None:
+    aiff = temp_dir / f"{target.stem}.aiff"
+    if not shutil.which("say"):
+        fallback = [0.0] * int(duration * SAMPLE_RATE)
+        for frequency, start in ((180.0, 0.0), (145.0, min(0.55, duration / 2))):
+            add_tone(fallback, frequency, start, min(0.50, duration / 2), 0.7, saw=True)
+        wav = temp_dir / f"{target.stem}.wav"
+        write_wav(wav, fallback)
+        encode_mp3(wav, target)
         return
-
-    # Non-macOS fallback used only for local validation.
-    fallback = [0.0] * int(1.20 * SAMPLE_RATE)
-    for frequency, start in ((180.0, 0.0), (145.0, 0.58)):
-        add_tone(fallback, frequency, start, 0.55, 0.8, saw=True)
-    write_wav(wav_path, fallback)
-    encode_mp3(wav_path, target)
+    run(["say", "-r", "125", "-o", str(aiff), text])
+    if crowd:
+        filter_complex = (
+            "[0:a]asplit=5[a0][a1][a2][a3][a4];"
+            "[a0]aresample=44100,volume=0.95[b0];"
+            "[a1]asetrate=47000,aresample=44100,adelay=70,volume=0.80[b1];"
+            "[a2]asetrate=41500,aresample=44100,adelay=135,volume=0.78[b2];"
+            "[a3]asetrate=49000,aresample=44100,adelay=210,volume=0.64[b3];"
+            "[a4]asetrate=39500,aresample=44100,adelay=285,volume=0.60[b4];"
+            "[b0][b1][b2][b3][b4]amix=inputs=5:normalize=0,alimiter=limit=0.90[out]"
+        )
+        run([
+            "ffmpeg", "-y", "-loglevel", "error", "-i", str(aiff),
+            "-filter_complex", filter_complex, "-map", "[out]",
+            "-t", f"{duration:.2f}", "-ar", str(SAMPLE_RATE), "-ac", "1",
+            "-b:a", "96k", str(target),
+        ])
+    else:
+        encode_mp3(aiff, target, "asetrate=36000,aresample=44100,lowpass=f=3200,volume=1.20", duration)
 
 
 def main() -> None:
     if not shutil.which("ffmpeg"):
         raise SystemExit("ffmpeg is required to generate ShakeCheer audio")
-
     RESOURCES.mkdir(parents=True, exist_ok=True)
-    generators = {
-        "air-horn": make_air_horn,
-        "level-up": make_level_up,
-        "sad-trumpet": make_sad_trumpet,
-        "victory": make_victory,
-        "podium": make_podium,
-    }
-
     with tempfile.TemporaryDirectory(prefix="shakecheer-audio-") as temp:
         temp_dir = Path(temp)
+        air_horn = download_cc0(1827, temp_dir)
+        encode_mp3(air_horn, RESOURCES / "air-horn.mp3", "loudnorm=I=-14:TP=-1.5:LRA=7", 1.35)
+        buzzer = download_cc0(1586, temp_dir)
+        encode_mp3(buzzer, RESOURCES / "fail-buzzer.mp3", "loudnorm=I=-15:TP=-1.5:LRA=7", 1.90)
+        generators = {
+            "level-up": make_level_up,
+            "coin": make_coin,
+            "sad-trumpet": make_sad_trumpet,
+            "victory": make_victory,
+            "podium": make_podium,
+        }
         for name, generator in generators.items():
-            wav_path = temp_dir / f"{name}.wav"
-            write_wav(wav_path, generator())
-            encode_mp3(wav_path, RESOURCES / f"{name}.mp3")
-        make_game_over(temp_dir, RESOURCES / "game-over.mp3")
-
-    print("Generated original ShakeCheer effects: air-horn, game-over, level-up, podium, sad-trumpet, victory")
+            wav = temp_dir / f"{name}.wav"
+            write_wav(wav, generator())
+            encode_mp3(wav, RESOURCES / f"{name}.mp3")
+        make_speech_cue(temp_dir, RESOURCES / "game-over.mp3", "Game over", 1.90)
+        make_speech_cue(temp_dir, RESOURCES / "crowd-hey.mp3", "Hey! Hey! Hey!", 3.30, crowd=True)
+        make_speech_cue(temp_dir, RESOURCES / "boo.mp3", "Boooo!", 2.30, crowd=True)
+        make_speech_cue(temp_dir, RESOURCES / "boo-crowd.mp3", "Awwww! Boooo!", 4.00, crowd=True)
+    print("Generated closer familiar effects: air-horn, fail-buzzer, game-over, crowd-hey, boo, boo-crowd, coin, level-up, sad-trumpet, victory, podium")
 
 
 if __name__ == "__main__":
