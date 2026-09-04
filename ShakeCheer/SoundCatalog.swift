@@ -167,7 +167,7 @@ enum SoundCatalog {
         animation: .drum,
         playbackMode: .sustained,
         accessLevel: .pro,
-        loopEndTime: 4.69,
+        loopEndTime: 4.20,
         loopCrossfadeDuration: 0.28
     )
 
@@ -191,7 +191,7 @@ enum SoundCatalog {
         animation: .stadiumHorn,
         playbackMode: .sustained,
         accessLevel: .pro,
-        loopEndTime: 2.10,
+        loopEndTime: 8.10,
         loopCrossfadeDuration: 0.45
     )
 
@@ -215,7 +215,7 @@ enum SoundCatalog {
         animation: .crowdHey,
         playbackMode: .sustained,
         accessLevel: .pro,
-        loopEndTime: 7.20,
+        loopEndTime: 3.30,
         loopCrossfadeDuration: 0.25
     )
 
@@ -250,7 +250,7 @@ enum SoundCatalog {
         animation: .partyBlower,
         playbackMode: .sustained,
         accessLevel: .pro,
-        loopEndTime: 4.26,
+        loopEndTime: 4.50,
         loopCrossfadeDuration: 0.20
     )
 
@@ -274,7 +274,7 @@ enum SoundCatalog {
         animation: .podium,
         playbackMode: .sustained,
         accessLevel: .pro,
-        loopEndTime: 22.04,
+        loopEndTime: 6.90,
         loopCrossfadeDuration: 0.35
     )
 
@@ -287,7 +287,7 @@ enum SoundCatalog {
         animation: .levelUp,
         playbackMode: .sustained,
         accessLevel: .pro,
-        loopEndTime: 8.20,
+        loopEndTime: 1.15,
         loopCrossfadeDuration: 0.25
     )
 
@@ -311,7 +311,7 @@ enum SoundCatalog {
         animation: .victory,
         playbackMode: .sustained,
         accessLevel: .pro,
-        loopEndTime: 7.64,
+        loopEndTime: 6.05,
         loopCrossfadeDuration: 0.25
     )
 
@@ -346,7 +346,7 @@ enum SoundCatalog {
         animation: .sadTrumpet,
         playbackMode: .sustained,
         accessLevel: .pro,
-        loopEndTime: 2.30,
+        loopEndTime: 7.35,
         loopCrossfadeDuration: 0.06,
         volumeMultiplier: 1.55
     )
@@ -360,7 +360,7 @@ enum SoundCatalog {
         animation: .boo,
         playbackMode: .sustained,
         accessLevel: .pro,
-        loopEndTime: 3.90,
+        loopEndTime: 2.15,
         loopCrossfadeDuration: 0.20
     )
 
@@ -373,7 +373,7 @@ enum SoundCatalog {
         animation: .crowdDisappointment,
         playbackMode: .sustained,
         accessLevel: .pro,
-        loopEndTime: 2.70,
+        loopEndTime: 3.85,
         loopCrossfadeDuration: 0.20
     )
 
@@ -399,7 +399,7 @@ enum SoundCatalog {
         animation: .laughTrack,
         playbackMode: .sustained,
         accessLevel: .pro,
-        loopEndTime: 3.36,
+        loopEndTime: 7.50,
         loopCrossfadeDuration: 0.20
     )
 

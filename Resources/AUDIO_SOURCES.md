@@ -1,44 +1,45 @@
-# Audio sources
+# Sources audio de ShakeCheer
 
-- `noisemaker.wav`: “Rapid rattle” (#0316), BigSoundBank / LaSonotheque, author DavidGreck.
-- `stadium-horn.wav`: “Gas fog horn #2” (#1049), BigSoundBank / LaSonotheque, author Joseph SARDIN.
+Vérification effectuée le 4 septembre 2026. Les liens ci-dessous pointent vers les fiches de téléchargement et de licence des enregistrements utilisés.
 
-Both source recordings are released under CC0 (public domain) and were trimmed, normalized, faded, resampled to 44.1 kHz, and converted to stereo PCM WAV for ShakeCheer.
+## Sons de base
 
-## Applaudissements — source CC0 vérifiée
+| Fichier | Enregistrement | Auteur | Licence et traitement |
+|---|---|---|---|
+| `bell.wav` | [La cloche sonne](https://sounddino.com/fr/effects/bells/), fichier `bell-ringing.mp3` | SoundDino | La page indique un usage commercial et personnel gratuit, sans attribution. Extrait, normalisé, fondu et converti en WAV PCM. |
+| `applause.wav` | [Applause #1, nº 2363](https://bigsoundbank.com/applause-1-s2363.html) | Dorian CLAIR | CC0. Extrait de 1,80 à 3,78 secondes, normalisé à −1 dBFS, fondu et converti en WAV PCM 16 bits, 44,1 kHz, stéréo. |
+| `noisemaker.wav` | [Rapid rattle, nº 0316](https://bigsoundbank.com/rapid-rattle-s0316.html) | DavidGreck | CC0. Extrait, normalisé, fondu et converti en WAV PCM 16 bits, 44,1 kHz, stéréo. |
 
-- Fichier dans l’app : `applause.wav`.
-- Enregistrement : [Applause #1, nº 2363](https://bigsoundbank.com/applause-1-s2363.html), Dorian CLAIR, BigSoundBank / LaSonothèque.
-- Licence affichée sur la fiche le 3 septembre 2026 : **CC0 (domaine public)**. La fiche autorise explicitement la modification, la redistribution et l’utilisation commerciale dans des applications.
-- Source téléchargée : https://bigsoundbank.com/UPLOAD/mp3/2363.mp3.
-- Préparation : extrait de 1,80 à 3,78 secondes, durée finale 1,98 seconde, normalisation de crête à −1 dBFS, fondu d’entrée de 5 ms et de sortie de 180 ms, conversion en WAV PCM signé 16 bits, 44,1 kHz, stéréo.
-- Cet enregistrement remplace l’ancien fichier d’applaudissements dont la provenance n’était pas établie. Le nom de ressource et la durée restent compatibles avec la lecture actuelle déclenchée par les mouvements.
+## Sons Pro — sources CC0
 
-## Nouvelles pistes à valider avant commercialisation
+Toutes les fiches BigSoundBank / LaSonothèque ci-dessous affichent explicitement **CC0 (domaine public)** et autorisent la modification, la redistribution et l’utilisation commerciale dans des applications, sans attribution obligatoire.
 
-- `cargo-ship-horn.mp3`: “Cargo Ship Horn” — Universfield, fichier fourni par le propriétaire du projet.
-- `air-horn.mp3`: “Air Horn” — SoundReality, fichier fourni par le propriétaire du projet.
-- `sad-trumpet.mp3`: “Failure Trumpet” — Universfield, fichier fourni par le propriétaire du projet.
+| Fichier dans l’app | Enregistrement(s) CC0 | Auteur | Préparation |
+|---|---|---|---|
+| `cheer-crowd.mp3` | [Shouts and Applauses of Teens #2, nº 0237](https://bigsoundbank.com/shouts-and-applauses-of-teens-2-s0237.html) | DenisChardonnet | Extrait de 4,50 s |
+| `drum-crowd.mp3` | [Drum Roll 1 L, nº 2402](https://bigsoundbank.com/drum-roll-1-l-s2402.html) | Joseph SARDIN | Extrait de 4,45 s |
+| `cargo-ship-horn.mp3` | [Ocean Liner Horn #1, nº 0261](https://bigsoundbank.com/horn-of-a-ship-1-s0261.html) | DenisChardonnet | Extrait de 8,40 s |
+| `referee-whistle.mp3` | [Plastic Whistle #1, nº 1017](https://bigsoundbank.com/plastic-whistle-s1017.html) | Joseph SARDIN | Extrait de 2,50 s |
+| `podium.mp3` | [Drum Roll 2 M, nº 2404](https://bigsoundbank.com/drum-roll-2-m-s2404.html), [Cymbale 16″ #1, nº 2311](https://bigsoundbank.com/cymbale-16-1-s2311.html) et [Applause: 150 People, nº 0019](https://bigsoundbank.com/applause-150-people-s0019.html) | Joseph SARDIN | Montage de 7,15 s : roulement, cymbale et applaudissements |
+| `air-horn.mp3` | [Gas Fog Horn #1, nº 1048](https://bigsoundbank.com/gas-fog-horn-1-s1048.html) | Joseph SARDIN | Extrait de 3,30 s |
+| `crowd-hey.mp3` | [Shouts and Applauses of Teens #1, nº 0236](https://bigsoundbank.com/shouts-and-applauses-of-teens-1-s0236.html) | DenisChardonnet | Extrait de 3,55 s |
+| `dj-scratch.mp3` | [Vinyl Scratch #1, nº 2858](https://bigsoundbank.com/vinyl-scratch-1-s2858.html) | Joseph SARDIN | Extrait de 1,30 s |
+| `champagne-pops.mp3` | [Champagne Cork #1, nº 0211](https://bigsoundbank.com/champagne-cork-s0211.html) | Joseph SARDIN | Trois copies espacées du bouchon, durée 2,15 s |
+| `party-blower.mp3` | [Party Horn #1, nº 1553](https://bigsoundbank.com/party-horn-1-s1553.html) | Joseph SARDIN | Quatre copies espacées, durée 4,85 s |
+| `level-up.mp3` | [Notification « LaSoLisa » #3, nº 2065](https://bigsoundbank.com/notification-lasolisa-3-s2065.html) | Joseph SARDIN | Trois notes ascendantes, durée 1,50 s |
+| `coin.mp3` | [Coins #1, nº 0193](https://bigsoundbank.com/coins-1-s0193.html) | Joseph SARDIN | Extrait de 2,50 s |
+| `victory.mp3` | [Chimes « Butterfly » #1, nº 2087](https://bigsoundbank.com/chimes-butterfly-1-s2087.html) et [Applause: 150 People, nº 0019](https://bigsoundbank.com/applause-150-people-s0019.html) | Joseph SARDIN | Montage de carillon et applaudissements, durée 6,30 s |
+| `fail-buzzer.mp3` | [Buzzer #1, nº 1583](https://bigsoundbank.com/buzzer-1-s1583.html) | Joseph SARDIN | Extrait de 0,33 s |
+| `game-over.mp3` | [Operation (Game) #1, nº 1682](https://bigsoundbank.com/operation-game-1-s1682.html) | Joseph SARDIN | Extrait de 0,62 s |
+| `sad-trumpet.mp3` | [Toy Horn, nº 1085](https://bigsoundbank.com/toy-horn-s1085.html) | Joseph SARDIN | Tonalité abaissée, durée 7,65 s |
+| `boo.mp3` | [Howling Two Children #1, nº 1661](https://bigsoundbank.com/howling-two-children-s1661.html) | Joseph SARDIN | Extrait de 2,40 s |
+| `boo-crowd.mp3` | [Sigh by the Mouth, nº 1405](https://bigsoundbank.com/sigh-by-the-mouth-s1405.html) | Joseph SARDIN | Extrait de 4,10 s |
+| `crickets.mp3` | [Field Cricket, nº 1020](https://bigsoundbank.com/field-cricket-s1020.html) | Joseph SARDIN | Extrait de 9,50 s |
+| `laugh-track.mp3` | [Laughter, nº 0490](https://bigsoundbank.com/laughter-s0490.html) | Joseph SARDIN | Extrait de 7,80 s |
 
-Les URL sources et les preuves de licence commerciale de ces trois pistes doivent être ajoutées avant la soumission App Store.
-- `boo-crowd.mp3`: “Crowd Disappointment Reaction” — Universfield, utilisé pour « Foule déçue »; preuve de licence commerciale à ajouter avant soumission.
-- `boo.mp3`: “Boo” — Freesound Community, fichier fourni par le propriétaire du projet; URL source et preuve de licence commerciale à ajouter avant soumission.
-- `crickets.mp3`: “Cricket Sound” — Felix Quinol, fichier fourni par le propriétaire du projet et optimisé en MP3 mono 80 kbit/s; URL source et preuve de licence commerciale à ajouter avant soumission.
+## Traitement commun des sons Pro
 
-- `level-up.mp3`: “Epic Hybrid Logo” — Ivan Luzan, utilisé pour « Level Up ».
-- `podium.mp3`: “Award Ceremony Anthem” — Leo Music Production, utilisé pour « Podium ».
-- `coin.mp3`: “Coin Recieved” — Ribhav Agrawal, utilisé pour « Pièce gagnée ».
-- `victory.mp3`: “Orchestral Win” — créateur `u_it78ck90s3`, utilisé pour « Victoire ».
-- `referee-whistle.mp3`: “Referee Whistle Blow Gymnasium” — Freesound Community, utilisé pour « Sifflet ».
-- `laugh-track.mp3`: “90s Sitcom Laugh Track V2” — Artificially Inspired, utilisé pour « Rires ».
+Les enregistrements sources ont été téléchargés en MP3 depuis BigSoundBank. Les sorties intégrées à l’application sont des MP3 mono à 44,1 kHz et 96 kbit/s. Elles sont normalisées vers −16 LUFS avec une crête maximale de −1,5 dB, puis fondues aux limites lorsque la durée le permet.
 
-Ces six pistes ont été coupées au besoin, fondues et optimisées en MP3 mono 96 kbit/s. Leurs URL sources et preuves de licence commerciale doivent être ajoutées avant la soumission App Store.
+Les noms de fichiers attendus par `SoundCatalog.swift` sont conservés. Les durées de boucle ont été ajustées aux nouveaux enregistrements. Les anciens fichiers provenant de Pixabay ne sont plus présents dans l’arbre courant une fois ce changement appliqué; leur suppression de l’historique Git fera l’objet d’une opération distincte.
 
-- `fail-buzzer.mp3`: “Buzzer 4” — Floraphonic, utilisé pour « Échec ».
-- `game-over.mp3`: “Game Over Deep Male Voice Clip” — Universfield, utilisé pour « Game Over ».
-- `crowd-hey.mp3`: “Crowd Shouting Hey Hey Hey” — créateur `11325622`, utilisé pour « Foule Hey! ».
-- `dj-scratch.mp3`: “Babyscratch” — Freesound Community, utilisé pour « DJ Scratch ».
-- `champagne-pops.mp3`: “Corkscrew Mix” — Freesound Community; seules les trois premières détonations ont été conservées.
-- `party-blower.mp3`: “Party Blower 6” — Floraphonic, utilisé pour « Sans-gêne ».
-
-Ces six pistes ont été coupées au besoin, fondues et optimisées en MP3 mono 96 kbit/s. Leurs URL sources et preuves de licence commerciale doivent être ajoutées avant la soumission App Store.
