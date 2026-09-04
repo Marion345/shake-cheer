@@ -16,7 +16,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Select Xcode
         run: sudo xcode-select -s /Applications/Xcode_16.4.app/Contents/Developer
@@ -24,10 +24,8 @@ jobs:
       - name: Install XcodeGen
         run: brew install xcodegen
 
-      - name: Generate original familiar audio
-        run: |
-          command -v ffmpeg >/dev/null || brew install ffmpeg
-          python3 scripts/generate_familiar_audio.py
+      - name: Install selected audio pack
+        run: python3 scripts/generate_familiar_audio.py
 
       - name: Generate Xcode project
         run: xcodegen generate
