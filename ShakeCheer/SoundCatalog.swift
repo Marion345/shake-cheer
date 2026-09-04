@@ -149,26 +149,28 @@ enum SoundCatalog {
 
     static let cheer = SoundDefinition(
         id: "cheer",
-        title: "Encouragement",
-        emoji: "📣",
+        title: "Encouragement stade",
+        emoji: "🏟️",
         category: .sports,
         audio: AudioResource(fileName: "cheer-crowd", fileExtension: "mp3"),
         animation: .cheer,
         playbackMode: .sustained,
-        accessLevel: .pro
+        accessLevel: .pro,
+        loopEndTime: 4.75,
+        loopCrossfadeDuration: 0.22
     )
 
     static let drum = SoundDefinition(
         id: "drum",
-        title: "Tambour",
+        title: "Foule & tambours",
         emoji: "🥁",
         category: .sports,
         audio: AudioResource(fileName: "drum-crowd", fileExtension: "mp3"),
         animation: .drum,
         playbackMode: .sustained,
         accessLevel: .pro,
-        loopEndTime: 4.20,
-        loopCrossfadeDuration: 0.28
+        loopEndTime: 5.75,
+        loopCrossfadeDuration: 0.24
     )
 
     static let noisemaker = SoundDefinition(
@@ -198,7 +200,7 @@ enum SoundCatalog {
     static let airHorn = SoundDefinition(
         id: "air-horn",
         title: "Air Horn",
-        emoji: "📢",
+        emoji: "📯",
         category: .party,
         audio: AudioResource(fileName: "air-horn", fileExtension: "mp3"),
         animation: .airHorn,
@@ -208,15 +210,15 @@ enum SoundCatalog {
 
     static let crowdHey = SoundDefinition(
         id: "crowd-hey",
-        title: "Foule « Hey! »",
-        emoji: "🙌",
+        title: "Foule en fête",
+        emoji: "🥳",
         category: .party,
         audio: AudioResource(fileName: "crowd-hey", fileExtension: "mp3"),
         animation: .crowdHey,
         playbackMode: .sustained,
         accessLevel: .pro,
-        loopEndTime: 3.30,
-        loopCrossfadeDuration: 0.25
+        loopEndTime: 4.65,
+        loopCrossfadeDuration: 0.22
     )
 
     static let djScratch = SoundDefinition(
@@ -244,20 +246,18 @@ enum SoundCatalog {
     static let partyBlower = SoundDefinition(
         id: "party-blower",
         title: "Sans-gêne",
-        emoji: "🥳",
+        emoji: "🎉",
         category: .party,
         audio: AudioResource(fileName: "party-blower", fileExtension: "mp3"),
         animation: .partyBlower,
-        playbackMode: .sustained,
-        accessLevel: .pro,
-        loopEndTime: 4.50,
-        loopCrossfadeDuration: 0.20
+        playbackMode: .impact,
+        accessLevel: .pro
     )
 
     static let refereeWhistle = SoundDefinition(
         id: "referee-whistle",
-        title: "Sifflet",
-        emoji: "📣",
+        title: "Sifflet arbitre",
+        emoji: "⚽️",
         category: .sports,
         audio: AudioResource(fileName: "referee-whistle", fileExtension: "mp3"),
         animation: .refereeWhistle,
@@ -267,15 +267,15 @@ enum SoundCatalog {
 
     static let podium = SoundDefinition(
         id: "podium",
-        title: "Podium",
-        emoji: "🏆",
+        title: "Célébration",
+        emoji: "🙌",
         category: .sports,
         audio: AudioResource(fileName: "podium", fileExtension: "mp3"),
-        animation: .podium,
+        animation: .cheer,
         playbackMode: .sustained,
         accessLevel: .pro,
-        loopEndTime: 6.90,
-        loopCrossfadeDuration: 0.35
+        loopEndTime: 6.20,
+        loopCrossfadeDuration: 0.30
     )
 
     static let levelUp = SoundDefinition(
@@ -285,10 +285,8 @@ enum SoundCatalog {
         category: .gaming,
         audio: AudioResource(fileName: "level-up", fileExtension: "mp3"),
         animation: .levelUp,
-        playbackMode: .sustained,
-        accessLevel: .pro,
-        loopEndTime: 1.15,
-        loopCrossfadeDuration: 0.25
+        playbackMode: .impact,
+        accessLevel: .pro
     )
 
     static let coin = SoundDefinition(
@@ -305,13 +303,13 @@ enum SoundCatalog {
     static let victory = SoundDefinition(
         id: "victory",
         title: "Victoire",
-        emoji: "🎉",
+        emoji: "🏆",
         category: .gaming,
         audio: AudioResource(fileName: "victory", fileExtension: "mp3"),
         animation: .victory,
         playbackMode: .sustained,
         accessLevel: .pro,
-        loopEndTime: 6.05,
+        loopEndTime: 6.75,
         loopCrossfadeDuration: 0.25
     )
 
@@ -329,7 +327,7 @@ enum SoundCatalog {
     static let gameOver = SoundDefinition(
         id: "game-over",
         title: "Game Over",
-        emoji: "☠️",
+        emoji: "🎮",
         category: .gaming,
         audio: AudioResource(fileName: "game-over", fileExtension: "mp3"),
         animation: .gameOver,
@@ -346,34 +344,34 @@ enum SoundCatalog {
         animation: .sadTrumpet,
         playbackMode: .sustained,
         accessLevel: .pro,
-        loopEndTime: 7.35,
-        loopCrossfadeDuration: 0.06,
-        volumeMultiplier: 1.55
+        loopEndTime: 3.75,
+        loopCrossfadeDuration: 0.08,
+        volumeMultiplier: 1.15
     )
 
     static let boo = SoundDefinition(
         id: "boo",
-        title: "Boo",
+        title: "Boo!",
         emoji: "👎",
         category: .funny,
         audio: AudioResource(fileName: "boo", fileExtension: "mp3"),
         animation: .boo,
         playbackMode: .sustained,
         accessLevel: .pro,
-        loopEndTime: 2.15,
-        loopCrossfadeDuration: 0.20
+        loopEndTime: 2.75,
+        loopCrossfadeDuration: 0.18
     )
 
     static let crowdDisappointment = SoundDefinition(
         id: "crowd-disappointment",
         title: "Foule déçue",
-        emoji: "😩",
+        emoji: "😭",
         category: .funny,
-        audio: AudioResource(fileName: "boo-crowd", fileExtension: "mp3"),
+        audio: AudioResource(fileName: "crowd-disappointment", fileExtension: "mp3"),
         animation: .crowdDisappointment,
         playbackMode: .sustained,
         accessLevel: .pro,
-        loopEndTime: 3.85,
+        loopEndTime: 4.75,
         loopCrossfadeDuration: 0.20
     )
 
@@ -392,15 +390,15 @@ enum SoundCatalog {
 
     static let laughTrack = SoundDefinition(
         id: "laugh-track",
-        title: "Rires",
-        emoji: "😂",
+        title: "Rires de foule",
+        emoji: "🤣",
         category: .funny,
         audio: AudioResource(fileName: "laugh-track", fileExtension: "mp3"),
         animation: .laughTrack,
         playbackMode: .sustained,
         accessLevel: .pro,
-        loopEndTime: 7.50,
-        loopCrossfadeDuration: 0.20
+        loopEndTime: 3.00,
+        loopCrossfadeDuration: 0.16
     )
 
     static let selectableCategories: [SoundCategory] = [
