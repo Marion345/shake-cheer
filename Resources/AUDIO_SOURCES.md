@@ -41,5 +41,4 @@ Toutes les fiches BigSoundBank / LaSonothèque ci-dessous affichent explicitemen
 
 Les enregistrements sources ont été téléchargés en MP3 depuis BigSoundBank. Les sorties intégrées à l’application sont des MP3 mono à 44,1 kHz et 96 kbit/s. Elles sont normalisées vers −16 LUFS avec une crête maximale de −1,5 dB, puis fondues aux limites lorsque la durée le permet.
 
-Les noms de fichiers attendus par `SoundCatalog.swift` sont conservés. Les durées de boucle ont été ajustées aux nouveaux enregistrements. Les anciens fichiers provenant de Pixabay ne sont plus présents dans l’arbre courant une fois ce changement appliqué; leur suppression de l’historique Git fera l’objet d’une opération distincte.
-
+Les noms de fichiers attendus par `SoundCatalog.swift` sont conservés. Les durées de boucle ont été ajustées aux nouveaux enregistrements. Les anciens fichiers provenant de Pixabay ont été retirés de l’arbre courant et de l’historique Git lors de la reconstruction propre du 4 septembre 2026.
