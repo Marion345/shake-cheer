@@ -23,7 +23,7 @@ RESOURCES = ROOT / "Resources"
 # output filename: (source URL, trim start seconds, duration seconds)
 SOURCES = {
     "air-horn.mp3": ("https://freesound.org/s/131930/", 0.0, 2.57),
-    "boo.mp3": ("https://freesound.org/s/233579/", 14.8, 3.0),
+    "boo.mp3": ("https://freesound.org/s/504621/", 0.0, 5.0),
     "cheer-crowd.mp3": ("https://freesound.org/s/829455/", 2.0, 5.0),
     "coin.mp3": ("https://freesound.org/s/347174/", 0.0, 0.50),
     "crowd-disappointment.mp3": ("https://freesound.org/s/764298/", 13.3, 5.0),

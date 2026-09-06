@@ -88,7 +88,7 @@ final class SoundCatalogTests: XCTestCase {
         XCTAssertEqual(SoundCatalog.boo.category, .funny)
         XCTAssertEqual(SoundCatalog.boo.playbackMode, .sustained)
         XCTAssertEqual(SoundCatalog.boo.fileName, "boo")
-        XCTAssertEqual(SoundCatalog.boo.loopEndTime, 2.75)
+        XCTAssertEqual(SoundCatalog.boo.loopEndTime, 4.75)
         XCTAssertEqual(SoundCatalog.crowdDisappointment.category, .funny)
         XCTAssertEqual(SoundCatalog.crowdDisappointment.playbackMode, .sustained)
         XCTAssertEqual(SoundCatalog.crowdDisappointment.fileName, "crowd-disappointment")

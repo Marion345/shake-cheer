@@ -1,6 +1,6 @@
 # Sources audio de ShakeCheer
 
-Vérification effectuée le 4 septembre 2026. Les liens ci-dessous pointent vers les fiches des enregistrements utilisés par l’app. Les 16 sons sélectionnés manuellement sont récupérés depuis leur source publique puis coupés, normalisés et encodés automatiquement par `scripts/install_user_audio.py` avant XcodeGen.
+Vérification effectuée le 6 septembre 2026. Les liens ci-dessous pointent vers les fiches des enregistrements utilisés par l’app. Les 16 sons sélectionnés manuellement sont récupérés depuis leur source publique puis coupés, normalisés et encodés automatiquement par `scripts/install_user_audio.py` avant XcodeGen.
 
 ## Sons de base
 
@@ -27,7 +27,7 @@ Vérification effectuée le 4 septembre 2026. Les liens ci-dessous pointent vers
 | `fail-buzzer.mp3` | [Freesound 394900 — Failure 1.wav](https://freesound.org/s/394900/) | FunWithSound | CC BY 4.0 |
 | `game-over.mp3` | [Freesound 434465 — Game Over Deep Epic](https://freesound.org/s/434465/) | dersuperanton | CC BY 4.0 |
 | `sad-trumpet.mp3` | [Freesound 543966 — Trumpet_Cry.wav](https://freesound.org/s/543966/) | sweet_niche | CC0 |
-| `boo.mp3` | [Freesound 233579 — Boo You Suck](https://freesound.org/s/233579/) | RoivasUGO | CC BY 4.0 |
+| `boo.mp3` | [Freesound 504621 — Booing Crowd](https://freesound.org/s/504621/) | NeoSpica | CC0 |
 | `crowd-disappointment.mp3` | [Freesound 764298 — GameSoundCon 2024 Walla](https://freesound.org/s/764298/) | ShangusBurger | CC0 |
 | `laugh-track.mp3` | [Freesound 752711](https://freesound.org/s/752711/) | Nox_Sound | CC0 |
 
