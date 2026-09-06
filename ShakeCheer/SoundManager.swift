@@ -4,6 +4,7 @@ import Foundation
 @MainActor
 final class SoundManager: AudioEngine {
     private var players: [AVAudioPlayer] = []
+    private var nonRetriggerablePlayers: [String: AVAudioPlayer] = [:]
     private let maxConcurrentPlayers = 8
 
     private var sustainedPlayer: AVAudioPlayer?
@@ -73,6 +74,7 @@ final class SoundManager: AudioEngine {
 
         players.forEach { $0.stop() }
         players.removeAll()
+        nonRetriggerablePlayers.removeAll()
     }
 
     private func playImpact(_ sound: SoundDefinition, intensity: Double) {
@@ -80,6 +82,13 @@ final class SoundManager: AudioEngine {
 
         do {
             players.removeAll { !$0.isPlaying }
+            nonRetriggerablePlayers = nonRetriggerablePlayers.filter { $0.value.isPlaying }
+
+            if !sound.allowsRetriggerWhilePlaying,
+               nonRetriggerablePlayers[sound.id]?.isPlaying == true {
+                return
+            }
+
             if players.count >= maxConcurrentPlayers {
                 players.removeFirst().stop()
             }
@@ -89,6 +98,10 @@ final class SoundManager: AudioEngine {
             player.prepareToPlay()
             player.play()
             players.append(player)
+
+            if !sound.allowsRetriggerWhilePlaying {
+                nonRetriggerablePlayers[sound.id] = player
+            }
         } catch {
             print("Playback error: \(error.localizedDescription)")
         }
@@ -227,7 +240,7 @@ final class SoundManager: AudioEngine {
         for intensity: Double,
         sound: SoundDefinition
     ) -> Float {
-        let baseVolume = min(max(0.55 + intensity * 0.12, 0.55), 1.0)
+        let baseVolume = min(max(0.90 + intensity * 0.10, 0.90), 1.0)
         return Float(min(baseVolume * sound.volumeMultiplier, 1.0))
     }
 }

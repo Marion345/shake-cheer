@@ -111,4 +111,13 @@ final class SoundCatalogTests: XCTestCase {
         XCTAssertEqual(SoundCatalog.failBuzzer.playbackMode, .impact)
         XCTAssertEqual(SoundCatalog.gameOver.playbackMode, .impact)
     }
+
+    func testChampagneSequenceMustFinishBeforeRetriggering() {
+        XCTAssertFalse(SoundCatalog.champagnePops.allowsRetriggerWhilePlaying)
+        XCTAssertTrue(
+            SoundCatalog.allSounds
+                .filter { $0.id != SoundCatalog.champagnePops.id }
+                .allSatisfy(\.allowsRetriggerWhilePlaying)
+        )
+    }
 }

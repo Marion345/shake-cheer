@@ -64,6 +64,7 @@ struct SoundDefinition: Identifiable, Hashable {
     let loopEndTime: TimeInterval?
     let loopCrossfadeDuration: TimeInterval
     let volumeMultiplier: Double
+    let allowsRetriggerWhilePlaying: Bool
 
     init(
         id: String,
@@ -75,7 +76,8 @@ struct SoundDefinition: Identifiable, Hashable {
         accessLevel: AccessLevel,
         loopEndTime: TimeInterval? = nil,
         loopCrossfadeDuration: TimeInterval = 0.4,
-        volumeMultiplier: Double = 1.0
+        volumeMultiplier: Double = 1.0,
+        allowsRetriggerWhilePlaying: Bool = true
     ) {
         self.id = id
         self.title = title
@@ -87,6 +89,7 @@ struct SoundDefinition: Identifiable, Hashable {
         self.loopEndTime = loopEndTime
         self.loopCrossfadeDuration = loopCrossfadeDuration
         self.volumeMultiplier = volumeMultiplier
+        self.allowsRetriggerWhilePlaying = allowsRetriggerWhilePlaying
     }
 
     var fileName: String { audio.fileName }
@@ -202,7 +205,8 @@ enum SoundCatalog {
         category: .party,
         audio: AudioResource(fileName: "champagne-pops", fileExtension: "mp3"),
         playbackMode: .impact,
-        accessLevel: .pro
+        accessLevel: .pro,
+        allowsRetriggerWhilePlaying: false
     )
 
     static let partyBlower = SoundDefinition(
