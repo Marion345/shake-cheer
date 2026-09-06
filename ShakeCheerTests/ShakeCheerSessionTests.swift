@@ -27,7 +27,7 @@ final class ShakeCheerSessionTests: XCTestCase {
         XCTAssertFalse(session.isRunning)
     }
 
-    func testShakePlaysSelectedSoundAndTriggersAnimation() {
+    func testShakePlaysSelectedSound() {
         let motion = MotionEngineMock()
         let audio = AudioEngineMock()
         let session = ShakeCheerSession(motionEngine: motion, audioEngine: audio)
@@ -37,7 +37,6 @@ final class ShakeCheerSessionTests: XCTestCase {
 
         XCTAssertEqual(audio.playedSounds, [SoundCatalog.drum])
         XCTAssertEqual(audio.lastIntensity, 0.8, accuracy: 0.001)
-        XCTAssertEqual(session.animationTrigger, 1)
     }
 
     func testMotionKeepsSelectedSoundAlive() {
@@ -56,14 +55,11 @@ final class ShakeCheerSessionTests: XCTestCase {
         let audio = AudioEngineMock()
         let session = ShakeCheerSession(motionEngine: motion, audioEngine: audio)
         session.start(sound: SoundCatalog.cheer)
-        motion.simulateIntensity(0.7)
-
         session.stop()
 
         XCTAssertEqual(motion.stopCount, 1)
         XCTAssertEqual(audio.stopAllCount, 1)
         XCTAssertFalse(session.isRunning)
-        XCTAssertEqual(session.liveIntensity, 0)
     }
 }
 

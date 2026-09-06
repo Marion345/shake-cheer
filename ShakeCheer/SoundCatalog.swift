@@ -48,32 +48,6 @@ enum AccessLevel: String {
     case pro
 }
 
-enum SoundAnimationKind: String {
-    case bell
-    case applause
-    case cheer
-    case drum
-    case noisemaker
-    case stadiumHorn
-    case airHorn
-    case sadTrumpet
-    case boo
-    case crowdDisappointment
-    case crickets
-    case levelUp
-    case podium
-    case coin
-    case victory
-    case refereeWhistle
-    case laughTrack
-    case failBuzzer
-    case gameOver
-    case crowdHey
-    case djScratch
-    case champagnePops
-    case partyBlower
-}
-
 struct AudioResource: Hashable {
     let fileName: String
     let fileExtension: String
@@ -85,7 +59,6 @@ struct SoundDefinition: Identifiable, Hashable {
     let emoji: String
     let category: SoundCategory
     let audio: AudioResource
-    let animation: SoundAnimationKind
     let playbackMode: PlaybackMode
     let accessLevel: AccessLevel
     let loopEndTime: TimeInterval?
@@ -98,7 +71,6 @@ struct SoundDefinition: Identifiable, Hashable {
         emoji: String,
         category: SoundCategory,
         audio: AudioResource,
-        animation: SoundAnimationKind,
         playbackMode: PlaybackMode,
         accessLevel: AccessLevel,
         loopEndTime: TimeInterval? = nil,
@@ -110,7 +82,6 @@ struct SoundDefinition: Identifiable, Hashable {
         self.emoji = emoji
         self.category = category
         self.audio = audio
-        self.animation = animation
         self.playbackMode = playbackMode
         self.accessLevel = accessLevel
         self.loopEndTime = loopEndTime
@@ -132,7 +103,6 @@ enum SoundCatalog {
         emoji: "🔔",
         category: .basic,
         audio: AudioResource(fileName: "bell", fileExtension: "wav"),
-        animation: .bell,
         playbackMode: .impact,
         accessLevel: .free
     )
@@ -143,7 +113,6 @@ enum SoundCatalog {
         emoji: "👏",
         category: .basic,
         audio: AudioResource(fileName: "applause", fileExtension: "wav"),
-        animation: .applause,
         playbackMode: .impact,
         accessLevel: .free
     )
@@ -154,7 +123,6 @@ enum SoundCatalog {
         emoji: "🏟️",
         category: .sports,
         audio: AudioResource(fileName: "cheer-crowd", fileExtension: "mp3"),
-        animation: .cheer,
         playbackMode: .sustained,
         accessLevel: .pro,
         loopEndTime: 4.75,
@@ -167,7 +135,6 @@ enum SoundCatalog {
         emoji: "🥁",
         category: .sports,
         audio: AudioResource(fileName: "drum-crowd", fileExtension: "mp3"),
-        animation: .drum,
         playbackMode: .sustained,
         accessLevel: .pro,
         loopEndTime: 5.75,
@@ -180,7 +147,6 @@ enum SoundCatalog {
         emoji: "🪇",
         category: .basic,
         audio: AudioResource(fileName: "noisemaker", fileExtension: "wav"),
-        animation: .noisemaker,
         playbackMode: .impact,
         accessLevel: .free
     )
@@ -191,7 +157,6 @@ enum SoundCatalog {
         emoji: "📯",
         category: .sports,
         audio: AudioResource(fileName: "cargo-ship-horn", fileExtension: "mp3"),
-        animation: .stadiumHorn,
         playbackMode: .sustained,
         accessLevel: .pro,
         loopEndTime: 8.10,
@@ -204,7 +169,6 @@ enum SoundCatalog {
         emoji: "📯",
         category: .party,
         audio: AudioResource(fileName: "air-horn", fileExtension: "mp3"),
-        animation: .airHorn,
         playbackMode: .impact,
         accessLevel: .pro
     )
@@ -215,7 +179,6 @@ enum SoundCatalog {
         emoji: "🥳",
         category: .party,
         audio: AudioResource(fileName: "crowd-hey", fileExtension: "mp3"),
-        animation: .crowdHey,
         playbackMode: .sustained,
         accessLevel: .pro,
         loopEndTime: 4.65,
@@ -228,7 +191,6 @@ enum SoundCatalog {
         emoji: "💿",
         category: .party,
         audio: AudioResource(fileName: "dj-scratch", fileExtension: "mp3"),
-        animation: .djScratch,
         playbackMode: .impact,
         accessLevel: .pro
     )
@@ -239,7 +201,6 @@ enum SoundCatalog {
         emoji: "🍾",
         category: .party,
         audio: AudioResource(fileName: "champagne-pops", fileExtension: "mp3"),
-        animation: .champagnePops,
         playbackMode: .impact,
         accessLevel: .pro
     )
@@ -250,7 +211,6 @@ enum SoundCatalog {
         emoji: "🎉",
         category: .party,
         audio: AudioResource(fileName: "party-blower", fileExtension: "mp3"),
-        animation: .partyBlower,
         playbackMode: .impact,
         accessLevel: .pro
     )
@@ -261,7 +221,6 @@ enum SoundCatalog {
         emoji: "⚽️",
         category: .sports,
         audio: AudioResource(fileName: "referee-whistle", fileExtension: "mp3"),
-        animation: .refereeWhistle,
         playbackMode: .impact,
         accessLevel: .pro
     )
@@ -272,7 +231,6 @@ enum SoundCatalog {
         emoji: "🙌",
         category: .sports,
         audio: AudioResource(fileName: "podium", fileExtension: "mp3"),
-        animation: .podium,
         playbackMode: .sustained,
         accessLevel: .pro,
         loopEndTime: 6.20,
@@ -285,7 +243,6 @@ enum SoundCatalog {
         emoji: "⬆️",
         category: .gaming,
         audio: AudioResource(fileName: "level-up", fileExtension: "mp3"),
-        animation: .levelUp,
         playbackMode: .impact,
         accessLevel: .pro
     )
@@ -296,7 +253,6 @@ enum SoundCatalog {
         emoji: "🪙",
         category: .gaming,
         audio: AudioResource(fileName: "coin", fileExtension: "mp3"),
-        animation: .coin,
         playbackMode: .impact,
         accessLevel: .pro
     )
@@ -307,7 +263,6 @@ enum SoundCatalog {
         emoji: "🏆",
         category: .gaming,
         audio: AudioResource(fileName: "victory", fileExtension: "mp3"),
-        animation: .victory,
         playbackMode: .sustained,
         accessLevel: .pro,
         loopEndTime: 6.75,
@@ -320,7 +275,6 @@ enum SoundCatalog {
         emoji: "❌",
         category: .gaming,
         audio: AudioResource(fileName: "fail-buzzer", fileExtension: "mp3"),
-        animation: .failBuzzer,
         playbackMode: .impact,
         accessLevel: .pro
     )
@@ -331,7 +285,6 @@ enum SoundCatalog {
         emoji: "🎮",
         category: .gaming,
         audio: AudioResource(fileName: "game-over", fileExtension: "mp3"),
-        animation: .gameOver,
         playbackMode: .impact,
         accessLevel: .pro
     )
@@ -342,7 +295,6 @@ enum SoundCatalog {
         emoji: "🎺",
         category: .funny,
         audio: AudioResource(fileName: "sad-trumpet", fileExtension: "mp3"),
-        animation: .sadTrumpet,
         playbackMode: .sustained,
         accessLevel: .pro,
         loopEndTime: 3.75,
@@ -356,10 +308,9 @@ enum SoundCatalog {
         emoji: "👎",
         category: .funny,
         audio: AudioResource(fileName: "boo", fileExtension: "mp3"),
-        animation: .boo,
         playbackMode: .sustained,
         accessLevel: .pro,
-        loopEndTime: 2.75,
+        loopEndTime: 4.75,
         loopCrossfadeDuration: 0.18
     )
 
@@ -369,7 +320,6 @@ enum SoundCatalog {
         emoji: "😭",
         category: .funny,
         audio: AudioResource(fileName: "crowd-disappointment", fileExtension: "mp3"),
-        animation: .crowdDisappointment,
         playbackMode: .sustained,
         accessLevel: .pro,
         loopEndTime: 4.75,
@@ -382,7 +332,6 @@ enum SoundCatalog {
         emoji: "🦗",
         category: .funny,
         audio: AudioResource(fileName: "crickets", fileExtension: "mp3"),
-        animation: .crickets,
         playbackMode: .sustained,
         accessLevel: .pro,
         loopEndTime: 9.30,
@@ -395,7 +344,6 @@ enum SoundCatalog {
         emoji: "🤣",
         category: .funny,
         audio: AudioResource(fileName: "laugh-track", fileExtension: "mp3"),
-        animation: .laughTrack,
         playbackMode: .sustained,
         accessLevel: .pro,
         loopEndTime: 3.00,
