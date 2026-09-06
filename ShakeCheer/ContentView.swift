@@ -305,33 +305,17 @@ private struct SoundIcon: View {
     let sound: SoundDefinition
     let size: CGFloat
 
-    @ViewBuilder
     var body: some View {
-        switch sound.animation {
-        case .bell:
-            Image("HandBell")
-                .resizable()
-                .scaledToFit()
-                .frame(width: size * 1.08, height: size * 1.08)
-        case .applause:
-            Image("ApplauseHands")
-                .resizable()
-                .scaledToFit()
-                .frame(width: size * 1.08, height: size * 1.08)
-        case .noisemaker:
-            Image("Noisemaker")
-                .resizable()
-                .scaledToFit()
-                .frame(width: size * 1.25, height: size * 1.25)
-        case .stadiumHorn:
-            Image("StadiumHorn")
-                .resizable()
-                .scaledToFit()
-                .frame(width: size * 1.15, height: size * 1.15)
-        default:
-            Text(sound.emoji)
-                .font(.system(size: size))
-        }
+        Image(sound.visualAssetName)
+            .resizable()
+            .scaledToFill()
+            .frame(width: size * 1.72, height: size * 1.15)
+            .clipShape(RoundedRectangle(cornerRadius: size * 0.13, style: .continuous))
+            .overlay {
+                RoundedRectangle(cornerRadius: size * 0.13, style: .continuous)
+                    .stroke(Color.white.opacity(0.18), lineWidth: 1)
+            }
+            .shadow(color: .black.opacity(0.4), radius: 10, y: 5)
     }
 }
 
@@ -391,10 +375,9 @@ private struct SoundAnimationView: View {
                     }
             }
 
-        case .cheer, .sadTrumpet:
+        case .cheer:
             ZStack {
-                Text(sound.emoji)
-                    .font(.system(size: 92))
+                SoundIcon(sound: sound, size: 106)
                     .phaseAnimator(PulsePhase.allCases, trigger: trigger) { content, phase in
                         content
                             .scaleEffect(phase.scale)
@@ -403,21 +386,46 @@ private struct SoundAnimationView: View {
                         .easeOut(duration: 0.11)
                     }
 
+                Image(systemName: "person.3.fill")
+                    .font(.system(size: 27, weight: .bold))
+                    .foregroundStyle(.orange)
+                    .phaseAnimator(NotePhase.allCases, trigger: trigger) { content, phase in
+                        content
+                            .opacity(phase.opacity)
+                            .scaleEffect(phase.scale)
+                            .offset(x: phase.x, y: phase.y)
+                    } animation: { phase in
+                        phase == .burst
+                            ? .spring(duration: 0.22, bounce: 0.35)
+                            : .easeOut(duration: 0.24)
+                    }
+            }
+
+        case .sadTrumpet:
+            ZStack {
+                SoundIcon(sound: sound, size: 102)
+                    .phaseAnimator(SadTrumpetPhase.allCases, trigger: trigger) { content, phase in
+                        content
+                            .rotationEffect(.degrees(phase.angle), anchor: .leading)
+                            .offset(y: phase.drop)
+                            .scaleEffect(phase.scale)
+                    } animation: { _ in
+                        .easeInOut(duration: 0.13)
+                    }
+
                 HStack(spacing: 5) {
                     Text("♪")
                     Text("♫")
                 }
                 .font(.system(size: 27, weight: .bold, design: .rounded))
                 .foregroundStyle(.orange)
-                .phaseAnimator(NotePhase.allCases, trigger: trigger) { content, phase in
+                .phaseAnimator(DescendingNotePhase.allCases, trigger: trigger) { content, phase in
                     content
                         .opacity(phase.opacity)
                         .scaleEffect(phase.scale)
                         .offset(x: phase.x, y: phase.y)
-                } animation: { phase in
-                    phase == .burst
-                        ? .spring(duration: 0.22, bounce: 0.35)
-                        : .easeOut(duration: 0.24)
+                } animation: { _ in
+                    .easeOut(duration: 0.25)
                 }
             }
 
@@ -581,12 +589,12 @@ private struct SoundAnimationView: View {
         case .refereeWhistle:
             ZStack {
                 SoundIcon(sound: sound, size: 106)
-                    .phaseAnimator(HornPhase.allCases, trigger: trigger) { content, phase in
+                    .phaseAnimator(WhistlePhase.allCases, trigger: trigger) { content, phase in
                         content
                             .scaleEffect(phase.scale)
-                            .offset(x: phase.offset)
+                            .rotationEffect(.degrees(phase.angle), anchor: .topLeading)
                     } animation: { _ in
-                        .easeOut(duration: 0.11)
+                        .easeInOut(duration: 0.09)
                     }
 
                 Image(systemName: "wave.3.right")
@@ -702,12 +710,12 @@ private struct SoundAnimationView: View {
         case .partyBlower:
             ZStack {
                 SoundIcon(sound: sound, size: 108)
-                    .phaseAnimator(HornPhase.allCases, trigger: trigger) { content, phase in
+                    .phaseAnimator(PartyBlowerPhase.allCases, trigger: trigger) { content, phase in
                         content
-                            .scaleEffect(phase.scale)
-                            .offset(x: phase.offset)
+                            .scaleEffect(x: phase.stretch, y: phase.height, anchor: .leading)
+                            .rotationEffect(.degrees(phase.angle), anchor: .leading)
                     } animation: { _ in
-                        .easeOut(duration: 0.11)
+                        .spring(duration: 0.16, bounce: 0.35)
                     }
 
                 Image(systemName: "wave.3.right")
@@ -812,19 +820,93 @@ private struct SoundAnimationView: View {
     }
 }
 
+private enum WhistlePhase: CaseIterable {
+    case resting, up, down, rebound, settled
+
+    var angle: Double {
+        switch self {
+        case .resting, .settled: return 0
+        case .up: return -2
+        case .down: return 2
+        case .rebound: return -1
+        }
+    }
+
+    var scale: Double {
+        switch self {
+        case .resting, .settled: return 1
+        case .up, .down: return 1.03
+        case .rebound: return 1.01
+        }
+    }
+}
+
+private enum PartyBlowerPhase: CaseIterable {
+    case resting, extended, recoil, settled
+
+    var stretch: Double {
+        switch self {
+        case .resting, .settled: return 1
+        case .extended: return 1.04
+        case .recoil: return 0.99
+        }
+    }
+
+    var height: Double { self == .extended ? 0.99 : 1 }
+
+    var angle: Double {
+        switch self {
+        case .extended: return -1
+        case .recoil: return 1
+        default: return 0
+        }
+    }
+}
+
+private enum SadTrumpetPhase: CaseIterable {
+    case resting, lift, fall, settled
+
+    var angle: Double {
+        switch self {
+        case .resting, .settled: return 0
+        case .lift: return -2
+        case .fall: return 3
+        }
+    }
+
+    var drop: Double { self == .fall ? 3 : 0 }
+    var scale: Double { self == .lift ? 1.03 : 1 }
+}
+
+private enum DescendingNotePhase: CaseIterable {
+    case hidden, appeared, falling, vanished
+
+    var opacity: Double {
+        switch self {
+        case .hidden, .vanished: return 0
+        case .appeared: return 1
+        case .falling: return 0.55
+        }
+    }
+
+    var scale: Double { self == .appeared ? 1.12 : 0.86 }
+    var x: Double { self == .falling || self == .vanished ? 18 : 8 }
+    var y: Double { self == .falling || self == .vanished ? 38 : 12 }
+}
+
 private enum BellPhase: CaseIterable {
     case resting, left, right, rebound, settled
 
     var angle: Double {
         switch self {
         case .resting, .settled: return 0
-        case .left: return -24
-        case .right: return 22
-        case .rebound: return -12
+        case .left: return -4
+        case .right: return 4
+        case .rebound: return -2
         }
     }
 
-    var scale: Double { self == .resting || self == .settled ? 1 : 1.06 }
+    var scale: Double { self == .resting || self == .settled ? 1 : 1.025 }
 }
 
 private enum ClapPhase: CaseIterable {
@@ -833,23 +915,23 @@ private enum ClapPhase: CaseIterable {
     var width: Double {
         switch self {
         case .open, .settled: return 1
-        case .clap, .secondClap: return 0.76
-        case .rebound: return 1.12
+        case .clap, .secondClap: return 0.96
+        case .rebound: return 1.03
         }
     }
 
     var height: Double {
         switch self {
-        case .clap, .secondClap: return 1.08
+        case .clap, .secondClap: return 1.02
         default: return 1
         }
     }
 
     var angle: Double {
         switch self {
-        case .clap: return -5
-        case .rebound: return 5
-        case .secondClap: return -3
+        case .clap: return -1.5
+        case .rebound: return 1.5
+        case .secondClap: return -1
         default: return 0
         }
     }
@@ -872,8 +954,8 @@ private enum ImpactPhase: CaseIterable {
 private enum PulsePhase: CaseIterable {
     case resting, burst, settled
 
-    var scale: Double { self == .burst ? 1.13 : 1 }
-    var angle: Double { self == .burst ? -7 : 0 }
+    var scale: Double { self == .burst ? 1.04 : 1 }
+    var angle: Double { self == .burst ? -1.5 : 0 }
 }
 
 private enum NotePhase: CaseIterable {
@@ -911,17 +993,17 @@ private enum DrumPhase: CaseIterable {
 
     var scale: Double {
         switch self {
-        case .hit, .secondHit: return 0.88
-        case .rebound: return 1.12
+        case .hit, .secondHit: return 0.96
+        case .rebound: return 1.04
         default: return 1
         }
     }
 
     var angle: Double {
         switch self {
-        case .hit: return -6
-        case .rebound: return 5
-        case .secondHit: return -3
+        case .hit: return -2
+        case .rebound: return 2
+        case .secondHit: return -1
         default: return 0
         }
     }
@@ -955,15 +1037,15 @@ private enum RattlePhase: CaseIterable {
     var angle: Double {
         switch self {
         case .resting: return 0
-        case .quarter: return 90
-        case .half: return 180
-        case .threeQuarter: return 270
-        case .fullTurn: return 360
+        case .quarter: return -3
+        case .half: return 3
+        case .threeQuarter: return -2
+        case .fullTurn: return 0
         }
     }
 
     var scale: Double {
-        self == .resting || self == .fullTurn ? 1 : 1.08
+        self == .resting || self == .fullTurn ? 1 : 1.025
     }
 }
 
@@ -972,13 +1054,13 @@ private enum HornPhase: CaseIterable {
 
     var scale: Double {
         switch self {
-        case .blast: return 1.14
-        case .rebound: return 0.97
+        case .blast: return 1.04
+        case .rebound: return 0.99
         default: return 1
         }
     }
 
-    var offset: Double { self == .blast ? 7 : 0 }
+    var offset: Double { self == .blast ? 3 : 0 }
 }
 
 private enum WavePhase: CaseIterable {

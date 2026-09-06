@@ -120,6 +120,7 @@ struct SoundDefinition: Identifiable, Hashable {
 
     var fileName: String { audio.fileName }
     var fileExtension: String { audio.fileExtension }
+    var visualAssetName: String { "Sound-\(id)" }
     var usesSustainedPlayback: Bool { playbackMode == .sustained }
     var isPro: Bool { accessLevel == .pro }
 }
@@ -271,7 +272,7 @@ enum SoundCatalog {
         emoji: "🙌",
         category: .sports,
         audio: AudioResource(fileName: "podium", fileExtension: "mp3"),
-        animation: .cheer,
+        animation: .podium,
         playbackMode: .sustained,
         accessLevel: .pro,
         loopEndTime: 6.20,
