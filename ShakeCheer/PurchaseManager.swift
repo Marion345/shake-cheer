@@ -5,10 +5,8 @@ import StoreKit
 @MainActor
 final class PurchaseManager: ObservableObject {
     static let proProductID = "com.marion345.shakecheer.pro"
-    // Temporary TestFlight switch. Set this to false before App Store review.
-    static let temporaryProTestingUnlockEnabled = true
 
-    @Published private(set) var isPro = temporaryProTestingUnlockEnabled
+    @Published private(set) var isPro = false
     @Published private(set) var product: Product?
     @Published private(set) var isLoadingProduct = false
     @Published private(set) var isPurchasing = false
@@ -41,10 +39,6 @@ final class PurchaseManager: ObservableObject {
 
     var displayPrice: String {
         product?.displayPrice ?? "Prix à venir"
-    }
-
-    var isUsingTemporaryProTestingUnlock: Bool {
-        Self.temporaryProTestingUnlockEnabled
     }
 
     func loadProduct() async {
@@ -138,6 +132,6 @@ final class PurchaseManager: ObservableObject {
             }
         }
 
-        isPro = Self.temporaryProTestingUnlockEnabled || hasActiveProPurchase
+        isPro = hasActiveProPurchase
     }
 }

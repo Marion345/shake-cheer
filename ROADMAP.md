@@ -11,7 +11,7 @@ Le prototype fonctionnel comprend :
 - une interface SwiftUI sombre, orange et or;
 - un carrousel centré avec six sons;
 - Cloche, Applaudissements, Encouragement, Tambour, Crécelle et Corne de stade;
-- des animations propres à chaque objet;
+- des illustrations propres à chaque son;
 - un mode de jeu immersif en plein écran;
 - un déclenchement Core Motion avec sensibilité moyenne fixe;
 - deux comportements audio : impact court et lecture maintenue pendant le mouvement;
@@ -56,7 +56,7 @@ Chaque son doit définir :
 - sa catégorie;
 - son fichier audio et son format;
 - son icône ou illustration;
-- son animation;
+- son illustration;
 - son mode de lecture;
 - son statut gratuit ou Pro;
 - sa provenance et sa licence commerciale.
@@ -89,7 +89,7 @@ Les vues SwiftUI consomment ces modèles et services sans connaître directement
 
 ### Phase 1 — Stabiliser la V0.1
 
-- valider les six sons et les animations sur plusieurs iPhone;
+- valider les sons et leurs illustrations sur plusieurs iPhone;
 - régler définitivement le comportement soutenu;
 - vérifier les niveaux audio et les interruptions;
 - compléter les licences des sons;
@@ -135,7 +135,7 @@ Les vues SwiftUI consomment ces modèles et services sans connaître directement
 - lancement progressif;
 - suivi des plantages et retours;
 - mesure respectueuse de la vie privée des catégories utilisées;
-- ajustement des sons, animations, prix et fréquence publicitaire;
+- ajustement des sons, illustrations, prix et fréquence publicitaire;
 - ajout périodique de packs.
 
 ## Principes produit
