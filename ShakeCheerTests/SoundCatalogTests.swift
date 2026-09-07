@@ -11,12 +11,10 @@ final class SoundCatalogTests: XCTestCase {
     }
 
     @MainActor
-    func testTemporaryProTestingUnlockIsEnabled() {
+    func testProIsLockedWithoutVerifiedPurchase() {
         let purchaseManager = PurchaseManager()
 
-        XCTAssertTrue(PurchaseManager.temporaryProTestingUnlockEnabled)
-        XCTAssertTrue(purchaseManager.isUsingTemporaryProTestingUnlock)
-        XCTAssertTrue(purchaseManager.isPro)
+        XCTAssertFalse(purchaseManager.isPro)
     }
 
     func testBuiltInSoundIDsAreUnique() {
