@@ -1,9 +1,10 @@
 # ShakeCheer — pages de support et de confidentialité
 
-Deux pages statiques en français canadien, sans JavaScript, formulaire, police distante ni outil de suivi ajouté par ShakeCheer.
+Trois pages statiques en français canadien, sans JavaScript, formulaire, police distante ni outil de suivi ajouté par ShakeCheer.
 
 - `dist/index.html` : aide et contact public `yanick.marion@hotmail.com`.
 - `dist/confidentialite.html` : politique de la version actuelle, achats Apple, mouvements locaux, support et hébergement.
+- `dist/credits-audio.html` : attributions publiques des six œuvres sous licence CC BY 4.0, liens vers les sources et indication des modifications.
 - `dist/styles.css` : thème noir/orange, navigation clavier et mise en page responsive.
 - `.openai/hosting.json` : identité conservée de l’ancien hébergement Sites; elle n’est pas publiée par GitHub Pages.
 - `../.github/workflows/website-pages.yml` : vérification et publication sur GitHub Pages.
@@ -23,6 +24,7 @@ Adresses attendues après la première publication réussie :
 
 - Support : https://marion345.github.io/shake-cheer/
 - Confidentialité : https://marion345.github.io/shake-cheer/confidentialite.html
+- Crédits audio : https://marion345.github.io/shake-cheer/credits-audio.html
 
 Après activation, chaque modification de `website/` fusionnée dans `main` déclenche la vérification et la publication. Les pull requests exécutent seulement la vérification. Le déploiement publie uniquement `website/dist`; aucun fichier Swift, document interne ou réglage Sites n’est inclus. Aucun secret supplémentaire ni compilation iOS n’est nécessaire pour publier ces pages.
 
