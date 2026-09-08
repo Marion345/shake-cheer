@@ -1,4 +1,4 @@
-"""Small, dependency-free checks for the two static ShakeCheer pages."""
+"""Small, dependency-free checks for the static ShakeCheer pages."""
 from html.parser import HTMLParser
 from pathlib import Path
 from urllib.parse import unquote, urlsplit
@@ -56,7 +56,7 @@ def contrast(a, b):
 
 
 pages = {p: Page(p.read_text(encoding="utf-8")) for p in ROOT.glob("*.html")}
-assert {p.name for p in pages} == {"index.html", "confidentialite.html"}
+assert {p.name for p in pages} == {"index.html", "confidentialite.html", "credits-audio.html"}
 for path, page in pages.items():
     assert page.lang == "fr-CA"
     assert page.headings == page.titles == page.current == 1
@@ -85,4 +85,9 @@ for fg, bg in (("#f6f3ed", "#0b0b0c"), ("#b6b4b0", "#151517"), ("#ffae43", "#0b0
     assert ratio >= 4.5, f"Insufficient contrast: {fg}/{bg}"
     print(f"PASS contrast {fg}/{bg}: {ratio:.2f}:1")
 assert "Des publicités sont prévues" in (ROOT / "confidentialite.html").read_text(encoding="utf-8")
+credits = (ROOT / "credits-audio.html").read_text(encoding="utf-8")
+for sound_id in ("867573", "243946", "433701", "466133", "394900", "434465"):
+    assert f"https://freesound.org/s/{sound_id}/" in credits, f"Missing attribution for Freesound {sound_id}"
+assert credits.count("https://creativecommons.org/licenses/by/4.0/") == 1
+assert "Modifications apportées" in credits
 print("PASS static site checks")
