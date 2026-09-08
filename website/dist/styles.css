@@ -49,10 +49,20 @@ li{margin-bottom:.5rem}
 .document a{overflow-wrap:anywhere}
 .summary-box{background:var(--panel);border:1px solid var(--line);padding:1.25rem 1.5rem;border-radius:12px;margin:1.8rem 0}
 .summary-box p{margin:0}
+.credits{max-width:920px}
+.credits-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem;margin:1.25rem 0 2.5rem}
+.credit{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:1.35rem}
+.credit h3{font-size:1.2rem;margin:.7rem 0 1rem;overflow-wrap:anywhere}
+.credit dl{margin:0}
+.credit dl div{display:grid;grid-template-columns:7.5rem minmax(0,1fr);gap:.7rem;border-top:1px solid var(--line);padding:.7rem 0}
+.credit dt{color:var(--muted);font-size:.875rem;font-weight:650}
+.credit dd{margin:0;color:var(--text);overflow-wrap:anywhere}
+.license-badge{display:inline-block;color:var(--accent);font-size:.75rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
+.footer-links{display:flex;gap:1rem;flex-wrap:wrap}
 footer{border-top:1px solid var(--line);padding:1.5rem 0 2rem;display:flex;gap:1rem;justify-content:space-between;flex-wrap:wrap;font-size:.875rem;color:var(--muted)}
 footer p{margin:0}
 footer a{color:var(--muted)}
-@media(max-width:800px){.layout{grid-template-columns:1fr;gap:2rem}.contact{position:static;order:-1}main{padding-top:2.4rem}.contact .button{margin-right:.75rem}.contact h2{font-size:1.3rem}}
+@media(max-width:800px){.layout{grid-template-columns:1fr;gap:2rem}.contact{position:static;order:-1}main{padding-top:2.4rem}.contact .button{margin-right:.75rem}.contact h2{font-size:1.3rem}.credits-grid{grid-template-columns:1fr}}
 @media(max-width:480px){.wrap{width:calc(100% - 2rem)}header{align-items:flex-start;flex-direction:column;padding:1.15rem 0;gap:.65rem}nav{gap:1.25rem}h1{font-size:2.6rem}.steps li{gap:.6rem}.contact{padding:1.2rem}.document h1{font-size:2.35rem}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 @media print{body{background:white;color:black;border:0;font-size:11pt}.wrap{width:100%}header,footer,.skip{display:none}.document{max-width:none}h1,h2,h3,.document strong,.document p,.document li,a{color:black}.summary-box{background:none;border:1px solid #777}main{padding:0}}
